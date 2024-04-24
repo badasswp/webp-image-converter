@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<ruleset name="WebPImageConverter">
+	<rule ref="WordPress-Core">
+		<exclude name="WordPress.Files.FileName" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
+		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
+		<exclude name="WordPress.PHP.DisallowShortTernary.Found" />
+		<exclude name="WordPress.WP.I18n.NoEmptyStrings" />
+		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralText" />
+		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralDomain" />
+		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
+		<exclude name="WordPress.WP.I18n.InterpolatedVariableText" />
+		<exclude name="WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase" />
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
+		<exclude name="Universal.Operators.DisallowShortTernary.Found" />
+		<exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.exitFound" />
+	</rule>
+
+	<arg value="s" />
+	<arg name="extensions" value="php" />
+	<arg name="colors" />
+	<file>.</file>
+
+	<exclude-pattern>/vendor/</exclude-pattern>
+	<exclude-pattern>/languages/</exclude-pattern>
+</ruleset>
