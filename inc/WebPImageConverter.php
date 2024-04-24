@@ -80,4 +80,32 @@ class WebPImageConverter {
 		$this->abs_dest = str_replace( $image_extension, '.webp', $this->abs_source );
 		$this->rel_dest = str_replace( $image_extension, '.webp', Plugin::$source );
 	}
+
+	/**
+	 * Get Options.
+	 *
+	 * A list of Conversion options to be used
+	 * when converting images to WebP format. E.g. quality...
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return mixed[]
+	 */
+	protected function get_options(): array {
+		$options = [
+			'quality'     => 85,
+			'max-quality' => 100,
+			'converter'   => 'imagick',
+		];
+
+		/**
+		 * Get Conversion options.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param mixed[] $options Conversion options.
+		 * @return mixed[]
+		 */
+		return (array) apply_filters( 'webp-img-conv-options', $options );
+	}
 }
