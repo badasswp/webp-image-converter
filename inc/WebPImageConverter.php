@@ -123,7 +123,7 @@ class WebPImageConverter {
 	 * @return void
 	 */
 	protected function set_image_destination(): void {
-		$image_extension = '.' . pathinfo( $this->rel_source, PATHINFO_EXTENSION );
+		$image_extension = '.' . pathinfo( Plugin::$source, PATHINFO_EXTENSION );
 
 		$this->abs_dest = str_replace( $image_extension, '.webp', $this->abs_source );
 		$this->rel_dest = str_replace( $image_extension, '.webp', Plugin::$source );
@@ -143,7 +143,7 @@ class WebPImageConverter {
 		$options = [
 			'quality'     => 85,
 			'max-quality' => 100,
-			'converter'   => 'imagick',
+			'converter'   => 'gd',
 		];
 
 		/**
