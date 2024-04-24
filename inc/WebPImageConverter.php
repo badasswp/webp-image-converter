@@ -65,6 +65,22 @@ class WebPImageConverter {
 		$this->set_image_source();
 		$this->set_image_destination();
 
+		// Bail out, if source image is empty.
+		if ( ! file_exists( $this->abs_source ) ) {
+			return new \WP_Error(
+				'webp-img-error',
+				sprintf(
+					__( 'Error: %s does not exist.', 'webp-img-conv' ),
+					$this->abs_source
+				)
+			);
+		}
+
+		// Bail out, if dest. image exists.
+		if ( file_exists( $this->abs_dest ) ) {
+			return $this->rel_dest;
+		}
+
 		// Convert to WebP image.
 		try {
 			WebPConvert::convert( $this->abs_source, $this->abs_dest, $this->get_options() );
