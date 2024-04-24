@@ -48,4 +48,19 @@ class WebPImageConverter {
 	 * @var string
 	 */
 	public string $rel_dest = '';
+
+	/**
+	 * Set Image source.
+	 *
+	 * Get the image's relative path and replace with
+	 * absolute path.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	protected function set_image_source(): void {
+		$img_uploads_dir  = wp_upload_dir();
+		$this->abs_source = str_replace( $img_uploads_dir['baseurl'] ?? '', $img_uploads_dir['basedir'] ?? '', Plugin::$source );
+	}
 }
