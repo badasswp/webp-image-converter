@@ -63,4 +63,21 @@ class WebPImageConverter {
 		$img_uploads_dir  = wp_upload_dir();
 		$this->abs_source = str_replace( $img_uploads_dir['baseurl'] ?? '', $img_uploads_dir['basedir'] ?? '', Plugin::$source );
 	}
+
+	/**
+	 * Set Image destination.
+	 *
+	 * Using image sources, set absolute and relative
+	 * paths for images.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	protected function set_image_destination(): void {
+		$image_extension = '.' . pathinfo( $this->rel_source, PATHINFO_EXTENSION );
+
+		$this->abs_dest = str_replace( $image_extension, '.webp', $this->abs_source );
+		$this->rel_dest = str_replace( $image_extension, '.webp', Plugin::$source );
+	}
 }
