@@ -11,6 +11,7 @@
 namespace WebPImageConverter;
 
 use Exception;
+use WebPConvert\WebPConvert;
 
 class WebPImageConverter {
 	/**
@@ -48,6 +49,37 @@ class WebPImageConverter {
 	 * @var string
 	 */
 	public string $rel_dest = '';
+
+	/**
+	 * Convert to WebP image.
+	 *
+	 * This method is responsible for taking the source image
+	 * and converting it to the WebP equivalent.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string|\WP_Error
+	 */
+	public function convert() {
+		// Set image source and destination.
+		$this->set_image_source();
+		$this->set_image_destination();
+
+		// Convert to WebP image.
+		try {
+			WebPConvert::convert( $this->abs_source, $this->abs_dest, $this->get_options() );
+		} catch ( Exception $e ) {
+			$error_msg = sprintf(
+				__( 'Fatal Error: %s', 'webp-img-conv' ),
+				$e->getMessage()
+			);
+			error_log( $error_msg );
+
+			return new \WP_Error( 'webp-img-error', $error_msg );
+		}
+
+		return $this->rel_dest;
+	}
 
 	/**
 	 * Set Image source.
