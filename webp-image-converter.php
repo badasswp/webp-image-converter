@@ -8,7 +8,7 @@
  * Author URI:  https://github.com/badasswp
  * License:     GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain: web-img-conv
+ * Text Domain: webp-image-converter
  * Domain Path: /languages
  *
  * @package WebPImageConverter
