@@ -105,6 +105,16 @@ final class Plugin {
 
 		// Convert to WebP image.
 		$webp = $this->converter->convert();
+
+		/**
+		 * Fires after Image is converted.
+		 *
+		 * @param string|\WP_Error $webp          WebP Image URL or WP Error.
+		 * @param int              $attachment_id Image ID.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'webp_img_conv_after', $webp, $attachment_id );
 	}
 
 	/**
