@@ -43,6 +43,10 @@ final class Plugin {
 
 	/**
 	 * Set up.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 		$this->converter = new WebPImageConverter();
