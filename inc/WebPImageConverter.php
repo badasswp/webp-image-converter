@@ -33,15 +33,6 @@ class WebPImageConverter {
 	public string $abs_dest = '';
 
 	/**
-	 * Image source (relative path).
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string
-	 */
-	public string $rel_source = '';
-
-	/**
 	 * Image destination (relative path).
 	 *
 	 * @since 1.0.0
