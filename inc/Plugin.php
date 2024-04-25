@@ -123,6 +123,25 @@ final class Plugin {
 	 * @return string
 	 */
 	public function filter_post_thumbnail_html( $html, $post_id, $thumbnail_id, $size, $attr ): string {
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
+		return $this->get_converted_image( $html );
+	}
+
+	/**
+	 * Get Converted image.
+	 *
+	 * This method uses the original image HTML to generate
+	 * a WebP-Image based HTML.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $html Image HTML.
+	 * @return string
+	 */
+	protected function get_converterd_image( $html ): string {
 		// Bail out, if empty or NOT image.
 		if ( empty( $html ) || ! preg_match( '/<img.*>/', $html, $image ) ) {
 			return $html;
