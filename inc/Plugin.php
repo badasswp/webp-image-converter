@@ -129,7 +129,17 @@ final class Plugin {
 			return $html;
 		}
 
-		return $this->get_converted_image( $html );
+		$html = $this->get_converted_image( $html );
+
+		/**
+		 * Filter WebP Image HTML.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $html WebP Image HTML.
+		 * @return string
+		 */
+		return (string) apply_filters( 'webp_img_conv_attachment_html', $html );
 	}
 
 	/**
@@ -153,7 +163,17 @@ final class Plugin {
 			return $html;
 		}
 
-		return $this->get_webp_image_html( $html );
+		$html = $this->get_converted_image( $html );
+
+		/**
+		 * Filter WebP Image Thumbnail HTML.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $html WebP Image HTML.
+		 * @return string
+		 */
+		return (string) apply_filters( 'webp_img_conv_thumbnail_html', $html );
 	}
 
 	/**
