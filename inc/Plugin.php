@@ -127,11 +127,11 @@ final class Plugin {
 			return $html;
 		}
 
-		return $this->get_converted_image( $html );
+		return $this->get_webp_image_html( $html );
 	}
 
 	/**
-	 * Get Converted image.
+	 * Get WebP image HTML.
 	 *
 	 * This method uses the original image HTML to generate
 	 * a WebP-Image based HTML.
@@ -141,7 +141,7 @@ final class Plugin {
 	 * @param string $html Image HTML.
 	 * @return string
 	 */
-	protected function get_converterd_image( $html ): string {
+	protected function get_webp_image_html( $html ): string {
 		// Bail out, if empty or NOT image.
 		if ( empty( $html ) || ! preg_match( '/<img.*>/', $html, $image ) ) {
 			return $html;
