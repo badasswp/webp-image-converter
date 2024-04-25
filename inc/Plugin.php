@@ -141,7 +141,7 @@ final class Plugin {
 			return $html;
 		}
 
-		$html = $this->get_converted_image( $html );
+		$html = $this->get_webp_image_html( $html );
 
 		/**
 		 * Filter WebP Image HTML.
@@ -175,7 +175,7 @@ final class Plugin {
 			return $html;
 		}
 
-		$html = $this->get_converted_image( $html );
+		$html = $this->get_webp_image_html( $html );
 
 		/**
 		 * Filter WebP Image Thumbnail HTML.
