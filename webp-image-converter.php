@@ -26,8 +26,8 @@ if ( ! file_exists( WEBP_AUTOLOAD ) ) {
 		'admin_notices',
 		function () {
 			printf(
-				__( 'Fatal Error: %s file does not exist, please check if Composer is installed!', 'webp-img-conv' ),
-				WEBP_AUTOLOAD
+				esc_html__( 'Fatal Error: %s file does not exist, please check if Composer is installed!', 'webp-img-conv' ),
+				esc_html( WEBP_AUTOLOAD )
 			);
 		}
 	);
