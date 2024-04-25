@@ -70,6 +70,7 @@ class WebPImageConverter {
 			return new \WP_Error(
 				'webp-img-error',
 				sprintf(
+					/* translators: Absolute path to Source Image. */
 					__( 'Error: %s does not exist.', 'webp-img-conv' ),
 					$this->abs_source
 				)
@@ -86,6 +87,7 @@ class WebPImageConverter {
 			WebPConvert::convert( $this->abs_source, $this->abs_dest, $this->get_options() );
 		} catch ( Exception $e ) {
 			$error_msg = sprintf(
+				/* translators: Exception error msg. */
 				__( 'Fatal Error: %s', 'webp-img-conv' ),
 				$e->getMessage()
 			);
