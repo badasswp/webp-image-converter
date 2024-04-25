@@ -109,10 +109,12 @@ final class Plugin {
 		/**
 		 * Fires after Image is converted.
 		 *
+		 * @since 1.0.0
+		 *
 		 * @param string|\WP_Error $webp          WebP Image URL or WP Error.
 		 * @param int              $attachment_id Image ID.
 		 *
-		 * @since 1.0.0
+		 * @return void
 		 */
 		do_action( 'webp_img_conv_after', $webp, $attachment_id );
 	}
