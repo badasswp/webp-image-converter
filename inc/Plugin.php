@@ -64,4 +64,40 @@ final class Plugin {
 
 		return static::$instance;
 	}
+
+	/**
+	 * Bind to WP.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function run(): void {
+		add_action( 'add_attachment', [ $this, 'action_add_attachment' ] );
+	}
+
+	/**
+	 * Generate WebP on add_attachment.
+	 *
+	 * This generates WebP images when users add new images
+	 * to the WP media.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  int $attachment_id Image ID.
+	 * @return void
+	 */
+	public function action_add_attachment( $attachment_id ): void {
+		// Get source image.
+		static::$source = wp_get_attachment_url( $attachment_id );
+
+		// Bail out, if attachment is not an image.
+		$filetype = wp_check_filetype( get_attached_file( $attachment_id ) );
+		if ( false === strpos( $filetype['type'], 'image/' ) ) {
+			return;
+		}
+
+		// Convert to WebP image.
+		$webp = $this->converter->convert();
+	}
 }
