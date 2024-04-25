@@ -132,7 +132,7 @@ final class Plugin {
 		preg_match_all( '/http\S+\b/', $image[0], $image_urls );
 
 		// Deal with all image src and srcset URLs.
-		foreach( $image_urls[0] as $image_url ) {
+		foreach ( $image_urls[0] as $image_url ) {
 			// Get source image.
 			static::$source = $image_url;
 
