@@ -141,7 +141,7 @@ class WebPImageConverter {
 	 */
 	protected function get_options(): array {
 		$options = [
-			'quality'     => 85,
+			'quality'     => 20,
 			'max-quality' => 100,
 			'converter'   => 'gd',
 		];
