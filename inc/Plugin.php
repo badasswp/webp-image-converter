@@ -78,6 +78,7 @@ final class Plugin {
 	 */
 	public function run(): void {
 		add_action( 'add_attachment', [ $this, 'action_add_attachment' ] );
+		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
 	}
 
 	/**
@@ -103,5 +104,47 @@ final class Plugin {
 
 		// Convert to WebP image.
 		$webp = $this->converter->convert();
+	}
+
+	/**
+	 * Generate WebP on post_thumbnail_html.
+	 *
+	 * Filter WP post thumbnail by grabbing the DOM and
+	 * replacing with generated WebP images.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string       $html         The post thumbnail HTML.
+	 * @param int          $post_id      The post ID.
+	 * @param int          $thumbnail_id The post thumbnail ID, or 0 if there isn't one.
+	 * @param string|int[] $size         Requested image size.
+	 * @param string|array $attr         Query string or array of attributes.
+	 *
+	 * @return string
+	 */
+	public function filter_post_thumbnail_html( $html, $post_id, $thumbnail_id, $size, $attr ): string {
+		// Bail out, if empty or NOT image.
+		if ( empty( $html ) || ! preg_match( '/<img.*>/', $html, $image ) ) {
+			return $html;
+		}
+
+		// Get all image URLs.
+		preg_match_all( '/http\S+\b/', $image[0], $image_urls );
+
+		// Deal with all image src and srcset URLs.
+		foreach( $image_urls[0] as $image_url ) {
+			// Get source image.
+			static::$source = $image_url;
+
+			// Convert to WebP image.
+			$webp = $this->converter->convert();
+
+			// Replace image with WebP.
+			if ( ! is_wp_error( $webp ) && file_exists( $this->converter->abs_dest ) ) {
+				$html = str_replace( static::$source, $webp, $html );
+			}
+		}
+
+		return $html;
 	}
 }
