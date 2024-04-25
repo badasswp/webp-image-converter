@@ -78,6 +78,7 @@ final class Plugin {
 	 */
 	public function run(): void {
 		add_action( 'add_attachment', [ $this, 'action_add_attachment' ] );
+		add_filter( 'wp_get_attachment_image', [ $this, 'filter_wp_get_attachment_image' ], 10, 5 );
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
 	}
 
@@ -107,6 +108,31 @@ final class Plugin {
 	}
 
 	/**
+	 * Generate WebP on wp_get_attachment_image.
+	 *
+	 * Filter WP image on the fly for image display used in
+	 * posts, pages and so on.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string       $html          HTML img element or empty string on failure.
+	 * @param int          $attachment_id Image attachment ID.
+	 * @param string|int[] $size          Requested image size.
+	 * @param bool         $icon          Whether the image should be treated as an icon.
+	 * @param string[]     $attr          Array of attribute values for the image markup, keyed by attribute name.
+	 *                                    See wp_get_attachment_image().
+	 *
+	 * @return string
+	 */
+	public function filter_wp_get_attachment_image( $html, $attachment_id, $size, $icon, $attr ): string {
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
+		return $this->get_converted_image( $html );
+	}
+
+	/**
 	 * Generate WebP on post_thumbnail_html.
 	 *
 	 * Filter WP post thumbnail by grabbing the DOM and
@@ -133,8 +159,8 @@ final class Plugin {
 	/**
 	 * Get WebP image HTML.
 	 *
-	 * This method uses the original image HTML to generate
-	 * a WebP-Image based HTML.
+	 * This generic method uses the original image HTML to generate
+	 * a WebP-Image HTML.
 	 *
 	 * @since 1.0.0
 	 *
