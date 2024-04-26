@@ -1,0 +1,5 @@
+.editorconfig
+.gitignore
+.github
+phpcs.xml
+README.md
