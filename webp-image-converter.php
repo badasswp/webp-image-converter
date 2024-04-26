@@ -27,7 +27,7 @@ if ( ! file_exists( WEBP_AUTOLOAD ) ) {
 		function () {
 			printf(
 				/* translators: Autoload file path. */
-				esc_html__( 'Fatal Error: %s file does not exist, please check if Composer is installed!', 'webp-img-conv' ),
+				esc_html__( 'Fatal Error: %s file does not exist, please check if Composer is installed!', 'webp-img-converter' ),
 				esc_html( WEBP_AUTOLOAD )
 			);
 		}
