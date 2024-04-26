@@ -95,11 +95,11 @@ final class Plugin {
 	 */
 	public function action_add_attachment( $attachment_id ): void {
 		// Get source image.
-		static::$source = wp_get_attachment_url( $attachment_id );
+		static::$source = (string) wp_get_attachment_url( $attachment_id );
 
 		// Bail out, if attachment is not an image.
-		$filetype = wp_check_filetype( get_attached_file( $attachment_id ) );
-		if ( false === strpos( $filetype['type'], 'image/' ) ) {
+		$filetype = wp_check_filetype( (string) get_attached_file( $attachment_id ) );
+		if ( false === strpos( (string) $filetype['type'], 'image/' ) ) {
 			return;
 		}
 
