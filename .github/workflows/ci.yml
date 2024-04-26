@@ -31,6 +31,8 @@ jobs:
   php80:
     runs-on: ubuntu-latest
 
+    needs: php74
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
@@ -49,6 +51,8 @@ jobs:
 
   php82:
     runs-on: ubuntu-latest
+
+    needs: php80
 
     steps:
       - name: Checkout Repo
