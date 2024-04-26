@@ -2,4 +2,5 @@
 .gitignore
 .github
 phpcs.xml
+phpstan.neon
 README.md
