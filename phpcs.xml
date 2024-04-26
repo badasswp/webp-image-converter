@@ -5,8 +5,6 @@
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
 		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
 		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
-		<exclude name="Universal.Operators.DisallowShortTernary.Found" />
-		<exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.exitFound" />
 	</rule>
 
 	<arg value="s" />
