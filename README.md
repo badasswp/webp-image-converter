@@ -20,15 +20,15 @@ This custom hook (filter) provides the ability to add custom options for your im
 add_filter( 'webp_img_conv_options', [ $this, 'custom_options' ] );
 
 public function custom_options( $options ) {
-  $options = wp_parse_args(
-    [
-      'quality'   => 50,
-      'converter' => 'imagick',
-    ],
-    $options
-  );
+    $options = wp_parse_args(
+        [
+            'quality'   => 50,
+            'converter' => 'imagick',
+        ],
+        $options
+    );
 
-  return (array) $options;
+    return (array) $options;
 }
 ```
 
