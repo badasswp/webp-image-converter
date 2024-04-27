@@ -117,7 +117,7 @@ final class Plugin {
 		 *
 		 * @return void
 		 */
-		do_action( 'webp_img_conv_after', $webp, $attachment_id );
+		do_action( 'webp_img_after', $webp, $attachment_id );
 	}
 
 	/**
