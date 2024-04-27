@@ -19,7 +19,7 @@ This custom hook (filter) provides the ability to add custom options for your im
 ```php
 add_filter( 'webp_img_options', [ $this, 'custom_options' ] );
 
-public function custom_options( $options ) {
+public function custom_options( $options ): array {
     $options = wp_parse_args(
         [
             'quality'   => 50,
