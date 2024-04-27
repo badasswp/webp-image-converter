@@ -147,6 +147,6 @@ class WebPImageConverter {
 		 * @param mixed[] $options Conversion options.
 		 * @return mixed[]
 		 */
-		return (array) apply_filters( 'webp_img_conv_options', $options );
+		return (array) apply_filters( 'webp_img_options', $options );
 	}
 }

@@ -12,12 +12,12 @@ You may not realize it, but __imagery is a large part of it__. This plugin helps
 
 ### Hooks
 
-#### `webp_img_conv_options`
+#### `webp_img_options`
 
 This custom hook (filter) provides the ability to add custom options for your image conversions to WebP. For e.g. to perform a 50% quality, image conversion using the Imagick extension, you could do:
 
 ```php
-add_filter( 'webp_img_conv_options', [ $this, 'custom_options' ] );
+add_filter( 'webp_img_options', [ $this, 'custom_options' ] );
 
 public function custom_options( $options ) {
     $options = wp_parse_args(
