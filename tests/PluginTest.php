@@ -7,7 +7,7 @@ use WP_Mock\Tools\TestCase;
 use WebPImageConverter\Plugin;
 
 /**
- * @covers Plugin
+ * @covers \WebPImageConverter\Plugin
  */
 class PluginTest extends TestCase {
 	public function setUp(): void {
