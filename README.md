@@ -42,7 +42,7 @@ public function custom_options( $options ): array {
 This custom hook (action) fires immediately after the image is converted to WebP. For e.g. you can capture errors to a custom post type of yours like so:
 
 ```php
-add_action( 'webp_image_after', [ $this, 'log_webp_errors' ] );
+add_action( 'webp_image_after', [ $this, 'log_webp_errors' ], 10, 2 );
 
 public function log_webp_errors( $webp, $attachment_id ): void {
     if ( is_wp_error( $webp ) ) {
