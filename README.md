@@ -59,6 +59,6 @@ public function log_webp_errors( $webp, $attachment_id ): void {
 
 **Properties**
 
-- webp _`{string|\WP_Error}`_ By default this will be the WebP return value after an image conversion is done. If successful, a string is returned, otherwise a WP_Error instance is.
+- webp _`{string|WP_Error}`_ By default this will be the WebP return value after an image conversion is done. If successful, a string is returned, otherwise a WP_Error instance is.
 - attachment_id _`{int}`_ By default this is the Image ID.
 <br/>
