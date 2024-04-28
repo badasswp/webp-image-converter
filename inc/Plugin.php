@@ -149,7 +149,9 @@ final class Plugin {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $html WebP Image HTML.
+		 * @param string $html          WebP Image HTML.
+		 * @param int    $attachment_id Image ID.
+		 *
 		 * @return string
 		 */
 		return (string) apply_filters( 'webp_img_attachment_html', $html, $attachment_id );
