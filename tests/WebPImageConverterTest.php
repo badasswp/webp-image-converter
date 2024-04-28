@@ -4,6 +4,7 @@ namespace WebPImageConverter\Tests;
 
 use Mockery;
 use WP_Mock\Tools\TestCase;
+use WebPImageConverter\Plugin;
 use WebPImageConverter\WebPImageConverter;
 
 /**
@@ -12,6 +13,8 @@ use WebPImageConverter\WebPImageConverter;
 class WebPImageConverterTest extends TestCase {
 	public function setUp(): void {
 		\WP_Mock::setUp();
+
+		$this->converter = new WebPImageConverter();
 	}
 
 	public function tearDown(): void {
@@ -71,6 +74,30 @@ class WebPImageConverterTest extends TestCase {
 				'quality'   => 50,
 				'converter' => 'imagick',
 			]
+		);
+		$this->assertConditionsMet();
+	}
+
+	public function test_set_image_source() {
+		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$converter->shouldAllowMockingProtectedMethods();
+
+		Plugin::$source = 'https://example.com/wp-content/uploads/2024/01/sample.jpeg';
+
+		\WP_Mock::userFunction( 'wp_upload_dir' )
+			->once()
+			->andReturn(
+				[
+					'baseurl' => 'https://example.com/wp-content/uploads/2024/01/',
+					'basedir' => '/var/www/html/wp-content/uploads/2024/01/'
+				]
+			);
+
+		$converter->set_image_source();
+
+		$this->assertSame(
+			'/var/www/html/wp-content/uploads/2024/01/sample.jpeg',
+			$converter->abs_source
 		);
 		$this->assertConditionsMet();
 	}
