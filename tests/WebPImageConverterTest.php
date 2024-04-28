@@ -43,4 +43,35 @@ class WebPImageConverterTest extends TestCase {
 		);
 		$this->assertConditionsMet();
 	}
+
+	public function test_get_options_returns_modified_settings() {
+		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$converter->shouldAllowMockingProtectedMethods();
+
+		\WP_Mock::onFilter( 'webp_img_options' )
+			->with(
+				[
+					'quality'     => 20,
+					'max-quality' => 100,
+					'converter'   => 'gd',
+				]
+			)
+			->reply(
+				[
+					'quality'   => 50,
+					'converter' => 'imagick',
+				]
+			);
+
+		$options = $converter->get_options();
+
+		$this->assertSame(
+			$options,
+			[
+				'quality'   => 50,
+				'converter' => 'imagick',
+			]
+		);
+		$this->assertConditionsMet();
+	}
 }
