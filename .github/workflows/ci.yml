@@ -31,6 +31,9 @@ jobs:
       - name: Static Analysis
         run: composer run analyse
 
+      - name: Testing
+        run: composer run test
+
   php80:
     runs-on: ubuntu-latest
 
@@ -55,6 +58,9 @@ jobs:
       - name: Static Analysis
         run: composer run analyse
 
+      - name: Testing
+        run: composer run test
+
   php82:
     runs-on: ubuntu-latest
 
@@ -78,6 +84,9 @@ jobs:
 
       - name: Static Analysis
         run: composer run analyse
+
+      - name: Testing
+        run: composer run test
 
   build:
     runs-on: ubuntu-latest
