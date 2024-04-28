@@ -152,7 +152,7 @@ final class Plugin {
 		 * @param string $html WebP Image HTML.
 		 * @return string
 		 */
-		return (string) apply_filters( 'webp_img_conv_attachment_html', $html );
+		return (string) apply_filters( 'webp_img_attachment_html', $html, $attachment_id );
 	}
 
 	/**
