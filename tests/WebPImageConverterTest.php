@@ -89,7 +89,7 @@ class WebPImageConverterTest extends TestCase {
 			->andReturn(
 				[
 					'baseurl' => 'https://example.com/wp-content/uploads/2024/01/',
-					'basedir' => '/var/www/html/wp-content/uploads/2024/01/'
+					'basedir' => '/var/www/html/wp-content/uploads/2024/01/',
 				]
 			);
 
