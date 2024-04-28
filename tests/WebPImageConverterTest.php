@@ -101,4 +101,27 @@ class WebPImageConverterTest extends TestCase {
 		);
 		$this->assertConditionsMet();
 	}
+
+	public function test_set_image_destination() {
+		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$converter->shouldAllowMockingProtectedMethods();
+
+		// Plugin Source.
+		Plugin::$source = 'https://example.com/wp-content/uploads/2024/01/sample.jpeg';
+
+		// Image Source (Absolute Path).
+		$converter->abs_source = '/var/www/html/wp-content/uploads/2024/01/sample.jpeg';
+
+		$converter->set_image_destination();
+
+		$this->assertSame(
+			'/var/www/html/wp-content/uploads/2024/01/sample.webp',
+			$converter->abs_dest
+		);
+		$this->assertSame(
+			'https://example.com/wp-content/uploads/2024/01/sample.webp',
+			$converter->rel_dest
+		);
+		$this->assertConditionsMet();
+	}
 }
