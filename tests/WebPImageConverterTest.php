@@ -2,6 +2,7 @@
 
 namespace WebPImageConverter\Tests;
 
+use WP_Error;
 use Mockery;
 use WP_Mock\Tools\TestCase;
 use WebPImageConverter\Plugin;
@@ -122,6 +123,31 @@ class WebPImageConverterTest extends TestCase {
 			'https://example.com/wp-content/uploads/2024/01/sample.webp',
 			$converter->rel_dest
 		);
+		$this->assertConditionsMet();
+	}
+
+	public function test_convert_returns_WP_error_if_source_image_is_empty() {
+		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$converter->shouldAllowMockingProtectedMethods();
+
+		$converter->abs_source = '';
+
+		$converter->shouldReceive( 'set_image_source' )
+			->with()->once();
+
+		$converter->shouldReceive( 'set_image_destination' )
+			->with()->once();
+
+		\WP_Mock::userFunction( '__' )
+			->once()
+			->with( 'Error: %s does not exist.', 'webp-img-converter' )
+			->andReturn( 'Error: does not exist.' );
+
+		$mock = Mockery::mock( WP_Error::class );
+
+		$webp = $converter->convert();
+
+		$this->assertInstanceOf( '\WP_Error', $webp );
 		$this->assertConditionsMet();
 	}
 }
