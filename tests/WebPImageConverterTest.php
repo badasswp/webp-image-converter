@@ -143,6 +143,8 @@ class WebPImageConverterTest extends TestCase {
 			->with( 'Error: %s does not exist.', 'webp-img-converter' )
 			->andReturn( 'Error: does not exist.' );
 
+		$mock = Mockery::mock( WP_Error::class );
+
 		$webp = $converter->convert();
 
 		$this->assertInstanceOf( '\WP_Error', $webp );
