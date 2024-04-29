@@ -151,6 +151,34 @@ class WebPImageConverterTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_convert_returns_same_if_destination_image_exists() {
+		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$converter->shouldAllowMockingProtectedMethods();
+
+		$converter->abs_source = __DIR__ . '/sample.jpeg';
+		$converter->abs_dest   = __DIR__ . '/sample.webp';
+		$converter->rel_dest   = str_replace( __DIR__, 'https://example.com/wp-content/uploads/2024/01', $converter->abs_dest );
+
+		// Create Mock Images.
+		$this->create_mock_image( $converter->abs_source );
+		$this->create_mock_image( $converter->abs_dest );
+
+		$converter->shouldReceive( 'set_image_source' )
+			->with()->once();
+
+		$converter->shouldReceive( 'set_image_destination' )
+			->with()->once();
+
+		$webp = $converter->convert();
+
+		$this->assertSame( 'https://example.com/wp-content/uploads/2024/01/sample.webp', $webp );
+		$this->assertConditionsMet();
+
+		// Destroy Mock Images.
+		$this->destroy_mock_image( $converter->abs_source );
+		$this->destroy_mock_image( $converter->abs_dest );
+	}
+
 	public function create_mock_image( $imageFilename ) {
 		// Create a blank image.
 		$width  = 400;
