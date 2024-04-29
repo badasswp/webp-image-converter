@@ -150,4 +150,22 @@ class WebPImageConverterTest extends TestCase {
 		$this->assertInstanceOf( '\WP_Error', $webp );
 		$this->assertConditionsMet();
 	}
+
+	public function create_mock_image( $imageFilename ) {
+		// Create a blank image.
+		$width  = 400;
+		$height = 200;
+		$image  = imagecreatetruecolor( $width, $height );
+
+		// Set background color.
+		$bgColor = imagecolorallocate( $image, 255, 255, 255 );
+		imagefill( $image, 0, 0, $bgColor );
+		imagejpeg( $image, $imageFilename );
+	}
+
+	public function destroy_mock_image( $imageFilename ) {
+		if ( file_exists( $imageFilename ) ) {
+			unlink( $imageFilename );
+		}
+	}
 }
