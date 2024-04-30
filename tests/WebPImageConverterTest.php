@@ -133,10 +133,10 @@ class WebPImageConverterTest extends TestCase {
 		$converter->abs_source = '';
 
 		$converter->shouldReceive( 'set_image_source' )
-			->with()->once();
+			->once()->with();
 
 		$converter->shouldReceive( 'set_image_destination' )
-			->with()->once();
+			->once()->with();
 
 		\WP_Mock::userFunction( '__' )
 			->once()
@@ -164,10 +164,10 @@ class WebPImageConverterTest extends TestCase {
 		$this->create_mock_image( $converter->abs_dest );
 
 		$converter->shouldReceive( 'set_image_source' )
-			->with()->once();
+			->once()->with();
 
 		$converter->shouldReceive( 'set_image_destination' )
-			->with()->once();
+			->once()->with();
 
 		$webp = $converter->convert();
 
@@ -191,10 +191,10 @@ class WebPImageConverterTest extends TestCase {
 		$this->create_mock_image( $converter->abs_source );
 
 		$converter->shouldReceive( 'set_image_source' )
-			->with()->once();
+			->once()->with();
 
 		$converter->shouldReceive( 'set_image_destination' )
-			->with()->once();
+			->once()->with();
 
 		$converter->shouldReceive( 'get_options' )
 			->once()
@@ -230,10 +230,10 @@ class WebPImageConverterTest extends TestCase {
 		$this->create_mock_image( $converter->abs_source );
 
 		$converter->shouldReceive( 'set_image_source' )
-			->with()->once();
+			->once()->with();
 
 		$converter->shouldReceive( 'set_image_destination' )
-			->with()->once();
+			->once()->with();
 
 		\WP_Mock::userFunction( '__' )
 			->once()
