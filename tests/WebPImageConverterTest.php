@@ -179,6 +179,45 @@ class WebPImageConverterTest extends TestCase {
 		$this->destroy_mock_image( $converter->abs_dest );
 	}
 
+	public function test_convert_returns_webp() {
+		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$converter->shouldAllowMockingProtectedMethods();
+
+		$converter->abs_source = __DIR__ . '/sample.jpeg';
+		$converter->abs_dest   = __DIR__ . '/sample.webp';
+		$converter->rel_dest   = str_replace( __DIR__, 'https://example.com/wp-content/uploads/2024/01', $converter->abs_dest );
+
+		// Create Mock Images.
+		$this->create_mock_image( $converter->abs_source );
+
+		$converter->shouldReceive( 'set_image_source' )
+			->with()->once();
+
+		$converter->shouldReceive( 'set_image_destination' )
+			->with()->once();
+
+		$converter->shouldReceive( 'get_options' )
+			->once()
+			->with()
+			->andReturn(
+				[
+					'quality'     => 20,
+					'max-quality' => 100,
+					'converter'   => 'gd',
+				]
+			);
+
+		$webp = $converter->convert();
+
+		$this->assertTrue( file_exists( $converter->abs_dest ) );
+		$this->assertSame( 'https://example.com/wp-content/uploads/2024/01/sample.webp', $webp );
+		$this->assertConditionsMet();
+
+		// Destroy Mock Images.
+		$this->destroy_mock_image( $converter->abs_source );
+		$this->destroy_mock_image( $converter->abs_dest );
+	}
+
 	public function create_mock_image( $image_file_name ) {
 		// Create a blank image.
 		$width  = 400;
