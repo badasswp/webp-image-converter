@@ -18,7 +18,7 @@ class PluginTest extends TestCase {
 		\WP_Mock::tearDown();
 	}
 
-	public function test_plugin_class_get_instance_returns_singleton() {
+	public function test_get_instance_returns_singleton() {
 		$instance = Plugin::get_instance();
 
 		$this->assertInstanceOf( Plugin::class, $instance );
