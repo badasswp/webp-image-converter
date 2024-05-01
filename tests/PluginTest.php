@@ -43,4 +43,31 @@ class PluginTest extends TestCase {
 
 		$this->assertConditionsMet();
 	}
+
+	public function test_action_add_attachment_fails_if_attachment_is_not_image() {
+		\WP_Mock::userFunction( 'wp_get_attachment_url' )
+			->once()
+			->with( 1 )
+			->andReturn( 'https://example.com/wp-content/uploads/2024/01/sample.pdf' );
+
+		\WP_Mock::userFunction( 'get_attached_file' )
+			->once()
+			->with( 1 )
+			->andReturn( '/var/www/html/wp-content/uploads/2024/01/sample.pdf' );
+
+		\WP_Mock::userFunction( 'wp_check_filetype' )
+			->once()
+			->with( '/var/www/html/wp-content/uploads/2024/01/sample.pdf' )
+			->andReturn(
+				[
+					'ext'             => 'pdf',
+					'type'            => 'application/pdf',
+					'proper_filename' => '/var/www/html/wp-content/uploads/2024/01/sample.pdf'
+				]
+			);
+
+		$this->instance->action_add_attachment( 1 );
+
+		$this->assertConditionsMet();
+	}
 }
