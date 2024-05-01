@@ -70,4 +70,43 @@ class PluginTest extends TestCase {
 
 		$this->assertConditionsMet();
 	}
+
+	public function test_action_add_attachment_passes() {
+		$this->instance->converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$this->instance->converter->shouldAllowMockingProtectedMethods();
+
+		\WP_Mock::userFunction( 'wp_get_attachment_url' )
+			->once()
+			->with( 1 )
+			->andReturn( 'https://example.com/wp-content/uploads/2024/01/sample.jpeg' );
+
+		\WP_Mock::userFunction( 'get_attached_file' )
+			->once()
+			->with( 1 )
+			->andReturn( '/var/www/html/wp-content/uploads/2024/01/sample.jpeg' );
+
+		\WP_Mock::userFunction( 'wp_check_filetype' )
+			->once()
+			->with( '/var/www/html/wp-content/uploads/2024/01/sample.jpeg' )
+			->andReturn(
+				[
+					'ext'  => 'jpeg',
+					'type' => 'image/jpeg',
+				]
+			);
+
+		$this->instance->converter->shouldReceive( 'convert' )
+			->once()
+			->andReturn( 'https://example.com/wp-content/uploads/2024/01/sample.webp' );
+
+		\WP_Mock::expectAction(
+			'webp_img_after',
+			'https://example.com/wp-content/uploads/2024/01/sample.webp',
+			1
+		);
+
+		$this->instance->action_add_attachment( 1 );
+
+		$this->assertConditionsMet();
+	}
 }
