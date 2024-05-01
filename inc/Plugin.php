@@ -30,7 +30,7 @@ final class Plugin {
 	 *
 	 * @var WebPImageConverter
 	 */
-	private WebPImageConverter $converter;
+	public WebPImageConverter $converter;
 
 	/**
 	 * Source Image.
