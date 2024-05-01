@@ -62,7 +62,7 @@ class PluginTest extends TestCase {
 				[
 					'ext'             => 'pdf',
 					'type'            => 'application/pdf',
-					'proper_filename' => '/var/www/html/wp-content/uploads/2024/01/sample.pdf'
+					'proper_filename' => '/var/www/html/wp-content/uploads/2024/01/sample.pdf',
 				]
 			);
 
