@@ -109,4 +109,11 @@ class PluginTest extends TestCase {
 
 		$this->assertConditionsMet();
 	}
+
+	public function test_filter_wp_get_attachment_image_fails_and_returns_empty_string() {
+		$image = $this->instance->filter_wp_get_attachment_image( '', 1, [], true, [] );
+
+		$this->assertSame( '', $image );
+		$this->assertConditionsMet();
+	}
 }
