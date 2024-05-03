@@ -140,4 +140,35 @@ class PluginTest extends TestCase {
 		$this->assertSame( '<img src="sample.webp"/>', $image );
 		$this->assertConditionsMet();
 	}
+
+	public function test_filter_post_thumbnail_html_fails_and_returns_empty_string() {
+		$image = $this->instance->filter_post_thumbnail_html( '', 1, [], true, [] );
+
+		$this->assertSame( '', $image );
+		$this->assertConditionsMet();
+	}
+
+	public function test_filter_post_thumbnail_html_returns_img_html() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$instance->shouldReceive( 'get_webp_image_html' )
+			->once()
+			->with( '<img src="sample.jpeg"/>' )
+			->andReturn( '<img src="sample.webp"/>' );
+
+		\WP_Mock::onFilter( 'webp_img_post_thumbnail_html' )
+			->with(
+				'<img src="sample.webp"/>',
+				2
+			)
+			->reply(
+				'<img src="sample.webp"/>'
+			);
+
+		$image = $instance->filter_post_thumbnail_html( '<img src="sample.jpeg"/>', 1, 2, [], [] );
+
+		$this->assertSame( '<img src="sample.webp"/>', $image );
+		$this->assertConditionsMet();
+	}
 }

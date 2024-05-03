@@ -188,7 +188,7 @@ class Plugin {
 		 * @param string $html WebP Image HTML.
 		 * @return string
 		 */
-		return (string) apply_filters( 'webp_img_conv_thumbnail_html', $html );
+		return (string) apply_filters( 'webp_img_post_thumbnail_html', $html, $thumbnail_id );
 	}
 
 	/**
