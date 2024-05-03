@@ -116,4 +116,28 @@ class PluginTest extends TestCase {
 		$this->assertSame( '', $image );
 		$this->assertConditionsMet();
 	}
+
+	public function test_filter_wp_get_attachment_image_returns_img_html() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$instance->shouldReceive( 'get_webp_image_html' )
+			->once()
+			->with( '<img src="sample.jpeg"/>' )
+			->andReturn( '<img src="sample.webp"/>' );
+
+		\WP_Mock::onFilter( 'webp_img_attachment_html' )
+			->with(
+				'<img src="sample.webp"/>',
+				1
+			)
+			->reply(
+				'<img src="sample.webp"/>'
+			);
+
+		$image = $instance->filter_wp_get_attachment_image( '<img src="sample.jpeg"/>', 1, [], true, [] );
+
+		$this->assertSame( '<img src="sample.webp"/>', $image );
+		$this->assertConditionsMet();
+	}
 }
