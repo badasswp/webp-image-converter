@@ -171,4 +171,24 @@ class PluginTest extends TestCase {
 		$this->assertSame( '<img src="sample.webp"/>', $image );
 		$this->assertConditionsMet();
 	}
+
+	public function test_get_webp_image_html_returns_emtpy_image_if_empty() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$image = $instance->get_webp_image_html( '' );
+
+		$this->assertSame( '', $image );
+		$this->assertConditionsMet();
+	}
+
+	public function test_get_webp_image_html_returns_html_if_no_image_in_html() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$image = $instance->get_webp_image_html( '<div></div>' );
+
+		$this->assertSame( '<div></div>', $image );
+		$this->assertConditionsMet();
+	}
 }
