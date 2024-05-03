@@ -185,7 +185,9 @@ class Plugin {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $html WebP Image HTML.
+		 * @param string $html         WebP Image HTML.
+		 * @param int    $thumbnail_id The post thumbnail ID, or 0 if there isn't one.
+		 *
 		 * @return string
 		 */
 		return (string) apply_filters( 'webp_img_post_thumbnail_html', $html, $thumbnail_id );
