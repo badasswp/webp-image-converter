@@ -13,7 +13,7 @@ namespace WebPImageConverter;
 use DOMDocument;
 use WebPImageConverter\WebPImageConverter;
 
-final class Plugin {
+class Plugin {
 	/**
 	 * Plugin instance.
 	 *
@@ -63,7 +63,7 @@ final class Plugin {
 	 */
 	public static function get_instance(): Plugin {
 		if ( null === static::$instance ) {
-			static::$instance = new static();
+			static::$instance = new self();
 		}
 
 		return static::$instance;
