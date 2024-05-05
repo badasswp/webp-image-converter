@@ -191,4 +191,14 @@ class PluginTest extends TestCase {
 		$this->assertSame( '<div></div>', $image );
 		$this->assertConditionsMet();
 	}
+
+	public function test_get_webp_image_html_returns_original_html_if_no_image_src_is_in_html() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$image = $instance->get_webp_image_html( '<figure><img src=""/></figure>' );
+
+		$this->assertSame( '<figure><img src=""/></figure>', $image );
+		$this->assertConditionsMet();
+	}
 }
