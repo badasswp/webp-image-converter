@@ -220,7 +220,7 @@ class PluginTest extends TestCase {
 				[
 					'file' => 'sample3.jpeg',
 				],
-			]
+			],
 		];
 
 		\WP_Mock::userFunction( 'wp_get_attachment_image_url' )
