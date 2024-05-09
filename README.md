@@ -87,3 +87,28 @@ public function custom_img_html( $html, $attachment_id ): array {
 - webp _`{string}`_ By default this will be the image HTML.
 - attachment_id _`{int}`_ By default this is the Image ID.
 <br/>
+
+#### `webp_img_thumbnail_html`
+
+This custom hook (filter) provides the ability to modify the resulting WebP image HTML. For e.g. you can nest your image HTML into a figure element like so:
+
+```php
+add_filter( 'webp_img_thumbnail_html', [ $this, 'custom_img_html' ], 10, 2 );
+
+public function custom_img_html( $html, $thumbnail_id ): array {
+    return sprintf(
+        '<figure>
+          %s
+          <figcaption>Image ID: %s</figcaption>
+        </figure>',
+        (string) $html,
+        (string) $thumbnail_id
+    );
+}
+```
+
+**Parameters**
+
+- webp _`{string}`_ By default this will be the image HTML.
+- thumbnail_id _`{int}`_ By default this is the Image ID.
+<br/>
