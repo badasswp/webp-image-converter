@@ -11,6 +11,8 @@ use WebPImageConverter\WebPImageConverter;
  * @covers \WebPImageConverter\Plugin
  */
 class PluginTest extends TestCase {
+	public $instance;
+
 	public function setUp(): void {
 		\WP_Mock::setUp();
 
