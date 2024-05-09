@@ -190,7 +190,7 @@ class Plugin {
 		 *
 		 * @return string
 		 */
-		return (string) apply_filters( 'webp_img_post_thumbnail_html', $html, $thumbnail_id );
+		return (string) apply_filters( 'webp_img_thumbnail_html', $html, $thumbnail_id );
 	}
 
 	/**
