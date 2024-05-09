@@ -32,7 +32,7 @@ public function custom_options( $options ): array {
 }
 ```
 
-**Properties**
+**Parameters**
 
 - options _`{array}`_ By default this will be an associative array containing key, value options of each image conversion.
 <br/>
@@ -57,7 +57,7 @@ public function log_webp_errors( $webp, $attachment_id ): void {
 }
 ```
 
-**Properties**
+**Parameters**
 
 - webp _`{string|WP_Error}`_ By default this will be the WebP return value after an image conversion is done. If successful, a string is returned, otherwise a WP_Error instance is.
 - attachment_id _`{int}`_ By default this is the Image ID.
@@ -82,7 +82,7 @@ public function custom_img_html( $html, $attachment_id ): array {
 }
 ```
 
-**Properties**
+**Parameters**
 
 - webp _`{string}`_ By default this will be the image HTML.
 - attachment_id _`{int}`_ By default this is the Image ID.
