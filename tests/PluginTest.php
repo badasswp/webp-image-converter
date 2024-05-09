@@ -159,7 +159,7 @@ class PluginTest extends TestCase {
 			->with( '<img src="sample.jpeg"/>' )
 			->andReturn( '<img src="sample.webp"/>' );
 
-		\WP_Mock::onFilter( 'webp_img_post_thumbnail_html' )
+		\WP_Mock::onFilter( 'webp_img_thumbnail_html' )
 			->with(
 				'<img src="sample.webp"/>',
 				2
