@@ -56,7 +56,7 @@ class WebPImageConverter {
 		$this->set_image_source();
 		$this->set_image_destination();
 
-		// Bail out, if source image is empty.
+		// Bail out, if source is empty.
 		if ( ! file_exists( $this->abs_source ) ) {
 			return new \WP_Error(
 				'webp-img-error',
