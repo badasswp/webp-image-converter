@@ -68,6 +68,19 @@ class WebPImageConverter {
 			);
 		}
 
+		// Bail out, if it is not an image.
+		$filetype = wp_check_filetype( $this->abs_source );
+		if ( false === strpos( (string) $filetype['type'], 'image/' ) ) {
+			return new \WP_Error(
+				'webp-img-error',
+				sprintf(
+					/* translators: Absolute path to Source Image. */
+					__( 'Error: %s is not an image.', 'webp-img-converter' ),
+					$this->abs_source
+				)
+			);
+		}
+
 		// Bail out, if dest. image exists.
 		if ( file_exists( $this->abs_dest ) ) {
 			return $this->rel_dest;
