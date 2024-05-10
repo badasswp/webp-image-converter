@@ -175,7 +175,7 @@ class WebPImageConverterTest extends TestCase {
 			->with( __DIR__ . '/sample.txt' )
 			->andReturn(
 				[
-					'type' => 'text/plain'
+					'type' => 'text/plain',
 				]
 			);
 
@@ -218,7 +218,7 @@ class WebPImageConverterTest extends TestCase {
 			->with( __DIR__ . '/sample.jpeg' )
 			->andReturn(
 				[
-					'type' => 'image/jpeg'
+					'type' => 'image/jpeg',
 				]
 			);
 
@@ -254,7 +254,7 @@ class WebPImageConverterTest extends TestCase {
 			->with( __DIR__ . '/sample.jpeg' )
 			->andReturn(
 				[
-					'type' => 'image/jpeg'
+					'type' => 'image/jpeg',
 				]
 			);
 
@@ -302,7 +302,7 @@ class WebPImageConverterTest extends TestCase {
 			->with( __DIR__ . '/sample.jpeg' )
 			->andReturn(
 				[
-					'type' => 'image/jpeg'
+					'type' => 'image/jpeg',
 				]
 			);
 
