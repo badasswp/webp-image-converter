@@ -171,6 +171,15 @@ class WebPImageConverterTest extends TestCase {
 		$converter->shouldReceive( 'set_image_destination' )
 			->once()->with();
 
+		\WP_Mock::userFunction( 'wp_check_filetype' )
+			->once()
+			->with( __DIR__ . '/sample.jpeg' )
+			->andReturn(
+				[
+					'type' => 'image/jpeg'
+				]
+			);
+
 		$webp = $converter->convert();
 
 		$this->assertSame( 'https://example.com/wp-content/uploads/2024/01/sample.webp', $webp );
@@ -197,6 +206,15 @@ class WebPImageConverterTest extends TestCase {
 
 		$converter->shouldReceive( 'set_image_destination' )
 			->once()->with();
+
+		\WP_Mock::userFunction( 'wp_check_filetype' )
+			->once()
+			->with( __DIR__ . '/sample.jpeg' )
+			->andReturn(
+				[
+					'type' => 'image/jpeg'
+				]
+			);
 
 		$converter->shouldReceive( 'get_options' )
 			->once()
@@ -236,6 +254,15 @@ class WebPImageConverterTest extends TestCase {
 
 		$converter->shouldReceive( 'set_image_destination' )
 			->once()->with();
+
+		\WP_Mock::userFunction( 'wp_check_filetype' )
+			->once()
+			->with( __DIR__ . '/sample.jpeg' )
+			->andReturn(
+				[
+					'type' => 'image/jpeg'
+				]
+			);
 
 		\WP_Mock::userFunction( '__' )
 			->once()
