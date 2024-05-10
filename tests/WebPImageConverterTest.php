@@ -153,6 +153,48 @@ class WebPImageConverterTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_convert_fails_if_source_is_not_an_image_and_returns_WP_error() {
+		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$converter->shouldAllowMockingProtectedMethods();
+
+		$converter->abs_source = __DIR__ . '/sample.txt';
+		$converter->abs_dest   = __DIR__ . '/sample.webp';
+		$converter->rel_dest   = str_replace( __DIR__, 'https://example.com/wp-content/uploads/2024/01', $converter->abs_dest );
+
+		// Create Mock Files.
+		$this->create_mock_file( $converter->abs_source );
+
+		$converter->shouldReceive( 'set_image_source' )
+			->once()->with();
+
+		$converter->shouldReceive( 'set_image_destination' )
+			->once()->with();
+
+		\WP_Mock::userFunction( 'wp_check_filetype' )
+			->once()
+			->with( __DIR__ . '/sample.txt' )
+			->andReturn(
+				[
+					'type' => 'text/plain'
+				]
+			);
+
+		\WP_Mock::userFunction( '__' )
+			->once()
+			->with( 'Error: %s is not an image.', 'webp-img-converter' )
+			->andReturn( 'Error: is not an image.' );
+
+		$mock = Mockery::mock( WP_Error::class );
+
+		$webp = $converter->convert();
+
+		$this->assertInstanceOf( '\WP_Error', $webp );
+		$this->assertConditionsMet();
+
+		// Destroy Mock Files.
+		$this->destroy_mock_image( $converter->abs_source );
+	}
+
 	public function test_convert_returns_same_if_destination_image_exists() {
 		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$converter->shouldAllowMockingProtectedMethods();
@@ -295,6 +337,16 @@ class WebPImageConverterTest extends TestCase {
 	public function destroy_mock_image( $image_file_name ) {
 		if ( file_exists( $image_file_name ) ) {
 			unlink( $image_file_name );
+		}
+	}
+
+	public function create_mock_file( $mock_file ) {
+		file_put_contents( $mock_file, 'Hello World!', FILE_APPEND );
+	}
+
+	public function destroy_mock_FILE( $mock_file ) {
+		if ( file_exists( $mock_file ) ) {
+			unlink( $mock_file );
 		}
 	}
 }
