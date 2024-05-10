@@ -128,7 +128,7 @@ class WebPImageConverterTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
-	public function test_convert_fails_if_source_image_is_empty_and_returns_WP_error() {
+	public function test_convert_fails_if_source_is_empty_and_returns_WP_error() {
 		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$converter->shouldAllowMockingProtectedMethods();
 
