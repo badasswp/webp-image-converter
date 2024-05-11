@@ -81,6 +81,7 @@ class Plugin {
 		add_filter( 'wp_get_attachment_image', [ $this, 'filter_wp_get_attachment_image' ], 10, 5 );
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
 		add_filter( 'wp_generate_attachment_metadata', [ $this, 'generate_webp_srcset_images' ], 10, 3 );
+		add_action( 'delete_attachment', [ $this, 'remove_webp_images' ] );
 	}
 
 	/**
@@ -250,5 +251,34 @@ class Plugin {
 		}
 
 		return $data;
+	}
+
+	public function remove_webp_images( $attachment_id ) {
+		if ( ! wp_attachment_is_image( $attachment_id ) ) {
+			return;
+		}
+
+		// Get absolute path for main image.
+		$main_image = (string) get_attached_file( $attachment_id );
+
+		// Remove main image using absolute path.
+		$extension  = '.' . pathinfo( $main_image, PATHINFO_EXTENSION );
+		$webp_image = str_replace( $extension, '.webp', $main_image );
+
+		unlink( $webp_image );
+
+		// Get attachment metadata.
+		$metadata = wp_get_attachment_metadata( $attachment_id );
+
+		// Remove metadata using main image absolute path.
+		foreach ( $metadata['sizes'] as $img ) {
+			$img_url_prefix = substr( $main_image, 0, (int) strrpos( $main_image, '/' ) );
+			$metadata_image = trailingslashit( $img_url_prefix ) . $img['file'];
+
+			$metadata_extension  = '.' . pathinfo( $metadata_image, PATHINFO_EXTENSION );
+			$webp_metadata_image = str_replace( $metadata_extension, '.webp', $metadata_image );
+
+			unlink( $webp_metadata_image );
+		}
 	}
 }
