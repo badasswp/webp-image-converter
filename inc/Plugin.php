@@ -282,7 +282,7 @@ class Plugin {
 		$metadata = wp_get_attachment_metadata( $attachment_id );
 
 		// Remove metadata using main image absolute path.
-		foreach ( $metadata['sizes'] as $img ) {
+		foreach ( $metadata['sizes'] ?? [] as $img ) {
 			// Get absolute path of metadata image.
 			$img_url_prefix = substr( $main_image, 0, (int) strrpos( $main_image, '/' ) );
 			$metadata_image = trailingslashit( $img_url_prefix ) . $img['file'];
