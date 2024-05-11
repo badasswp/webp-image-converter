@@ -246,9 +246,9 @@ class Plugin {
 	 * @param string $img_url  Relative path to Image - 'https://example.com/wp-content/uploads/2024/01/sample.png'.
 	 * @param string $img_html The Image HTML - '<img src="sample.png"/>'.
 	 *
-	 * @return void
+	 * @return string
 	 */
-	protected function _get_webp_html( $img_url, $img_html ) {
+	protected function _get_webp_html( $img_url, $img_html ): string {
 		// Set Source.
 		static::$source = $img_url;
 
