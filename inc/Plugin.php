@@ -287,6 +287,8 @@ class Plugin {
 	 * This method removes dynamically generated
 	 * WebP image versions when the main image is deleted.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param int $attachment_id Attachment ID.
 	 * @return void
 	 */
