@@ -79,6 +79,7 @@ class Plugin {
 	public function run(): void {
 		add_action( 'add_attachment', [ $this, 'generate_webp_image' ] );
 		add_filter( 'wp_generate_attachment_metadata', [ $this, 'generate_webp_srcset_images' ], 10, 3 );
+		add_filter( 'render_block', [ $this, 'filter_render_image_block' ], 20, 2 );
 		add_filter( 'wp_get_attachment_image', [ $this, 'filter_wp_get_attachment_image' ], 10, 5 );
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
 		add_action( 'delete_attachment', [ $this, 'remove_webp_images' ] );
@@ -143,6 +144,26 @@ class Plugin {
 		}
 
 		return $metadata;
+	}
+
+	/**
+	 * Render Image Block with WebP Images.
+	 *
+	 * Loop through each block and swap regular images for
+	 * WebP versions.
+	 *
+	 * @param string  $html  Image HTML.
+	 * @param mixed[] $block Block array.
+	 *
+	 * @return string
+	 */
+	public function filter_render_image_block( $html, $block ): string {
+		// Bail out, if empty or NOT image.
+		if ( empty( $html ) || ! preg_match( '/<img.*>/', $html, $image ) ) {
+			return $html;
+		}
+
+		return $this->get_webp_image_html( $html );
 	}
 
 	/**
