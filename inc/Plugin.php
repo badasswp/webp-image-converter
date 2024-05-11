@@ -255,6 +255,15 @@ class Plugin {
 		return $metadata;
 	}
 
+	/**
+	 * Remove WebP images.
+	 *
+	 * This method removes dynamically generated
+	 * WebP image versions when the main image is deleted.
+	 *
+	 * @param int $attachment_id Attachment ID.
+	 * @return void
+	 */
 	public function remove_webp_images( $attachment_id ) {
 		if ( ! wp_attachment_is_image( $attachment_id ) ) {
 			return;
