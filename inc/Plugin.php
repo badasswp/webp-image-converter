@@ -77,10 +77,10 @@ class Plugin {
 	 * @return void
 	 */
 	public function run(): void {
-		add_action( 'add_attachment', [ $this, 'action_add_attachment' ] );
+		add_action( 'add_attachment', [ $this, 'generate_webp_image' ] );
+		add_filter( 'wp_generate_attachment_metadata', [ $this, 'generate_webp_srcset_images' ], 10, 3 );
 		add_filter( 'wp_get_attachment_image', [ $this, 'filter_wp_get_attachment_image' ], 10, 5 );
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
-		add_filter( 'wp_generate_attachment_metadata', [ $this, 'generate_webp_srcset_images' ], 10, 3 );
 		add_action( 'delete_attachment', [ $this, 'remove_webp_images' ] );
 	}
 
@@ -95,7 +95,7 @@ class Plugin {
 	 * @param  int $attachment_id Image ID.
 	 * @return void
 	 */
-	public function action_add_attachment( $attachment_id ): void {
+	public function generate_webp_image( $attachment_id ): void {
 		// Get source image.
 		static::$source = (string) wp_get_attachment_url( $attachment_id );
 
