@@ -261,7 +261,7 @@ class Plugin {
 		// Get absolute path for main image.
 		$main_image = (string) get_attached_file( $attachment_id );
 
-		// Remove main image using absolute path.
+		// Get WebP version of main image.
 		$extension  = '.' . pathinfo( $main_image, PATHINFO_EXTENSION );
 		$webp_image = str_replace( $extension, '.webp', $main_image );
 
@@ -272,9 +272,11 @@ class Plugin {
 
 		// Remove metadata using main image absolute path.
 		foreach ( $metadata['sizes'] as $img ) {
+			// Get absolute path of metadata image.
 			$img_url_prefix = substr( $main_image, 0, (int) strrpos( $main_image, '/' ) );
 			$metadata_image = trailingslashit( $img_url_prefix ) . $img['file'];
 
+			// Get WebP version of metadata image.
 			$metadata_extension  = '.' . pathinfo( $metadata_image, PATHINFO_EXTENSION );
 			$webp_metadata_image = str_replace( $metadata_extension, '.webp', $metadata_image );
 
