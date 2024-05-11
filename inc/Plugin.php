@@ -270,7 +270,7 @@ class Plugin {
 				return $html;
 			}
 
-			$html = $this->_get_webp_html( $html, $html );
+			$html = $this->_get_webp_html( $src, $html );
 
 			// For the srcset images.
 			$srcset = $image->getAttribute( 'srcset' );
