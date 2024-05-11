@@ -206,20 +206,20 @@ class Plugin {
 			return $html;
 		}
 
-		// Get all image URLs.
-		preg_match_all( '/http\S+\b/', $image[0], $image_urls );
+		// Get DOM object.
+		$dom = new DOMDocument();
+		$dom->loadHTML( $html, LIBXML_NOERROR );
 
-		// Deal with all image src and srcset URLs.
-		foreach ( $image_urls[0] as $image_url ) {
-			// Get source image.
-			static::$source = $image_url;
+		// Generate WebP images.
+		foreach ( $dom->getElementsByTagName( 'img' ) as $image ) {
+			// For only src image.
+			$html = $this->__get_webp_html( $image->getAttribute( 'src' ), $html );
 
-			// Convert to WebP image.
-			$webp = $this->converter->convert();
+			// For all srcset images.
+			preg_match_all( '/http\S+\b/', $image->getAttribute( 'srcset' ), $image_urls );
 
-			// Replace image with WebP.
-			if ( ! is_wp_error( $webp ) && file_exists( $this->converter->abs_dest ) ) {
-				$html = str_replace( static::$source, $webp, $html );
+			foreach ( $image_urls[0] as $img_url ) {
+				$html = $this->__get_webp_html( $img_url, $html );
 			}
 		}
 
