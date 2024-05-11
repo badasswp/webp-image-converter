@@ -212,11 +212,23 @@ class Plugin {
 
 		// Generate WebP images.
 		foreach ( $dom->getElementsByTagName( 'img' ) as $image ) {
-			// For only src image.
-			$html = $this->__get_webp_html( $image->getAttribute( 'src' ), $html );
+			// For the src image.
+			$src = $image->getAttribute( 'src' );
 
-			// For all srcset images.
-			preg_match_all( '/http\S+\b/', $image->getAttribute( 'srcset' ), $image_urls );
+			if ( empty( $src ) ) {
+				return $html;
+			}
+
+			$html = $this->__get_webp_html( $html, $html );
+
+			// For the srcset images.
+			$srcset = $image->getAttribute( 'srcset' );
+
+			if ( empty( $srcset ) ) {
+				return $html;
+			}
+
+			preg_match_all( '/http\S+\b/', $srcset, $image_urls );
 
 			foreach ( $image_urls[0] as $img_url ) {
 				$html = $this->__get_webp_html( $img_url, $html );
