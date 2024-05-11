@@ -192,7 +192,8 @@ class Plugin {
 	 * Get WebP image HTML.
 	 *
 	 * This generic method uses the original image HTML to generate
-	 * a WebP-Image HTML.
+	 * a WebP-Image HTML. This is useful for images that pre-date the installation
+	 * of the plugin.
 	 *
 	 * @since 1.0.0
 	 *
