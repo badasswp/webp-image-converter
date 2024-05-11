@@ -219,7 +219,7 @@ class Plugin {
 				return $html;
 			}
 
-			$html = $this->__get_webp_html( $html, $html );
+			$html = $this->_get_webp_html( $html, $html );
 
 			// For the srcset images.
 			$srcset = $image->getAttribute( 'srcset' );
@@ -231,7 +231,7 @@ class Plugin {
 			preg_match_all( '/http\S+\b/', $srcset, $image_urls );
 
 			foreach ( $image_urls[0] as $img_url ) {
-				$html = $this->__get_webp_html( $img_url, $html );
+				$html = $this->_get_webp_html( $img_url, $html );
 			}
 		}
 
@@ -248,7 +248,7 @@ class Plugin {
 	 *
 	 * @return void
 	 */
-	protected function __get_webp_html( $img_url, $img_html ) {
+	protected function _get_webp_html( $img_url, $img_html ) {
 		// Set Source.
 		static::$source = $img_url;
 
