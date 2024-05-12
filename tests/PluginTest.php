@@ -62,7 +62,7 @@ class PluginTest extends TestCase {
 			->andReturn( 'https://example.com/wp-content/uploads/2024/01/sample.webp' );
 
 		\WP_Mock::expectAction(
-			'webp_img_after',
+			'webp_img_convert',
 			'https://example.com/wp-content/uploads/2024/01/sample.webp',
 			1
 		);
