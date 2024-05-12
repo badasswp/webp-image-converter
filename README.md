@@ -37,12 +37,12 @@ public function custom_options( $options ): array {
 - options _`{array}`_ By default this will be an associative array containing key, value options of each image conversion.
 <br/>
 
-#### `webp_img_after`
+#### `webp_img_convert`
 
 This custom hook (action) fires immediately after the image is converted to WebP. For e.g. you can capture errors to a custom post type of yours like so:
 
 ```php
-add_action( 'webp_image_after', [ $this, 'log_webp_errors' ], 10, 2 );
+add_action( 'webp_img_convert', [ $this, 'log_webp_errors' ], 10, 2 );
 
 public function log_webp_errors( $webp, $attachment_id ): void {
     if ( is_wp_error( $webp ) ) {
