@@ -1,8 +1,0 @@
-.editorconfig
-.gitignore
-.github
-phpcs.xml
-phpstan.neon
-phpunit.xml
-README.md
-tests
