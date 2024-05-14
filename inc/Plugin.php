@@ -33,11 +33,11 @@ class Plugin {
 	public WebPImageConverter $converter;
 
 	/**
-	 * Source Image.
+	 * Source Props.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var string
+	 * @var mixed[]
 	 */
 	public static $source;
 
