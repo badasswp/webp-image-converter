@@ -1,3 +1,5 @@
+name: WebPImageConverter Build
+
 on:
   push:
     branches:
