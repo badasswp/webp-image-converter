@@ -174,7 +174,6 @@ class Plugin {
 	 * @param string|int[] $size          Requested image size.
 	 * @param bool         $icon          Whether the image should be treated as an icon.
 	 * @param string[]     $attr          Array of attribute values for the image markup, keyed by attribute name.
-	 *                                    See wp_get_attachment_image().
 	 *
 	 * @return string
 	 */
