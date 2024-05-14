@@ -182,7 +182,7 @@ class Plugin {
 			return $html;
 		}
 
-		$html = $this->get_webp_image_html( $html );
+		$html = $this->get_webp_image_html( $html, $attachment_id );
 
 		/**
 		 * Filter WebP Image HTML.
@@ -218,7 +218,7 @@ class Plugin {
 			return $html;
 		}
 
-		$html = $this->get_webp_image_html( $html );
+		$html = $this->get_webp_image_html( $html, $thumbnail_id );
 
 		/**
 		 * Filter WebP Image Thumbnail HTML.
@@ -243,9 +243,11 @@ class Plugin {
 	 * @since 1.0.0
 	 *
 	 * @param string $html Image HTML.
+	 * @param int    $id   Image Attachment ID.
+	 *
 	 * @return string
 	 */
-	protected function get_webp_image_html( $html ): string {
+	protected function get_webp_image_html( $html, $id = 0 ): string {
 		// Bail out, if empty or NOT image.
 		if ( empty( $html ) || ! preg_match( '/<img.*>/', $html, $image ) ) {
 			return $html;
@@ -274,7 +276,7 @@ class Plugin {
 			preg_match_all( '/http\S+\b/', $srcset, $image_urls );
 
 			foreach ( $image_urls[0] as $img_url ) {
-				$html = $this->_get_webp_html( $img_url, $html );
+				$html = $this->_get_webp_html( $img_url, $html, $id );
 			}
 		}
 
@@ -288,12 +290,16 @@ class Plugin {
 	 *
 	 * @param string $img_url  Relative path to Image - 'https://example.com/wp-content/uploads/2024/01/sample.png'.
 	 * @param string $img_html The Image HTML - '<img src="sample.png"/>'.
+	 * @param int    $img_id   Image Attachment ID.
 	 *
 	 * @return string
 	 */
-	protected function _get_webp_html( $img_url, $img_html ): string {
+	protected function _get_webp_html( $img_url, $img_html, $img_id ): string {
 		// Set Source.
-		static::$source = $img_url;
+		static::$source = [
+			'id'  => $img_id,
+			'url' => $img_url,
+		];
 
 		// Convert image to WebP.
 		$webp = $this->converter->convert();
