@@ -130,7 +130,11 @@ class Plugin {
 
 		// Convert srcset images.
 		foreach ( $metadata['sizes'] as $img ) {
-			static::$source = trailingslashit( $img_url_prefix ) . $img['file'];
+			static::$source = [
+				'id'  => (int) $attachment_id,
+				'url' => trailingslashit( $img_url_prefix ) . $img['file'],
+			];
+
 			$this->converter->convert();
 		}
 
