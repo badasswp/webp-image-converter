@@ -100,6 +100,18 @@ class WebPImageConverter {
 			return new \WP_Error( 'webp-img-error', $error_msg );
 		}
 
+		/**
+		 * Fires after Image is converted.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string|\WP_Error $webp          WebP Image URL or WP Error.
+		 * @param int              $attachment_id Image ID.
+		 *
+		 * @return void
+		 */
+		do_action( 'webp_img_convert', $webp = $this->rel_dest, $attachment_id = Plugin::$source['id'] );
+
 		return $this->rel_dest;
 	}
 

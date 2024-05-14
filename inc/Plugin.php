@@ -97,23 +97,14 @@ class Plugin {
 	 * @return void
 	 */
 	public function generate_webp_image( $attachment_id ): void {
-		// Get source image.
-		static::$source = (string) wp_get_attachment_url( $attachment_id );
+		// Get source props.
+		static::$source = [
+			'id'  => (int) $attachment_id,
+			'url' => (string) wp_get_attachment_url( $attachment_id ),
+		];
 
 		// Convert to WebP image.
 		$webp = $this->converter->convert();
-
-		/**
-		 * Fires after Image is converted.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param string|\WP_Error $webp          WebP Image URL or WP Error.
-		 * @param int              $attachment_id Image ID.
-		 *
-		 * @return void
-		 */
-		do_action( 'webp_img_convert', $webp, $attachment_id );
 	}
 
 	/**
