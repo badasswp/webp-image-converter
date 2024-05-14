@@ -127,7 +127,7 @@ class WebPImageConverter {
 	 */
 	protected function set_image_source(): void {
 		$img_uploads_dir  = wp_upload_dir();
-		$this->abs_source = str_replace( $img_uploads_dir['baseurl'], $img_uploads_dir['basedir'], Plugin::$source );
+		$this->abs_source = str_replace( $img_uploads_dir['baseurl'], $img_uploads_dir['basedir'], Plugin::$source['url'] );
 	}
 
 	/**
@@ -144,7 +144,7 @@ class WebPImageConverter {
 		$image_extension = '.' . pathinfo( Plugin::$source, PATHINFO_EXTENSION );
 
 		$this->abs_dest = str_replace( $image_extension, '.webp', $this->abs_source );
-		$this->rel_dest = str_replace( $image_extension, '.webp', Plugin::$source );
+		$this->rel_dest = str_replace( $image_extension, '.webp', Plugin::$source['url'] );
 	}
 
 	/**
