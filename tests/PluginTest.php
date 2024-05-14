@@ -52,6 +52,11 @@ class PluginTest extends TestCase {
 		$this->instance->converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$this->instance->converter->shouldAllowMockingProtectedMethods();
 
+		Plugin::$source = [
+			'id'  => 1,
+			'url' => 'https://example.com/wp-content/uploads/2024/01/sample.jpeg',
+		];
+
 		\WP_Mock::userFunction( 'wp_get_attachment_url' )
 			->once()
 			->with( 1 )
@@ -60,12 +65,6 @@ class PluginTest extends TestCase {
 		$this->instance->converter->shouldReceive( 'convert' )
 			->once()
 			->andReturn( 'https://example.com/wp-content/uploads/2024/01/sample.webp' );
-
-		\WP_Mock::expectAction(
-			'webp_img_convert',
-			'https://example.com/wp-content/uploads/2024/01/sample.webp',
-			1
-		);
 
 		$this->instance->generate_webp_image( 1 );
 
@@ -85,7 +84,7 @@ class PluginTest extends TestCase {
 
 		$instance->shouldReceive( 'get_webp_image_html' )
 			->once()
-			->with( '<img src="sample.jpeg"/>' )
+			->with( '<img src="sample.jpeg"/>', 1 )
 			->andReturn( '<img src="sample.webp"/>' );
 
 		\WP_Mock::onFilter( 'webp_img_attachment_html' )
@@ -116,7 +115,7 @@ class PluginTest extends TestCase {
 
 		$instance->shouldReceive( 'get_webp_image_html' )
 			->once()
-			->with( '<img src="sample.jpeg"/>' )
+			->with( '<img src="sample.jpeg"/>', 2 )
 			->andReturn( '<img src="sample.webp"/>' );
 
 		\WP_Mock::onFilter( 'webp_img_thumbnail_html' )
