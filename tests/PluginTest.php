@@ -71,6 +71,45 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_generate_webp_srcset_images() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$instance->converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$instance->converter->shouldAllowMockingProtectedMethods();
+
+		$data = [
+			'sizes' => [
+				[
+					'file' => 'sample1.jpeg',
+				],
+				[
+					'file' => 'sample2.jpeg',
+				],
+				[
+					'file' => 'sample3.jpeg',
+				],
+			],
+		];
+
+		\WP_Mock::userFunction( 'wp_get_attachment_image_url' )
+			->once()
+			->with( 1 )
+			->andReturn( 'https://example.com/wp-content/uploads/2024/01/sample.jpeg' );
+
+		\WP_Mock::userFunction( 'trailingslashit' )
+			->times( 3 )
+			->with( 'https://example.com/wp-content/uploads/2024/01' )
+			->andReturn( 'https://example.com/wp-content/uploads/2024/01/' );
+
+		$instance->converter->shouldReceive( 'convert' )
+			->times( 3 );
+
+		$srcset = $instance->generate_webp_srcset_images( $data, 1, 'create' );
+
+		$this->assertConditionsMet();
+	}
+
 	public function test_filter_wp_get_attachment_image_fails_and_returns_empty_string() {
 		$image = $this->instance->filter_wp_get_attachment_image( '', 1, [], true, [] );
 
@@ -160,45 +199,6 @@ class PluginTest extends TestCase {
 		$image = $instance->get_webp_image_html( '<figure><img src=""/></figure>' );
 
 		$this->assertSame( '<figure><img src=""/></figure>', $image );
-		$this->assertConditionsMet();
-	}
-
-	public function test_generate_webp_srcset_images() {
-		$instance = Mockery::mock( Plugin::class )->makePartial();
-		$instance->shouldAllowMockingProtectedMethods();
-
-		$instance->converter = Mockery::mock( WebPImageConverter::class )->makePartial();
-		$instance->converter->shouldAllowMockingProtectedMethods();
-
-		$data = [
-			'sizes' => [
-				[
-					'file' => 'sample1.jpeg',
-				],
-				[
-					'file' => 'sample2.jpeg',
-				],
-				[
-					'file' => 'sample3.jpeg',
-				],
-			],
-		];
-
-		\WP_Mock::userFunction( 'wp_get_attachment_image_url' )
-			->once()
-			->with( 1 )
-			->andReturn( 'https://example.com/wp-content/uploads/2024/01/sample.jpeg' );
-
-		\WP_Mock::userFunction( 'trailingslashit' )
-			->times( 3 )
-			->with( 'https://example.com/wp-content/uploads/2024/01' )
-			->andReturn( 'https://example.com/wp-content/uploads/2024/01/' );
-
-		$instance->converter->shouldReceive( 'convert' )
-			->times( 3 );
-
-		$srcset = $instance->generate_webp_srcset_images( $data, 1, 'create' );
-
 		$this->assertConditionsMet();
 	}
 }
