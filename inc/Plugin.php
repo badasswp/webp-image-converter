@@ -117,7 +117,7 @@ class Plugin {
 	 *
 	 * @param mixed[] $metadata      An array of attachment meta data.
 	 * @param int     $attachment_id Attachment ID.
-	 * @param string  $context       Additional context. Can be 'create' or 'update.
+	 * @param string  $context       Additional context. Can be 'create' or 'update'.
 	 *
 	 * @return mixed[]
 	 */
