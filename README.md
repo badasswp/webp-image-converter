@@ -112,3 +112,25 @@ public function custom_img_html( $html, $thumbnail_id ): array {
 - webp _`{string}`_ By default this will be the image HTML.
 - thumbnail_id _`{int}`_ By default this is the Image ID.
 <br/>
+
+---
+
+## Contributing
+
+First, thank you for taking the time to contribute!
+
+Contributing isn't just writing code - it's anything that improves the project.  All contributions are managed right here on Github.  Here are some ways you can help:
+
+### Bugs
+
+If you're running into an issue, please take a look through [existing issues](https://github.com/badasswp/webp-image-converter/issues) and [open a new one](https://github.com/badasswp/webp-image-converter/issues/new) if needed.  If you're able, include steps to reproduce, environment information, and screenshots/screencasts as relevant.
+
+### Features
+
+New features and enhancements are also managed via [issues](https://github.com/badasswp/webp-image-converter/issues).
+
+### Pull Requests (PR)
+
+Pull requests represent a proposed solution to a specified problem.  They should always reference an issue that describes the problem in detail. Discussion on pull requests should be limited to the pull request itself, i.e. code review.
+
+---
