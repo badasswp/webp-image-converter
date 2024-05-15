@@ -110,6 +110,31 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_filter_render_image_block_returns_empty_string() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$image = $instance->filter_render_image_block( '', [] );
+
+		$this->assertSame( '', $image );
+		$this->assertConditionsMet();
+	}
+
+	public function test_filter_render_image_block_returns_img_html() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$instance->shouldReceive( 'get_webp_image_html' )
+			->once()
+			->with( '<img src="sample.jpeg"/>' )
+			->andReturn( '<img src="sample.webp"/>' );
+
+		$image = $instance->filter_render_image_block( '<img src="sample.jpeg"/>', [] );
+
+		$this->assertSame( '<img src="sample.webp"/>', $image );
+		$this->assertConditionsMet();
+	}
+
 	public function test_filter_wp_get_attachment_image_fails_and_returns_empty_string() {
 		$image = $this->instance->filter_wp_get_attachment_image( '', 1, [], true, [] );
 
