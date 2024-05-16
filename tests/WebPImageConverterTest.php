@@ -358,7 +358,7 @@ class WebPImageConverterTest extends TestCase {
 		file_put_contents( $mock_file, 'Hello World!', FILE_APPEND );
 	}
 
-	public function destroy_mock_FILE( $mock_file ) {
+	public function destroy_mock_file( $mock_file ) {
 		if ( file_exists( $mock_file ) ) {
 			unlink( $mock_file );
 		}
