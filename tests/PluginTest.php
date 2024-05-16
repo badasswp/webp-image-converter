@@ -226,4 +226,18 @@ class PluginTest extends TestCase {
 		$this->assertSame( '<figure><img src=""/></figure>', $image );
 		$this->assertConditionsMet();
 	}
+
+	public function test_remove_webp_images_fails_if_not_image() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		\WP_Mock::userFunction( 'wp_attachment_is_image' )
+			->once()
+			->with( 1 )
+			->andReturn( false );
+
+		$image = $instance->remove_webp_images( 1 );
+
+		$this->assertConditionsMet();
+	}
 }
