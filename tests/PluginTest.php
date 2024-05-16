@@ -241,6 +241,30 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_remove_webp_images_bails_if_no_parent_image_abs_path_or_metadata_is_found() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		\WP_Mock::userFunction( 'wp_attachment_is_image' )
+			->once()
+			->with( 1 )
+			->andReturn( true );
+
+		\WP_Mock::userFunction( 'get_attached_file' )
+			->once()
+			->with( 1 )
+			->andReturn( '' );
+
+		\WP_Mock::userFunction( 'wp_get_attachment_metadata' )
+			->once()
+			->with( 1 )
+			->andReturn( [] );
+
+		$image = $instance->remove_webp_images( 1 );
+
+		$this->assertConditionsMet();
+	}
+
 	public function create_mock_image( $image_file_name ) {
 		// Create a blank image.
 		$width  = 400;
