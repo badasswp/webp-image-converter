@@ -331,11 +331,15 @@ class Plugin {
 		// Get absolute path for main image.
 		$main_image = (string) get_attached_file( $attachment_id );
 
-		// Get WebP version of main image.
-		$extension  = '.' . pathinfo( $main_image, PATHINFO_EXTENSION );
-		$webp_image = str_replace( $extension, '.webp', $main_image );
+		// Ensure image exists before proceeding.
+		if ( $main_image ) {
+			$extension  = '.' . pathinfo( $main_image, PATHINFO_EXTENSION );
+			$webp_image = str_replace( $extension, '.webp', $main_image );
 
-		unlink( $webp_image );
+			if ( file_exists( $webp_image ) ) {
+				unlink( $webp_image );
+			}
+		}
 
 		// Get attachment metadata.
 		$metadata = wp_get_attachment_metadata( $attachment_id );
