@@ -323,15 +323,15 @@ class PluginTest extends TestCase {
 				[
 					'sizes' => [
 						[
-							'file' => 'sample1.jpeg'
+							'file' => 'sample1.jpeg',
 						],
 						[
-							'file' => 'sample2.jpeg'
+							'file' => 'sample2.jpeg',
 						],
 						[
-							'file' => 'sample3.jpeg'
-						]
-					]
+							'file' => 'sample3.jpeg',
+						],
+					],
 				]
 			);
 
