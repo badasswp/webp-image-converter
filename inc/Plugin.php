@@ -306,7 +306,7 @@ class Plugin {
 
 		// Replace image with WebP.
 		if ( ! is_wp_error( $webp ) && file_exists( $this->converter->abs_dest ) ) {
-			return str_replace( static::$source, $webp, $img_html );
+			return str_replace( static::$source['url'], $webp, $img_html );
 		}
 
 		return $img_html;
