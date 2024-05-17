@@ -1,7 +1,10 @@
 name: WebPImageConverter Build
 
 on:
-  push:
+  workflow_run:
+    workflows: ["WebPImageConverter CI/CD"]
+    types:
+      - completed
     branches:
       - master
 
