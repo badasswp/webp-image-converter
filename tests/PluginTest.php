@@ -227,6 +227,30 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_get_webp_html_bails_out_and_returns_same_image_html() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$instance->converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$instance->converter->shouldAllowMockingProtectedMethods();
+
+		$error = Mockery::mock( \WP_Error::class )->makePartial();
+
+		$instance->converter->shouldReceive( 'convert' )
+			->once()->with()
+			->andReturn( $error );
+
+		\WP_Mock::userFunction( 'is_wp_error' )
+			->once()
+			->with( $error )
+			->andReturn( true );
+
+		$img_html = $instance->_get_webp_html( 'https://example.com/wp-content/uploads/2024/01/sample.pdf', '<img src="https://example.com/wp-content/uploads/2024/01/sample.pdf"/>', 1 );
+
+		$this->assertSame( $img_html, '<img src="https://example.com/wp-content/uploads/2024/01/sample.pdf"/>' );
+		$this->assertConditionsMet();
+	}
+
 	public function test_remove_webp_images_fails_if_not_image() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
