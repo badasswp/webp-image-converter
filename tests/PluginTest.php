@@ -251,6 +251,37 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_get_webp_html_returns_new_image_html() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$instance->converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$instance->converter->shouldAllowMockingProtectedMethods();
+
+		$this->create_mock_image( __DIR__ . '/sample.webp' );
+		$instance->converter->abs_dest = __DIR__ . '/sample.webp';
+
+		$error = Mockery::mock( \WP_Error::class )->makePartial();
+
+		Plugin::$source['url'] = 'https://example.com/wp-content/uploads/2024/01/sample.jpeg';
+
+		$instance->converter->shouldReceive( 'convert' )
+			->once()->with()
+			->andReturn( 'https://example.com/wp-content/uploads/2024/01/sample.webp' );
+
+		\WP_Mock::userFunction( 'is_wp_error' )
+			->once()
+			->with( 'https://example.com/wp-content/uploads/2024/01/sample.webp' )
+			->andReturn( false );
+
+		$img_html = $instance->_get_webp_html( 'https://example.com/wp-content/uploads/2024/01/sample.jpeg', '<img src="https://example.com/wp-content/uploads/2024/01/sample.jpeg"/>', 1 );
+
+		$this->assertSame( $img_html, '<img src="https://example.com/wp-content/uploads/2024/01/sample.webp"/>' );
+		$this->assertConditionsMet();
+
+		$this->destroy_mock_image( __DIR__ . '/sample.webp' );
+	}
+
 	public function test_remove_webp_images_fails_if_not_image() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
