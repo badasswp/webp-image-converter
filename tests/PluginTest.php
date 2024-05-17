@@ -292,6 +292,60 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_remove_webp_images_removes_webp_metadata_image() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		\WP_Mock::userFunction( 'wp_attachment_is_image' )
+			->once()
+			->with( 1 )
+			->andReturn( true );
+
+		\WP_Mock::userFunction( 'get_attached_file' )
+			->once()
+			->with( 1 )
+			->andReturn( __DIR__ . '/sample.jpeg' );
+
+		\WP_Mock::userFunction(
+			'trailingslashit',
+			[
+				'times'  => 3,
+				'return' => function ( $text ) {
+					return $text . '/';
+				},
+			]
+		);
+
+		\WP_Mock::userFunction( 'wp_get_attachment_metadata' )
+			->once()
+			->with( 1 )
+			->andReturn(
+				[
+					'sizes' => [
+						[
+							'file' => 'sample1.jpeg'
+						],
+						[
+							'file' => 'sample2.jpeg'
+						],
+						[
+							'file' => 'sample3.jpeg'
+						]
+					]
+				]
+			);
+
+		// Create Mock Images.
+		$this->create_mock_image( __DIR__ . '/sample.webp' );
+		$this->create_mock_image( __DIR__ . '/sample1.webp' );
+		$this->create_mock_image( __DIR__ . '/sample2.webp' );
+		$this->create_mock_image( __DIR__ . '/sample3.webp' );
+
+		$image = $instance->remove_webp_images( 1 );
+
+		$this->assertConditionsMet();
+	}
+
 	public function create_mock_image( $image_file_name ) {
 		// Create a blank image.
 		$width  = 400;
