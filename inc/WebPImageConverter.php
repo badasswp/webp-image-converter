@@ -100,6 +100,18 @@ class WebPImageConverter {
 			return new \WP_Error( 'webp-img-error', $error_msg );
 		}
 
+		/**
+		 * Fires after Image is converted.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string|\WP_Error $webp          WebP Image URL or WP Error.
+		 * @param int              $attachment_id Image ID.
+		 *
+		 * @return void
+		 */
+		do_action( 'webp_img_convert', $webp = $this->rel_dest, $attachment_id = Plugin::$source['id'] );
+
 		return $this->rel_dest;
 	}
 
@@ -115,7 +127,7 @@ class WebPImageConverter {
 	 */
 	protected function set_image_source(): void {
 		$img_uploads_dir  = wp_upload_dir();
-		$this->abs_source = str_replace( $img_uploads_dir['baseurl'], $img_uploads_dir['basedir'], Plugin::$source );
+		$this->abs_source = str_replace( $img_uploads_dir['baseurl'], $img_uploads_dir['basedir'], Plugin::$source['url'] );
 	}
 
 	/**
@@ -129,10 +141,10 @@ class WebPImageConverter {
 	 * @return void
 	 */
 	protected function set_image_destination(): void {
-		$image_extension = '.' . pathinfo( Plugin::$source, PATHINFO_EXTENSION );
+		$image_extension = '.' . pathinfo( Plugin::$source['url'], PATHINFO_EXTENSION );
 
 		$this->abs_dest = str_replace( $image_extension, '.webp', $this->abs_source );
-		$this->rel_dest = str_replace( $image_extension, '.webp', Plugin::$source );
+		$this->rel_dest = str_replace( $image_extension, '.webp', Plugin::$source['url'] );
 	}
 
 	/**

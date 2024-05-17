@@ -85,7 +85,10 @@ class WebPImageConverterTest extends TestCase {
 		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$converter->shouldAllowMockingProtectedMethods();
 
-		Plugin::$source = 'https://example.com/wp-content/uploads/2024/01/sample.jpeg';
+		Plugin::$source = [
+			'id'  => 1,
+			'url' => 'https://example.com/wp-content/uploads/2024/01/sample.jpeg',
+		];
 
 		\WP_Mock::userFunction( 'wp_upload_dir' )
 			->once()
@@ -109,8 +112,10 @@ class WebPImageConverterTest extends TestCase {
 		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$converter->shouldAllowMockingProtectedMethods();
 
-		// Plugin Source.
-		Plugin::$source = 'https://example.com/wp-content/uploads/2024/01/sample.jpeg';
+		Plugin::$source = [
+			'id'  => 1,
+			'url' => 'https://example.com/wp-content/uploads/2024/01/sample.jpeg',
+		];
 
 		// Image Source (Absolute Path).
 		$converter->abs_source = '/var/www/html/wp-content/uploads/2024/01/sample.jpeg';
@@ -236,6 +241,11 @@ class WebPImageConverterTest extends TestCase {
 		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$converter->shouldAllowMockingProtectedMethods();
 
+		Plugin::$source = [
+			'id'  => 1,
+			'url' => 'https://example.com/wp-content/uploads/2024/01/sample.jpeg',
+		];
+
 		$converter->abs_source = __DIR__ . '/sample.jpeg';
 		$converter->abs_dest   = __DIR__ . '/sample.webp';
 		$converter->rel_dest   = str_replace( __DIR__, 'https://example.com/wp-content/uploads/2024/01', $converter->abs_dest );
@@ -268,6 +278,12 @@ class WebPImageConverterTest extends TestCase {
 					'converter'   => 'gd',
 				]
 			);
+
+		\WP_Mock::expectAction(
+			'webp_img_convert',
+			'https://example.com/wp-content/uploads/2024/01/sample.webp',
+			1
+		);
 
 		$webp = $converter->convert();
 
@@ -311,8 +327,6 @@ class WebPImageConverterTest extends TestCase {
 			->with( 'Fatal Error: %s', 'webp-img-converter' )
 			->andReturn( 'Fatal Error: %s' );
 
-		$mock = Mockery::mock( WP_Error::class );
-
 		$webp = $converter->convert();
 
 		$this->assertInstanceOf( '\WP_Error', $webp );
@@ -344,7 +358,7 @@ class WebPImageConverterTest extends TestCase {
 		file_put_contents( $mock_file, 'Hello World!', FILE_APPEND );
 	}
 
-	public function destroy_mock_FILE( $mock_file ) {
+	public function destroy_mock_file( $mock_file ) {
 		if ( file_exists( $mock_file ) ) {
 			unlink( $mock_file );
 		}

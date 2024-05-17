@@ -33,11 +33,11 @@ class Plugin {
 	public WebPImageConverter $converter;
 
 	/**
-	 * Source Image.
+	 * Source Props.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var string
+	 * @var mixed[]
 	 */
 	public static $source;
 
@@ -97,23 +97,14 @@ class Plugin {
 	 * @return void
 	 */
 	public function generate_webp_image( $attachment_id ): void {
-		// Get source image.
-		static::$source = (string) wp_get_attachment_url( $attachment_id );
+		// Get source props.
+		static::$source = [
+			'id'  => (int) $attachment_id,
+			'url' => (string) wp_get_attachment_url( $attachment_id ),
+		];
 
 		// Convert to WebP image.
 		$webp = $this->converter->convert();
-
-		/**
-		 * Fires after Image is converted.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param string|\WP_Error $webp          WebP Image URL or WP Error.
-		 * @param int              $attachment_id Image ID.
-		 *
-		 * @return void
-		 */
-		do_action( 'webp_img_convert', $webp, $attachment_id );
 	}
 
 	/**
@@ -126,7 +117,7 @@ class Plugin {
 	 *
 	 * @param mixed[] $metadata      An array of attachment meta data.
 	 * @param int     $attachment_id Attachment ID.
-	 * @param string  $context       Additional context. Can be 'create' or 'update.
+	 * @param string  $context       Additional context. Can be 'create' or 'update'.
 	 *
 	 * @return mixed[]
 	 */
@@ -139,7 +130,11 @@ class Plugin {
 
 		// Convert srcset images.
 		foreach ( $metadata['sizes'] as $img ) {
-			static::$source = trailingslashit( $img_url_prefix ) . $img['file'];
+			static::$source = [
+				'id'  => (int) $attachment_id,
+				'url' => trailingslashit( $img_url_prefix ) . $img['file'],
+			];
+
 			$this->converter->convert();
 		}
 
@@ -179,7 +174,6 @@ class Plugin {
 	 * @param string|int[] $size          Requested image size.
 	 * @param bool         $icon          Whether the image should be treated as an icon.
 	 * @param string[]     $attr          Array of attribute values for the image markup, keyed by attribute name.
-	 *                                    See wp_get_attachment_image().
 	 *
 	 * @return string
 	 */
@@ -188,7 +182,7 @@ class Plugin {
 			return $html;
 		}
 
-		$html = $this->get_webp_image_html( $html );
+		$html = $this->get_webp_image_html( $html, $attachment_id );
 
 		/**
 		 * Filter WebP Image HTML.
@@ -224,7 +218,7 @@ class Plugin {
 			return $html;
 		}
 
-		$html = $this->get_webp_image_html( $html );
+		$html = $this->get_webp_image_html( $html, $thumbnail_id );
 
 		/**
 		 * Filter WebP Image Thumbnail HTML.
@@ -249,9 +243,11 @@ class Plugin {
 	 * @since 1.0.0
 	 *
 	 * @param string $html Image HTML.
+	 * @param int    $id   Image Attachment ID.
+	 *
 	 * @return string
 	 */
-	protected function get_webp_image_html( $html ): string {
+	protected function get_webp_image_html( $html, $id = 0 ): string {
 		// Bail out, if empty or NOT image.
 		if ( empty( $html ) || ! preg_match( '/<img.*>/', $html, $image ) ) {
 			return $html;
@@ -280,7 +276,7 @@ class Plugin {
 			preg_match_all( '/http\S+\b/', $srcset, $image_urls );
 
 			foreach ( $image_urls[0] as $img_url ) {
-				$html = $this->_get_webp_html( $img_url, $html );
+				$html = $this->_get_webp_html( $img_url, $html, $id );
 			}
 		}
 
@@ -294,19 +290,23 @@ class Plugin {
 	 *
 	 * @param string $img_url  Relative path to Image - 'https://example.com/wp-content/uploads/2024/01/sample.png'.
 	 * @param string $img_html The Image HTML - '<img src="sample.png"/>'.
+	 * @param int    $img_id   Image Attachment ID.
 	 *
 	 * @return string
 	 */
-	protected function _get_webp_html( $img_url, $img_html ): string {
+	protected function _get_webp_html( $img_url, $img_html, $img_id ): string {
 		// Set Source.
-		static::$source = $img_url;
+		static::$source = [
+			'id'  => $img_id,
+			'url' => $img_url,
+		];
 
 		// Convert image to WebP.
 		$webp = $this->converter->convert();
 
 		// Replace image with WebP.
 		if ( ! is_wp_error( $webp ) && file_exists( $this->converter->abs_dest ) ) {
-			return str_replace( static::$source, $webp, $img_html );
+			return str_replace( static::$source['url'], $webp, $img_html );
 		}
 
 		return $img_html;
@@ -331,11 +331,15 @@ class Plugin {
 		// Get absolute path for main image.
 		$main_image = (string) get_attached_file( $attachment_id );
 
-		// Get WebP version of main image.
-		$extension  = '.' . pathinfo( $main_image, PATHINFO_EXTENSION );
-		$webp_image = str_replace( $extension, '.webp', $main_image );
+		// Ensure image exists before proceeding.
+		if ( $main_image ) {
+			$extension  = '.' . pathinfo( $main_image, PATHINFO_EXTENSION );
+			$webp_image = str_replace( $extension, '.webp', $main_image );
 
-		unlink( $webp_image );
+			if ( file_exists( $webp_image ) ) {
+				unlink( $webp_image );
+			}
+		}
 
 		// Get attachment metadata.
 		$metadata = wp_get_attachment_metadata( $attachment_id );
@@ -346,11 +350,16 @@ class Plugin {
 			$img_url_prefix = substr( $main_image, 0, (int) strrpos( $main_image, '/' ) );
 			$metadata_image = trailingslashit( $img_url_prefix ) . $img['file'];
 
-			// Get WebP version of metadata image.
-			$metadata_extension  = '.' . pathinfo( $metadata_image, PATHINFO_EXTENSION );
-			$webp_metadata_image = str_replace( $metadata_extension, '.webp', $metadata_image );
+			// Ensure image exists before proceeding.
+			if ( $metadata_image ) {
+				// Get WebP version of metadata image.
+				$metadata_extension  = '.' . pathinfo( $metadata_image, PATHINFO_EXTENSION );
+				$webp_metadata_image = str_replace( $metadata_extension, '.webp', $metadata_image );
 
-			unlink( $webp_metadata_image );
+				if ( file_exists( $webp_metadata_image ) ) {
+					unlink( $webp_metadata_image );
+				}
+			}
 		}
 	}
 }
