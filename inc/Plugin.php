@@ -350,11 +350,16 @@ class Plugin {
 			$img_url_prefix = substr( $main_image, 0, (int) strrpos( $main_image, '/' ) );
 			$metadata_image = trailingslashit( $img_url_prefix ) . $img['file'];
 
-			// Get WebP version of metadata image.
-			$metadata_extension  = '.' . pathinfo( $metadata_image, PATHINFO_EXTENSION );
-			$webp_metadata_image = str_replace( $metadata_extension, '.webp', $metadata_image );
+			// Ensure image exists before proceeding.
+			if ( $metadata_image ) {
+				// Get WebP version of metadata image.
+				$metadata_extension  = '.' . pathinfo( $metadata_image, PATHINFO_EXTENSION );
+				$webp_metadata_image = str_replace( $metadata_extension, '.webp', $metadata_image );
 
-			unlink( $webp_metadata_image );
+				if ( file_exists( $webp_metadata_image ) ) {
+					unlink( $webp_metadata_image );
+				}
+			}
 		}
 	}
 }
