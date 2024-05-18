@@ -1,4 +1,4 @@
-name: WebPImageConverter CI/CD
+name: WebPImageConverter CI
 
 on:
   push:

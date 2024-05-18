@@ -2,7 +2,7 @@ name: WebPImageConverter Build
 
 on:
   workflow_run:
-    workflows: ["WebPImageConverter CI/CD"]
+    workflows: ["WebPImageConverter CI"]
     types: [completed]
     branches: [master]
 
