@@ -2,6 +2,7 @@
 
 ## 1.0.1
 * Refactor hook `webp_img_convert` to placement within convert public method.
+* Fix bugs within `Plugin` class methods.
 * Add more Unit tests & Code coverage.
 * Update README notes.
 
