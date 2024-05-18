@@ -338,6 +338,16 @@ class Plugin {
 
 			if ( file_exists( $webp_image ) ) {
 				unlink( $webp_image );
+
+				/**
+				 * Fires after WebP Image has been deleted.
+				 *
+				 * @param string $webp_image    Absolute path to WebP image.
+				 * @param int    $attachment_id Image ID.
+				 *
+				 * @return void
+				 */
+				do_action( 'webp_img_delete', $webp_image, $attachment_id );
 			}
 		}
 
@@ -358,6 +368,16 @@ class Plugin {
 
 				if ( file_exists( $webp_metadata_image ) ) {
 					unlink( $webp_metadata_image );
+
+					/**
+					 * Fires after WebP Metadata Image has been deleted.
+					 *
+					 * @param string $webp_metadata_image Absolute path to WebP image.
+					 * @param int    $attachment_id       Image ID.
+					 *
+					 * @return void
+					 */
+					do_action( 'webp_img_metadata_delete', $webp_metadata_image, $attachment_id );
 				}
 			}
 		}
