@@ -334,6 +334,8 @@ class PluginTest extends TestCase {
 			->with( 1 )
 			->andReturn( __DIR__ . '/sample.jpeg' );
 
+		\WP_Mock::expectAction( 'webp_img_delete', __DIR__ . '/sample.webp', 1 );
+
 		\WP_Mock::userFunction( 'wp_get_attachment_metadata' )
 			->once()
 			->with( 1 )
@@ -360,6 +362,8 @@ class PluginTest extends TestCase {
 			->once()
 			->with( 1 )
 			->andReturn( __DIR__ . '/sample.jpeg' );
+
+		\WP_Mock::expectAction( 'webp_img_delete', __DIR__ . '/sample.webp', 1 );
 
 		\WP_Mock::userFunction(
 			'trailingslashit',
@@ -389,6 +393,10 @@ class PluginTest extends TestCase {
 					],
 				]
 			);
+
+		\WP_Mock::expectAction( 'webp_img_metadata_delete', __DIR__ . '/sample1.webp', 1 );
+		\WP_Mock::expectAction( 'webp_img_metadata_delete', __DIR__ . '/sample2.webp', 1 );
+		\WP_Mock::expectAction( 'webp_img_metadata_delete', __DIR__ . '/sample3.webp', 1 );
 
 		// Create Mock Images.
 		$this->create_mock_image( __DIR__ . '/sample.webp' );
