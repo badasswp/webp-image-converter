@@ -103,7 +103,7 @@ class WebPImageConverter {
 		/**
 		 * Fires after Image is converted.
 		 *
-		 * @since 1.0.0
+		 * @since 1.0.1
 		 *
 		 * @param string|\WP_Error $webp          WebP Image URL or WP Error.
 		 * @param int              $attachment_id Image ID.

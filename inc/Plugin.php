@@ -148,6 +148,8 @@ class Plugin {
 	 * Loop through each block and swap regular images for
 	 * WebP versions.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param string  $html  Image HTML.
 	 * @param mixed[] $block Block array.
 	 *
@@ -343,6 +345,8 @@ class Plugin {
 				/**
 				 * Fires after WebP Image has been deleted.
 				 *
+				 * @since 1.0.2
+				 *
 				 * @param string $webp_image    Absolute path to WebP image.
 				 * @param int    $attachment_id Image ID.
 				 *
@@ -373,6 +377,8 @@ class Plugin {
 					/**
 					 * Fires after WebP Metadata Image has been deleted.
 					 *
+					 * @since 1.0.2
+					 *
 					 * @param string $webp_metadata_image Absolute path to WebP image.
 					 * @param int    $attachment_id       Image ID.
 					 *
@@ -387,8 +393,7 @@ class Plugin {
 	/**
 	 * Menu Service.
 	 *
-	 * This controls the menu display for
-	 * the plugin.
+	 * This controls the menu display for the plugin.
 	 *
 	 * @since 1.0.2
 	 *
