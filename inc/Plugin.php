@@ -83,6 +83,7 @@ class Plugin {
 		add_filter( 'wp_get_attachment_image', [ $this, 'filter_wp_get_attachment_image' ], 10, 5 );
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
 		add_action( 'delete_attachment', [ $this, 'remove_webp_images' ] );
+		add_action( 'admin_menu', [ $this, 'add_webp_image_menu' ] );
 	}
 
 	/**
@@ -381,5 +382,45 @@ class Plugin {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Menu Service.
+	 *
+	 * This controls the menu display for
+	 * the plugin.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return void
+	 */
+	public function add_webp_image_menu() {
+		add_submenu_page(
+			'upload.php',
+			'WebP Image Converter',
+			'WebP Image Converter',
+			'manage_options',
+			'webp-image-converter',
+			[ $this, 'webp_image_menu_page' ]
+		);
+	}
+
+	/**
+	 * Menu Callback.
+	 *
+	 * This controls the display of the
+	 * menu page.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return void
+	 */
+	public function webp_image_menu_page() {
+		printf(
+			'<div class="wrap">
+				<h1>WebP Image Converter</h1>
+				<p>Manage all your WebP generated images here.</p>
+			</div>'
+		);
 	}
 }
