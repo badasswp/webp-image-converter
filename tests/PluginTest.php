@@ -42,6 +42,7 @@ class PluginTest extends TestCase {
 		\WP_Mock::expectFilterAdded( 'wp_get_attachment_image', [ $this->instance, 'filter_wp_get_attachment_image' ], 10, 5 );
 		\WP_Mock::expectFilterAdded( 'post_thumbnail_html', [ $this->instance, 'filter_post_thumbnail_html' ], 10, 5 );
 		\WP_Mock::expectActionAdded( 'delete_attachment', [ $this->instance, 'remove_webp_images' ] );
+		\WP_Mock::expectActionAdded( 'admin_menu', [ $this->instance, 'add_webp_image_menu' ] );
 
 		$this->instance->run();
 
