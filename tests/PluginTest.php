@@ -410,6 +410,37 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_add_webp_image_menu() {
+		\WP_Mock::userFunction( 'add_submenu_page' )
+			->once()
+			->with(
+				'upload.php',
+				'WebP Image Converter',
+				'WebP Image Converter',
+				'manage_options',
+				'webp-image-converter',
+				[ $this->instance, 'webp_image_menu_page' ]
+			)
+			->andReturn( null );
+
+		$menu = $this->instance->add_webp_image_menu();
+
+		$this->assertNull( $menu );
+		$this->assertConditionsMet();
+	}
+
+	public function test_webp_image_menu_page() {
+		$this->instance->webp_image_menu_page();
+
+		$this->expectOutputString(
+			'<div class="wrap">
+				<h1>WebP Image Converter</h1>
+				<p>Manage all your WebP generated images here.</p>
+			</div>'
+		);
+		$this->assertConditionsMet();
+	}
+
 	public function create_mock_image( $image_file_name ) {
 		// Create a blank image.
 		$width  = 400;
