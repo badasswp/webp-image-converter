@@ -6,6 +6,10 @@ Convert your WordPress JPG/PNG images to WebP formats during runtime.
 
 ![screenshot](https://github.com/badasswp/webp-image-converter/assets/149586343/9c4a9cb2-63a0-462c-9ba1-a7adf23e51ea)
 
+## Download
+
+Get the latest version from any of our [release tags](https://github.com/badasswp/webp-image-converter/releases).
+
 ## Why WebP Image Converter?
 
 As an internet user, you already know images can be the difference between a great website experience and a terrible one! Think about how often you've landed on a website and hit the back button because the home page was too busy or the banner image was taking so much time to load due to its size.
