@@ -161,7 +161,6 @@ Pull requests represent a proposed solution to a specified problem. They should 
 ### Testing
 
 ```bash
-# Run PHPUnit tests.
 composer run test
 ```
 
@@ -178,7 +177,6 @@ composer run lint:fix
 ### Static Analysis
 
 ```bash
-# Run Static Analysis.
 composer run analyse
 ```
 
