@@ -158,12 +158,6 @@ Pull requests represent a proposed solution to a specified problem. They should 
 - Run `composer install` to build PHP dependencies.
 - For local development, you can use [Docker](https://docs.docker.com/install/) or [Local by Flywheel](https://localwp.com/).
 
-### Testing
-
-```bash
-composer run test
-```
-
 ### Linting
 
 ```bash
@@ -172,6 +166,12 @@ composer run lint
 
 # Fix PHP Linting errors.
 composer run lint:fix
+```
+
+### Testing
+
+```bash
+composer run test
 ```
 
 ### Static Analysis
