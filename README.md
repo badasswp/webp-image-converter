@@ -146,3 +146,40 @@ git checkout -b feat/1234-image-error-logging-capability
 ### Pull Requests (PR)
 
 Pull requests represent a proposed solution to a specified problem. They should always reference an issue that describes the problem in detail. Discussion on pull requests __should be limited to the pull request__, i.e. code review.
+
+---
+
+## Development
+
+### Setup
+
+- Clone the repository.
+- Make sure you have [Composer](https://getcomposer.org) and PHP `v7.4|v8.0` installed in your computer.
+- Run `composer install` to build PHP dependencies.
+- For local development, you can use [Docker](https://docs.docker.com/install/) or [Local by Flywheel](https://localwp.com/).
+
+### Testing
+
+```bash
+# Run PHPUnit tests.
+composer run test
+```
+
+### Linting
+
+```bash
+# Run PHP Linting.
+composer run lint
+
+# Fix PHP Linting errors.
+composer run lint:fix
+```
+
+### Static Analysis
+
+```bash
+# Run Static Analysis.
+composer run analyse
+```
+
+
