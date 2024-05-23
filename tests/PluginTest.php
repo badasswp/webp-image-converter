@@ -36,14 +36,14 @@ class PluginTest extends TestCase {
 	}
 
 	public function test_run() {
-		\WP_Mock::expectActionAdded( 'add_attachment', [ $this->instance, 'generate_webp_image' ] );
+		\WP_Mock::expectActionAdded( 'add_attachment', [ $this->instance, 'generate_webp_image' ], 10, 1 );
 		\WP_Mock::expectFilterAdded( 'wp_generate_attachment_metadata', [ $this->instance, 'generate_webp_srcset_images' ], 10, 3 );
 		\WP_Mock::expectFilterAdded( 'render_block', [ $this->instance, 'filter_render_image_block' ], 20, 2 );
 		\WP_Mock::expectFilterAdded( 'wp_get_attachment_image', [ $this->instance, 'filter_wp_get_attachment_image' ], 10, 5 );
 		\WP_Mock::expectFilterAdded( 'post_thumbnail_html', [ $this->instance, 'filter_post_thumbnail_html' ], 10, 5 );
-		\WP_Mock::expectActionAdded( 'delete_attachment', [ $this->instance, 'remove_webp_images' ] );
+		\WP_Mock::expectActionAdded( 'delete_attachment', [ $this->instance, 'delete_webp_images' ], 10, 1 );
 		\WP_Mock::expectActionAdded( 'admin_menu', [ $this->instance, 'add_webp_image_menu' ] );
-		\WP_Mock::expectActionAdded( 'webp_img_convert', [ $this->instance, 'add_webp_meta_to_attachment' ] );
+		\WP_Mock::expectActionAdded( 'webp_img_convert', [ $this->instance, 'add_webp_meta_to_attachment' ], 10, 2 );
 
 		$this->instance->run();
 
@@ -284,7 +284,7 @@ class PluginTest extends TestCase {
 		$this->destroy_mock_image( __DIR__ . '/sample.webp' );
 	}
 
-	public function test_remove_webp_images_fails_if_not_image() {
+	public function test_delete_webp_images_fails_if_not_image() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
 
@@ -293,12 +293,12 @@ class PluginTest extends TestCase {
 			->with( 1 )
 			->andReturn( false );
 
-		$image = $instance->remove_webp_images( 1 );
+		$image = $instance->delete_webp_images( 1 );
 
 		$this->assertConditionsMet();
 	}
 
-	public function test_remove_webp_images_bails_if_no_parent_image_abs_path_or_metadata_is_found() {
+	public function test_delete_webp_images_bails_if_no_parent_image_abs_path_or_metadata_is_found() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
 
@@ -317,12 +317,12 @@ class PluginTest extends TestCase {
 			->with( 1 )
 			->andReturn( [] );
 
-		$image = $instance->remove_webp_images( 1 );
+		$image = $instance->delete_webp_images( 1 );
 
 		$this->assertConditionsMet();
 	}
 
-	public function test_remove_webp_images_removes_parent_webp_image() {
+	public function test_delete_webp_images_removes_parent_webp_image() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
 
@@ -346,12 +346,12 @@ class PluginTest extends TestCase {
 		// Create Mock Images.
 		$this->create_mock_image( __DIR__ . '/sample.webp' );
 
-		$image = $instance->remove_webp_images( 1 );
+		$image = $instance->delete_webp_images( 1 );
 
 		$this->assertConditionsMet();
 	}
 
-	public function test_remove_webp_images_removes_webp_metadata_image() {
+	public function test_delete_webp_images_removes_webp_metadata_image() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
 
@@ -406,7 +406,7 @@ class PluginTest extends TestCase {
 		$this->create_mock_image( __DIR__ . '/sample2.webp' );
 		$this->create_mock_image( __DIR__ . '/sample3.webp' );
 
-		$image = $instance->remove_webp_images( 1 );
+		$image = $instance->delete_webp_images( 1 );
 
 		$this->assertConditionsMet();
 	}
