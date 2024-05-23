@@ -414,8 +414,7 @@ class Plugin {
 	/**
 	 * Menu Callback.
 	 *
-	 * This controls the display of the
-	 * menu page.
+	 * This controls the display of the menu page.
 	 *
 	 * @since 1.0.2
 	 *
@@ -435,8 +434,8 @@ class Plugin {
 	 *
 	 * @since 1.0.2
 	 *
-	 * @param string $webp          WebP absolute image path.
-	 * @param int    $attachment_id Image ID.
+	 * @param string|\WP_Error $webp          WebP absolute image path.
+	 * @param int              $attachment_id Image ID.
 	 *
 	 * @return void
 	 */
