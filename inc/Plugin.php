@@ -77,14 +77,14 @@ class Plugin {
 	 * @return void
 	 */
 	public function run(): void {
-		add_action( 'add_attachment', [ $this, 'generate_webp_image' ] );
+		add_action( 'add_attachment', [ $this, 'generate_webp_image' ], 10, 1 );
 		add_filter( 'wp_generate_attachment_metadata', [ $this, 'generate_webp_srcset_images' ], 10, 3 );
 		add_filter( 'render_block', [ $this, 'filter_render_image_block' ], 20, 2 );
 		add_filter( 'wp_get_attachment_image', [ $this, 'filter_wp_get_attachment_image' ], 10, 5 );
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
 		add_action( 'delete_attachment', [ $this, 'remove_webp_images' ] );
 		add_action( 'admin_menu', [ $this, 'add_webp_image_menu' ] );
-		add_action( 'webp_img_convert', [ $this, 'add_webp_meta_to_attachment' ] );
+		add_action( 'webp_img_convert', [ $this, 'add_webp_meta_to_attachment' ], 10, 2 );
 	}
 
 	/**
