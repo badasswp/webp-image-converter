@@ -119,6 +119,50 @@ public function custom_img_html( $html, $thumbnail_id ): string {
 - thumbnail_id _`{int}`_ By default this is the Image ID.
 <br/>
 
+#### `webp_img_delete`
+
+This custom hook (action) fires immediately after a WebP image is deleteed.
+
+```php
+add_action( 'webp_img_delete', [ $this, 'delete_bmp_image' ], 10, 2 );
+
+public function delete_bmp_image( $webp, $attachment_id ): void {
+    $bmp = str_replace( '.webp', '.bmp', $webp );
+
+    if ( file_exists( $bmp ) ) {
+        unlink( $bmp );
+    }
+}
+```
+
+**Parameters**
+
+- webp _`{string}`_ By default this will be the abstract path of the WebP image.
+- attachment_id _`{int}`_ By default this is the Image ID.
+<br/>
+
+#### `webp_img_metadata_delete`
+
+This custom hook (action) fires immediately after a WebP metadata image is deleteed.
+
+```php
+add_action( 'webp_img_metadata_delete', [ $this, 'delete_bmp_image' ], 10, 2 );
+
+public function delete_bmp_image( $webp, $attachment_id ): void {
+    $bmp = str_replace( '.webp', '.bmp', $webp );
+
+    if ( file_exists( $bmp ) ) {
+        unlink( $bmp );
+    }
+}
+```
+
+**Parameters**
+
+- webp _`{string}`_ By default this will be the abstract path of the WebP metadata image.
+- attachment_id _`{int}`_ By default this is the Image ID.
+<br/>
+
 ---
 
 ## Development
