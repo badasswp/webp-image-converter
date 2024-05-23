@@ -82,7 +82,7 @@ class Plugin {
 		add_filter( 'render_block', [ $this, 'filter_render_image_block' ], 20, 2 );
 		add_filter( 'wp_get_attachment_image', [ $this, 'filter_wp_get_attachment_image' ], 10, 5 );
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
-		add_action( 'delete_attachment', [ $this, 'remove_webp_images' ] );
+		add_action( 'delete_attachment', [ $this, 'delete_webp_images' ], 10, 1 );
 		add_action( 'admin_menu', [ $this, 'add_webp_image_menu' ] );
 		add_action( 'webp_img_convert', [ $this, 'add_webp_meta_to_attachment' ], 10, 2 );
 	}
@@ -327,7 +327,7 @@ class Plugin {
 	 * @param int $attachment_id Attachment ID.
 	 * @return void
 	 */
-	public function remove_webp_images( $attachment_id ): void {
+	public function delete_webp_images( $attachment_id ): void {
 		if ( ! wp_attachment_is_image( $attachment_id ) ) {
 			return;
 		}
