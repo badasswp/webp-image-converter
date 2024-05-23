@@ -123,7 +123,7 @@ class Plugin {
 	 *
 	 * @return mixed[]
 	 */
-	public function generate_webp_srcset_images( $metadata, $attachment_id, $context ) {
+	public function generate_webp_srcset_images( $metadata, $attachment_id, $context ): array {
 		// Get parent image URL.
 		$img_url = (string) wp_get_attachment_image_url( $attachment_id );
 
@@ -327,7 +327,7 @@ class Plugin {
 	 * @param int $attachment_id Attachment ID.
 	 * @return void
 	 */
-	public function remove_webp_images( $attachment_id ) {
+	public function remove_webp_images( $attachment_id ): void {
 		if ( ! wp_attachment_is_image( $attachment_id ) ) {
 			return;
 		}
@@ -400,7 +400,7 @@ class Plugin {
 	 *
 	 * @return void
 	 */
-	public function add_webp_image_menu() {
+	public function add_webp_image_menu(): void {
 		add_submenu_page(
 			'upload.php',
 			'WebP Image Converter',
@@ -421,7 +421,7 @@ class Plugin {
 	 *
 	 * @return void
 	 */
-	public function webp_image_menu_page() {
+	public function webp_image_menu_page(): void {
 		printf(
 			'<div class="wrap">
 				<h1>WebP Image Converter</h1>
@@ -440,7 +440,7 @@ class Plugin {
 	 *
 	 * @return void
 	 */
-	public function add_webp_meta_to_attachment( $webp, $attachment_id ) {
+	public function add_webp_meta_to_attachment( $webp, $attachment_id ): void {
 		if ( ! is_wp_error( $webp ) && ! get_post_meta( $attachment_id, 'webp_img', true ) ) {
 			update_post_meta( $attachment_id, 'webp_img', $webp );
 		}
