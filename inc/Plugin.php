@@ -84,6 +84,7 @@ class Plugin {
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
 		add_action( 'delete_attachment', [ $this, 'remove_webp_images' ] );
 		add_action( 'admin_menu', [ $this, 'add_webp_image_menu' ] );
+		add_action( 'webp_img_convert', [ $this, 'add_webp_meta_to_attachment' ] );
 	}
 
 	/**
@@ -427,5 +428,21 @@ class Plugin {
 				<p>Manage all your WebP generated images here.</p>
 			</div>'
 		);
+	}
+
+	/**
+	 * Add WebP meta to Attachment.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @param string $webp          WebP absolute image path.
+	 * @param int    $attachment_id Image ID.
+	 *
+	 * @return void
+	 */
+	public function add_webp_meta_to_attachment( $webp, $attachment_id ) {
+		if ( ! is_wp_error( $webp ) && ! get_post_meta( $attachment_id, 'webp_img', true ) ) {
+			update_post_meta( $attachment_id, 'webp_img', $webp );
+		}
 	}
 }
