@@ -444,4 +444,42 @@ class Plugin {
 			update_post_meta( $attachment_id, 'webp_img', $webp );
 		}
 	}
+
+	/**
+	 * Get all Images and associated WebPs.
+	 *
+	 * This function grabs all Image attachments and
+	 * associated WebP versions, if any.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return mixed[]
+	 */
+	public function get_webp_images(): array {
+		$posts = get_posts(
+			[
+				'post_type'      => 'attachment',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+			]
+		);
+
+		if ( ! $posts ) {
+			return [];
+		}
+
+		$images = array_map(
+			function ( $post ) {
+				if ( wp_attachment_is_image( $post ) ) {
+					return [
+						'guid' => $post->guid ?? '',
+						'webp' => get_post_meta( $post->ID, 'webp_img', true ) ?? '',
+					];
+				}
+			},
+			$posts
+		);
+
+		return $images;
+	}
 }
