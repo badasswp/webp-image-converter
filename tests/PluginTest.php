@@ -436,7 +436,7 @@ class PluginTest extends TestCase {
 		$this->expectOutputString(
 			'<div class="wrap">
 				<h1>WebP Image Converter</h1>
-				<p>Manage all your WebP generated images here.</p>
+				<p>Manage your settings here.</p>
 			</div>'
 		);
 		$this->assertConditionsMet();
