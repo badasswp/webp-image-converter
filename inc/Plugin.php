@@ -470,11 +470,10 @@ class Plugin {
 
 		$images = array_map(
 			function ( $post ) {
-				$post_id = $post->ID ?? '';
-				if ( wp_attachment_is_image( $post ) ) {
+				if ( $post instanceof \WP_Post && wp_attachment_is_image( $post ) ) {
 					return [
-						'guid' => $post->guid ?? '',
-						'webp' => get_post_meta( (int) $post_id, 'webp_img', true ) ?? '',
+						'guid' => $post->guid,
+						'webp' => get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '',
 					];
 				}
 			},
