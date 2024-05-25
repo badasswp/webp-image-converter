@@ -44,6 +44,7 @@ class PluginTest extends TestCase {
 		\WP_Mock::expectActionAdded( 'delete_attachment', [ $this->instance, 'delete_webp_images' ], 10, 1 );
 		\WP_Mock::expectActionAdded( 'admin_menu', [ $this->instance, 'add_webp_image_menu' ] );
 		\WP_Mock::expectActionAdded( 'webp_img_convert', [ $this->instance, 'add_webp_meta_to_attachment' ], 10, 2 );
+		\WP_Mock::expectFilterAdded( 'attachment_fields_to_edit', [ $this->instance, 'add_webp_attachment_fields' ], 10, 2 );
 
 		$this->instance->run();
 
