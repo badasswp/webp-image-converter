@@ -443,6 +443,19 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_add_webp_meta_to_attachment_bails_out() {
+		$webp = Mockery::mock( '\WP_Error' )->makePartial();
+
+		\WP_Mock::userFunction( 'is_wp_error' )
+			->once()
+			->with( $webp )
+			->andReturn( true );
+
+		$this->instance->add_webp_meta_to_attachment( $webp, 1 );
+
+		$this->assertConditionsMet();
+	}
+
 	public function create_mock_image( $image_file_name ) {
 		// Create a blank image.
 		$width  = 400;
