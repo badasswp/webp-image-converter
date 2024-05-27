@@ -456,6 +456,29 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_add_webp_meta_to_attachment_updates_post_meta() {
+		$webp = 'https://example.com/wp-content/uploads/2024/01/sample.webp';
+
+		\WP_Mock::userFunction( 'is_wp_error' )
+			->once()
+			->with( $webp )
+			->andReturn( false );
+
+		\WP_Mock::userFunction( 'get_post_meta' )
+			->once()
+			->with( 1, 'webp_img', true )
+			->andReturn( '' );
+
+		\WP_Mock::userFunction( 'update_post_meta' )
+			->once()
+			->with( 1, 'webp_img', 'https://example.com/wp-content/uploads/2024/01/sample.webp' )
+			->andReturn( null );
+
+		$this->instance->add_webp_meta_to_attachment( $webp, 1 );
+
+		$this->assertConditionsMet();
+	}
+
 	public function create_mock_image( $image_file_name ) {
 		// Create a blank image.
 		$width  = 400;
