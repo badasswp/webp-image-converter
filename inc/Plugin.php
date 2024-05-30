@@ -460,12 +460,19 @@ class Plugin {
 	 *
 	 * @return mixed[]
 	 */
-	public function get_webp_images(): array {
+	protected function get_webp_images(): array {
 		$posts = get_posts(
 			[
 				'post_type'      => 'attachment',
 				'posts_per_page' => -1,
 				'orderby'        => 'title',
+				'meta_query'     => [
+					[
+						'key'     => 'webp_img',
+						'value'   => '',
+						'compare' => '!=',
+					],
+				],
 			]
 		);
 
