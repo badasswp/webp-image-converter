@@ -10,6 +10,10 @@
 
 namespace WebPImageConverter;
 
+// @todo: Add testing for 3 new methods below... add_webp_meta_to_attachment and so on.
+// @todo: Add cache to new method to retrieve WebP images.
+// @todo: Add settings control to admin page.
+
 use DOMDocument;
 use WebPImageConverter\WebPImageConverter;
 
@@ -496,7 +500,7 @@ class Plugin {
 	 * @return mixed[]
 	 */
 	public function add_webp_attachment_fields( $fields, $post ): array {
-		$webp_img = get_post_meta( $post->ID, 'webp_img', true );
+		$webp_img = get_post_meta( $post->ID, 'webp_img', true ) ?? '';
 
 		$fields['webp_img'] = array(
 			'label' => 'WebP Image',
