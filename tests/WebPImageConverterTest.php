@@ -80,14 +80,45 @@ class WebPImageConverterTest extends TestCase {
 		\WP_Mock::onFilter( 'webp_img_options' )
 			->with(
 				[
-					'quality'     => 20,
+					'quality'     => 75,
 					'max-quality' => 100,
-					'converter'   => 'gd',
+					'converter'   => 'imagick',
 				]
 			)
 			->reply(
 				[
 					'quality'   => 50,
+					'converter' => 'imagick',
+				]
+			);
+
+		\WP_Mock::userFunction( 'wp_parse_args' )
+			->once()
+			->with(
+				[
+					'quality' => 75,
+					'converter' => 'imagick',
+				],
+				[
+					'quality'     => 20,
+					'max-quality' => 100,
+					'converter'   => 'gd',
+				]
+			)
+			->andReturn(
+				[
+					'quality'     => 75,
+					'max-quality' => 100,
+					'converter'   => 'imagick',
+				]
+			);
+
+		\WP_Mock::userFunction( 'get_option' )
+			->once()
+			->with( 'webp_img_converter', [] )
+			->andReturn(
+				[
+					'quality' => 75,
 					'converter' => 'imagick',
 				]
 			);
