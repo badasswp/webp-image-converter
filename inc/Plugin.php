@@ -86,7 +86,7 @@ class Plugin {
 		add_action( 'admin_menu', [ $this, 'add_webp_image_menu' ] );
 		add_action( 'webp_img_convert', [ $this, 'add_webp_meta_to_attachment' ], 10, 2 );
 		add_filter( 'attachment_fields_to_edit', [ $this, 'add_webp_attachment_fields' ], 10, 2 );
-		add_action( 'admin_init', [ $this, 'add_webp_settings' ], 10, 2 );
+		add_action( 'admin_init', [ $this, 'add_webp_settings' ] );
 	}
 
 	/**
