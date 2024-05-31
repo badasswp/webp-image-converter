@@ -433,13 +433,66 @@ class PluginTest extends TestCase {
 	}
 
 	public function test_webp_image_menu_page() {
-		$this->instance->webp_image_menu_page();
+		\WP_Mock::userFunction( 'plugin_dir_path' )
+			->once()
+			->with( Plugin::$file )
+			->andReturn( './inc' );
 
-		$this->expectOutputString(
-			'<div class="wrap">
-				<h1>WebP Image Converter</h1>
-				<p>Manage your settings here.</p>
-			</div>'
+		\WP_Mock::userFunction( 'wp_nonce_field' )
+			->with( 'webp_settings_action', 'webp_settings_nonce' )
+			->andReturn( '' );
+
+		\WP_Mock::userFunction( 'esc_url' )
+			->once()
+			->with( '/wp-admin/upload.php?page=webp-image-converter' )
+			->andReturn( '/wp-admin/upload.php?page=webp-image-converter' );
+
+		\WP_Mock::userFunction( 'get_option' )
+			->times( 2 )
+			->with( 'webp_img_converter', [] )
+			->andReturn(
+				[
+					'quality'   => 75,
+					'converter' => 'imagick',
+				]
+			);
+
+		\WP_Mock::userFunction( 'esc_attr' )
+			->once()
+			->with( 75 )
+			->andReturn( '75' );
+
+		\WP_Mock::userFunction(
+			'esc_attr',
+			[
+				'times'  => 5,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
+		\WP_Mock::userFunction(
+			'esc_html',
+			[
+				'times'  => 10,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
+		$_SERVER = [
+			'REQUEST_URI' => '/wp-admin/upload.php?page=webp-image-converter',
+		];
+
+		ob_start();
+		$this->instance->webp_image_menu_page();
+		$output = ob_get_clean();
+
+		$this->assertEquals(
+			$output,
+			file_get_contents( __DIR__ . '/Views/settings.html' )
 		);
 		$this->assertConditionsMet();
 	}
