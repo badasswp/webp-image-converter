@@ -248,7 +248,7 @@ class Plugin {
 	 *
 	 * This generic method uses the original image HTML to generate
 	 * a WebP-Image HTML. This is useful for images that pre-date the installation
-	 * of the plugin.
+	 * of the plugin on a WP Instance.
 	 *
 	 * @since 1.0.0
 	 *
@@ -437,8 +437,8 @@ class Plugin {
 	/**
 	 * Save Plugin settings.
 	 *
-	 * This method handles all save actions for the
-	 * Plugin settings.
+	 * This method handles all save actions for the fields
+	 * on the Plugin's settings page.
 	 *
 	 * @since 1.0.2
 	 *
@@ -472,9 +472,12 @@ class Plugin {
 	/**
 	 * Add WebP meta to Attachment.
 	 *
+	 * This is responsible for creating meta data or logging errors
+	 * depending on the conversion result ($webp).
+	 *
 	 * @since 1.0.2
 	 *
-	 * @param string|\WP_Error $webp          WebP absolute image path.
+	 * @param string|\WP_Error $webp          WebP's relative path.
 	 * @param int              $attachment_id Image ID.
 	 *
 	 * @return void
@@ -531,8 +534,11 @@ class Plugin {
 	}
 
 	/**
-	 * Add attachment fields for WebP image on attachment
-	 * modal.
+	 * Add attachment fields for WebP image.
+	 *
+	 * As the name implies, this logic creates a WebP field label
+	 * in the WP attachment modal so users can see the path of the image's
+	 * generated WebP version.
 	 *
 	 * @since 1.0.2
 	 *
