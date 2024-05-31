@@ -96,7 +96,7 @@ class WebPImageConverterTest extends TestCase {
 			->once()
 			->with(
 				[
-					'quality' => 75,
+					'quality'   => 75,
 					'converter' => 'imagick',
 				],
 				[
@@ -118,7 +118,7 @@ class WebPImageConverterTest extends TestCase {
 			->with( 'webp_img_converter', [] )
 			->andReturn(
 				[
-					'quality' => 75,
+					'quality'   => 75,
 					'converter' => 'imagick',
 				]
 			);
@@ -130,6 +130,63 @@ class WebPImageConverterTest extends TestCase {
 			[
 				'quality'   => 50,
 				'converter' => 'imagick',
+			]
+		);
+		$this->assertConditionsMet();
+	}
+
+	public function test_get_options_returns_plugin_settings() {
+		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
+		$converter->shouldAllowMockingProtectedMethods();
+
+		\WP_Mock::expectFilter(
+			'webp_img_options',
+			[
+				'quality'     => 66,
+				'max-quality' => 100,
+				'converter'   => 'cwebp',
+			]
+		);
+
+		\WP_Mock::userFunction( 'wp_parse_args' )
+			->once()
+			->with(
+				[
+					'quality'   => 66,
+					'converter' => 'cwebp',
+				],
+				[
+					'quality'     => 20,
+					'max-quality' => 100,
+					'converter'   => 'gd',
+				]
+			)
+			->andReturn(
+				[
+					'quality'     => 66,
+					'max-quality' => 100,
+					'converter'   => 'cwebp',
+				]
+			);
+
+		\WP_Mock::userFunction( 'get_option' )
+			->once()
+			->with( 'webp_img_converter', [] )
+			->andReturn(
+				[
+					'quality'   => 66,
+					'converter' => 'cwebp',
+				]
+			);
+
+		$options = $converter->get_options();
+
+		$this->assertSame(
+			$options,
+			[
+				'quality'     => 66,
+				'max-quality' => 100,
+				'converter'   => 'cwebp',
 			]
 		);
 		$this->assertConditionsMet();
