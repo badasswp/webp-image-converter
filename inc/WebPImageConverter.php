@@ -158,11 +158,14 @@ class WebPImageConverter {
 	 * @return mixed[]
 	 */
 	protected function get_options(): array {
-		$options = [
-			'quality'     => 20,
-			'max-quality' => 100,
-			'converter'   => 'gd',
-		];
+		$options = wp_parse_args(
+			get_option( 'webp_img_converter', [] ),
+			[
+				'quality'     => 20,
+				'max-quality' => 100,
+				'converter'   => 'gd',
+			]
+		);
 
 		/**
 		 * Get Conversion options.
