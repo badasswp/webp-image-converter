@@ -426,12 +426,11 @@ class Plugin {
 	 * @return void
 	 */
 	public function webp_image_menu_page(): void {
-		printf(
-			'<div class="wrap">
-				<h1>WebP Image Converter</h1>
-				<p>Manage your settings here.</p>
-			</div>'
-		);
+		$settings = (string) plugin_dir_path( __FILE__ ) . '/Views/settings.php';
+
+		if ( file_exists( $settings ) ) {
+			require_once $settings;
+		}
 	}
 
 	/**
