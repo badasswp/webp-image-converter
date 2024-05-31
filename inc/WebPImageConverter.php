@@ -103,7 +103,7 @@ class WebPImageConverter {
 		/**
 		 * Fires after Image is converted.
 		 *
-		 * @since 1.0.0
+		 * @since 1.0.1
 		 *
 		 * @param string|\WP_Error $webp          WebP Image URL or WP Error.
 		 * @param int              $attachment_id Image ID.
@@ -158,11 +158,14 @@ class WebPImageConverter {
 	 * @return mixed[]
 	 */
 	protected function get_options(): array {
-		$options = [
-			'quality'     => 20,
-			'max-quality' => 100,
-			'converter'   => 'gd',
-		];
+		$options = wp_parse_args(
+			get_option( 'webp_img_converter', [] ),
+			[
+				'quality'     => 20,
+				'max-quality' => 100,
+				'converter'   => 'gd',
+			]
+		);
 
 		/**
 		 * Get Conversion options.

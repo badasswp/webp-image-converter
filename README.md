@@ -6,6 +6,10 @@ Convert your WordPress JPG/PNG images to WebP formats during runtime.
 
 ![screenshot](https://github.com/badasswp/webp-image-converter/assets/149586343/9c4a9cb2-63a0-462c-9ba1-a7adf23e51ea)
 
+## Download
+
+Get the latest version from any of our [release tags](https://github.com/badasswp/webp-image-converter/releases).
+
 ## Why WebP Image Converter?
 
 As an internet user, you already know images can be the difference between a great website experience and a terrible one! Think about how often you've landed on a website and hit the back button because the home page was too busy or the banner image was taking so much time to load due to its size.
@@ -72,7 +76,7 @@ This custom hook (filter) provides the ability to modify the resulting WebP imag
 ```php
 add_filter( 'webp_img_attachment_html', [ $this, 'custom_img_html' ], 10, 2 );
 
-public function custom_img_html( $html, $attachment_id ): array {
+public function custom_img_html( $html, $attachment_id ): string {
     return sprintf(
         '<figure>
           %s
@@ -97,7 +101,7 @@ This custom hook (filter) provides the ability to modify the resulting WebP imag
 ```php
 add_filter( 'webp_img_thumbnail_html', [ $this, 'custom_img_html' ], 10, 2 );
 
-public function custom_img_html( $html, $thumbnail_id ): array {
+public function custom_img_html( $html, $thumbnail_id ): string {
     return sprintf(
         '<figure>
           %s
@@ -115,9 +119,86 @@ public function custom_img_html( $html, $thumbnail_id ): array {
 - thumbnail_id _`{int}`_ By default this is the Image ID.
 <br/>
 
+#### `webp_img_delete`
+
+This custom hook (action) fires immediately after a WebP image is deleteed.
+
+```php
+add_action( 'webp_img_delete', [ $this, 'delete_bmp_image' ], 10, 2 );
+
+public function delete_bmp_image( $webp, $attachment_id ): void {
+    $bmp = str_replace( '.webp', '.bmp', $webp );
+
+    if ( file_exists( $bmp ) ) {
+        unlink( $bmp );
+    }
+}
+```
+
+**Parameters**
+
+- webp _`{string}`_ By default this will be the abstract path of the WebP image.
+- attachment_id _`{int}`_ By default this is the Image ID.
+<br/>
+
+#### `webp_img_metadata_delete`
+
+This custom hook (action) fires immediately after a WebP metadata image is deleteed.
+
+```php
+add_action( 'webp_img_metadata_delete', [ $this, 'delete_bmp_image' ], 10, 2 );
+
+public function delete_bmp_image( $webp, $attachment_id ): void {
+    $bmp = str_replace( '.webp', '.bmp', $webp );
+
+    if ( file_exists( $bmp ) ) {
+        unlink( $bmp );
+    }
+}
+```
+
+**Parameters**
+
+- webp _`{string}`_ By default this will be the abstract path of the WebP metadata image.
+- attachment_id _`{int}`_ By default this is the Image ID.
+<br/>
+
 ---
 
-## Contributing
+## Development
+
+### Setup
+
+- Clone the repository.
+- Make sure you have [Composer](https://getcomposer.org) and PHP `v7.4|v8.0` installed in your computer.
+- Run `composer install` to build PHP dependencies.
+- For local development, you can use [Docker](https://docs.docker.com/install/) or [Local by Flywheel](https://localwp.com/).
+
+### Linting
+
+```bash
+# Run PHP Linting.
+composer run lint
+
+# Fix PHP Linting errors.
+composer run lint:fix
+```
+
+### Testing
+
+```bash
+composer run test
+```
+
+### Static Analysis
+
+```bash
+composer run analyse
+```
+
+---
+
+## Contribution
 
 First, thank you for taking the time to contribute!
 
@@ -125,18 +206,18 @@ Contributing isn't just writing code - it's anything that improves the project. 
 
 ### Bugs
 
-If you're running into an issue, please take a look through [existing issues](https://github.com/badasswp/webp-image-converter/issues) and [open a new one](https://github.com/badasswp/webp-image-converter/issues/new) if needed. If you're able, include steps to reproduce, environment information, and screenshots/screencasts as relevant. To create a branch that fixes a bug, please use the convention `fix/GH-{issue-number}-your-branch-name` like so:
+If you're running into an issue, please take a look through [existing issues](https://github.com/badasswp/webp-image-converter/issues) and [open a new one](https://github.com/badasswp/webp-image-converter/issues/new) if needed. If you're able, include steps to reproduce, environment information, and screenshots/screencasts as relevant. To create a branch that fixes a bug, please use the convention `fix/{issue-number}-your-branch-name` like so:
 
 ```
-git checkout -b fix/GH-1234-image-mime-type-bug
+git checkout -b fix/1234-image-mime-type-bug
 ```
 
 ### Features
 
-New features and enhancements are also managed via [issues](https://github.com/badasswp/webp-image-converter/issues). To create a branch that adds a feature, please use the convention `feat/GH-{issue-number}-your-branch-name` like so:
+New features and enhancements are also managed via [issues](https://github.com/badasswp/webp-image-converter/issues). To create a branch that adds a feature, please use the convention `feat/{issue-number}-your-branch-name` like so:
 
 ```
-git checkout -b feat/GH-1234-image-error-logging-capability
+git checkout -b feat/1234-image-error-logging-capability
 ```
 
 ### Pull Requests (PR)

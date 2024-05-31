@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.2
+* Add `webp_img_delete` and `webp_img_metadata_delete` hooks.
+* Add Settings page for plugin options.
+* Add WebP field on WP attachment modal.
+* Add new class methods.
+* Fix Bugs and Linting issues within class methods.
+* Add more Unit tests & Code coverage.
+* Update README notes.
+
 ## 1.0.1
 * Refactor hook `webp_img_convert` to placement within convert public method.
 * Fix bugs within `Plugin` class methods.

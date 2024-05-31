@@ -42,6 +42,15 @@ class Plugin {
 	public static $source;
 
 	/**
+	 * Plugin File.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @var string
+	 */
+	public static $file = __FILE__;
+
+	/**
 	 * Set up.
 	 *
 	 * @since 1.0.0
@@ -77,12 +86,16 @@ class Plugin {
 	 * @return void
 	 */
 	public function run(): void {
-		add_action( 'add_attachment', [ $this, 'generate_webp_image' ] );
+		add_action( 'add_attachment', [ $this, 'generate_webp_image' ], 10, 1 );
 		add_filter( 'wp_generate_attachment_metadata', [ $this, 'generate_webp_srcset_images' ], 10, 3 );
 		add_filter( 'render_block', [ $this, 'filter_render_image_block' ], 20, 2 );
 		add_filter( 'wp_get_attachment_image', [ $this, 'filter_wp_get_attachment_image' ], 10, 5 );
 		add_filter( 'post_thumbnail_html', [ $this, 'filter_post_thumbnail_html' ], 10, 5 );
-		add_action( 'delete_attachment', [ $this, 'remove_webp_images' ] );
+		add_action( 'delete_attachment', [ $this, 'delete_webp_images' ], 10, 1 );
+		add_action( 'admin_menu', [ $this, 'add_webp_image_menu' ] );
+		add_action( 'webp_img_convert', [ $this, 'add_webp_meta_to_attachment' ], 10, 2 );
+		add_filter( 'attachment_fields_to_edit', [ $this, 'add_webp_attachment_fields' ], 10, 2 );
+		add_action( 'admin_init', [ $this, 'add_webp_settings' ] );
 	}
 
 	/**
@@ -121,7 +134,7 @@ class Plugin {
 	 *
 	 * @return mixed[]
 	 */
-	public function generate_webp_srcset_images( $metadata, $attachment_id, $context ) {
+	public function generate_webp_srcset_images( $metadata, $attachment_id, $context ): array {
 		// Get parent image URL.
 		$img_url = (string) wp_get_attachment_image_url( $attachment_id );
 
@@ -146,6 +159,8 @@ class Plugin {
 	 *
 	 * Loop through each block and swap regular images for
 	 * WebP versions.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @param string  $html  Image HTML.
 	 * @param mixed[] $block Block array.
@@ -238,7 +253,7 @@ class Plugin {
 	 *
 	 * This generic method uses the original image HTML to generate
 	 * a WebP-Image HTML. This is useful for images that pre-date the installation
-	 * of the plugin.
+	 * of the plugin on a WP Instance.
 	 *
 	 * @since 1.0.0
 	 *
@@ -323,7 +338,7 @@ class Plugin {
 	 * @param int $attachment_id Attachment ID.
 	 * @return void
 	 */
-	public function remove_webp_images( $attachment_id ) {
+	public function delete_webp_images( $attachment_id ): void {
 		if ( ! wp_attachment_is_image( $attachment_id ) ) {
 			return;
 		}
@@ -338,6 +353,18 @@ class Plugin {
 
 			if ( file_exists( $webp_image ) ) {
 				unlink( $webp_image );
+
+				/**
+				 * Fires after WebP Image has been deleted.
+				 *
+				 * @since 1.0.2
+				 *
+				 * @param string $webp_image    Absolute path to WebP image.
+				 * @param int    $attachment_id Image ID.
+				 *
+				 * @return void
+				 */
+				do_action( 'webp_img_delete', $webp_image, $attachment_id );
 			}
 		}
 
@@ -358,8 +385,183 @@ class Plugin {
 
 				if ( file_exists( $webp_metadata_image ) ) {
 					unlink( $webp_metadata_image );
+
+					/**
+					 * Fires after WebP Metadata Image has been deleted.
+					 *
+					 * @since 1.0.2
+					 *
+					 * @param string $webp_metadata_image Absolute path to WebP image.
+					 * @param int    $attachment_id       Image ID.
+					 *
+					 * @return void
+					 */
+					do_action( 'webp_img_metadata_delete', $webp_metadata_image, $attachment_id );
 				}
 			}
 		}
+	}
+
+	/**
+	 * Menu Service.
+	 *
+	 * This controls the menu display for the plugin.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return void
+	 */
+	public function add_webp_image_menu(): void {
+		add_submenu_page(
+			'upload.php',
+			'WebP Image Converter',
+			'WebP Image Converter',
+			'manage_options',
+			'webp-image-converter',
+			[ $this, 'webp_image_menu_page' ]
+		);
+	}
+
+	/**
+	 * Menu Callback.
+	 *
+	 * This controls the display of the menu page.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return void
+	 */
+	public function webp_image_menu_page(): void {
+		$settings = (string) plugin_dir_path( __FILE__ ) . '/Views/settings.php';
+
+		if ( file_exists( $settings ) ) {
+			require_once $settings;
+		}
+	}
+
+	/**
+	 * Save Plugin settings.
+	 *
+	 * This method handles all save actions for the fields
+	 * on the Plugin's settings page.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return void
+	 */
+	public function add_webp_settings(): void {
+		if ( ! isset( $_POST['webp_save_settings'] ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['webp_settings_nonce'] ) || ! wp_verify_nonce( $_POST['webp_settings_nonce'], 'webp_settings_action' ) ) {
+			return;
+		}
+
+		$fields = [ 'quality', 'converter' ];
+
+		update_option(
+			'webp_img_converter',
+			array_combine(
+				$fields,
+				array_map(
+					function ( $field ) {
+						return sanitize_text_field( $_POST[ $field ] ?? '' );
+					},
+					$fields
+				)
+			)
+		);
+	}
+
+	/**
+	 * Add WebP meta to Attachment.
+	 *
+	 * This is responsible for creating meta data or logging errors
+	 * depending on the conversion result ($webp).
+	 *
+	 * @since 1.0.2
+	 *
+	 * @param string|\WP_Error $webp          WebP's relative path.
+	 * @param int              $attachment_id Image ID.
+	 *
+	 * @return void
+	 */
+	public function add_webp_meta_to_attachment( $webp, $attachment_id ): void {
+		if ( ! is_wp_error( $webp ) && ! get_post_meta( $attachment_id, 'webp_img', true ) ) {
+			update_post_meta( $attachment_id, 'webp_img', $webp );
+		}
+	}
+
+	/**
+	 * Get all Images and associated WebPs.
+	 *
+	 * This function grabs all Image attachments and
+	 * associated WebP versions, if any.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return mixed[]
+	 */
+	protected function get_webp_images(): array {
+		$posts = get_posts(
+			[
+				'post_type'      => 'attachment',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'meta_query'     => [
+					[
+						'key'     => 'webp_img',
+						'value'   => '',
+						'compare' => '!=',
+					],
+				],
+			]
+		);
+
+		if ( ! $posts ) {
+			return [];
+		}
+
+		$images = array_map(
+			function ( $post ) {
+				if ( $post instanceof \WP_Post && wp_attachment_is_image( $post ) ) {
+					return [
+						'guid' => $post->guid,
+						'webp' => get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '',
+					];
+				}
+			},
+			$posts
+		);
+
+		return $images;
+	}
+
+	/**
+	 * Add attachment fields for WebP image.
+	 *
+	 * As the name implies, this logic creates a WebP field label
+	 * in the WP attachment modal so users can see the path of the image's
+	 * generated WebP version.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @param mixed[]  $fields Fields Array.
+	 * @param \WP_Post $post   WP Post.
+	 *
+	 * @return mixed[]
+	 */
+	public function add_webp_attachment_fields( $fields, $post ): array {
+		$webp_img = get_post_meta( $post->ID, 'webp_img', true ) ?? '';
+
+		$fields['webp_img'] = [
+			'label' => 'WebP Image',
+			'input' => 'text',
+			'value' => (string) $webp_img,
+			'helps' => 'WebP Image generated by webp-image-converter.',
+		];
+
+		return $fields;
 	}
 }

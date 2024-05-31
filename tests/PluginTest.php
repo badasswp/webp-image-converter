@@ -36,12 +36,16 @@ class PluginTest extends TestCase {
 	}
 
 	public function test_run() {
-		\WP_Mock::expectActionAdded( 'add_attachment', [ $this->instance, 'generate_webp_image' ] );
+		\WP_Mock::expectActionAdded( 'add_attachment', [ $this->instance, 'generate_webp_image' ], 10, 1 );
 		\WP_Mock::expectFilterAdded( 'wp_generate_attachment_metadata', [ $this->instance, 'generate_webp_srcset_images' ], 10, 3 );
 		\WP_Mock::expectFilterAdded( 'render_block', [ $this->instance, 'filter_render_image_block' ], 20, 2 );
 		\WP_Mock::expectFilterAdded( 'wp_get_attachment_image', [ $this->instance, 'filter_wp_get_attachment_image' ], 10, 5 );
 		\WP_Mock::expectFilterAdded( 'post_thumbnail_html', [ $this->instance, 'filter_post_thumbnail_html' ], 10, 5 );
-		\WP_Mock::expectActionAdded( 'delete_attachment', [ $this->instance, 'remove_webp_images' ] );
+		\WP_Mock::expectActionAdded( 'delete_attachment', [ $this->instance, 'delete_webp_images' ], 10, 1 );
+		\WP_Mock::expectActionAdded( 'admin_menu', [ $this->instance, 'add_webp_image_menu' ] );
+		\WP_Mock::expectActionAdded( 'webp_img_convert', [ $this->instance, 'add_webp_meta_to_attachment' ], 10, 2 );
+		\WP_Mock::expectFilterAdded( 'attachment_fields_to_edit', [ $this->instance, 'add_webp_attachment_fields' ], 10, 2 );
+		\WP_Mock::expectActionAdded( 'admin_init', [ $this->instance, 'add_webp_settings' ] );
 
 		$this->instance->run();
 
@@ -282,7 +286,7 @@ class PluginTest extends TestCase {
 		$this->destroy_mock_image( __DIR__ . '/sample.webp' );
 	}
 
-	public function test_remove_webp_images_fails_if_not_image() {
+	public function test_delete_webp_images_fails_if_not_image() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
 
@@ -291,12 +295,12 @@ class PluginTest extends TestCase {
 			->with( 1 )
 			->andReturn( false );
 
-		$image = $instance->remove_webp_images( 1 );
+		$image = $instance->delete_webp_images( 1 );
 
 		$this->assertConditionsMet();
 	}
 
-	public function test_remove_webp_images_bails_if_no_parent_image_abs_path_or_metadata_is_found() {
+	public function test_delete_webp_images_bails_if_no_parent_image_abs_path_or_metadata_is_found() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
 
@@ -315,12 +319,12 @@ class PluginTest extends TestCase {
 			->with( 1 )
 			->andReturn( [] );
 
-		$image = $instance->remove_webp_images( 1 );
+		$image = $instance->delete_webp_images( 1 );
 
 		$this->assertConditionsMet();
 	}
 
-	public function test_remove_webp_images_removes_parent_webp_image() {
+	public function test_delete_webp_images_removes_parent_webp_image() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
 
@@ -333,6 +337,8 @@ class PluginTest extends TestCase {
 			->once()
 			->with( 1 )
 			->andReturn( __DIR__ . '/sample.jpeg' );
+
+		\WP_Mock::expectAction( 'webp_img_delete', __DIR__ . '/sample.webp', 1 );
 
 		\WP_Mock::userFunction( 'wp_get_attachment_metadata' )
 			->once()
@@ -342,12 +348,12 @@ class PluginTest extends TestCase {
 		// Create Mock Images.
 		$this->create_mock_image( __DIR__ . '/sample.webp' );
 
-		$image = $instance->remove_webp_images( 1 );
+		$image = $instance->delete_webp_images( 1 );
 
 		$this->assertConditionsMet();
 	}
 
-	public function test_remove_webp_images_removes_webp_metadata_image() {
+	public function test_delete_webp_images_removes_webp_metadata_image() {
 		$instance = Mockery::mock( Plugin::class )->makePartial();
 		$instance->shouldAllowMockingProtectedMethods();
 
@@ -360,6 +366,8 @@ class PluginTest extends TestCase {
 			->once()
 			->with( 1 )
 			->andReturn( __DIR__ . '/sample.jpeg' );
+
+		\WP_Mock::expectAction( 'webp_img_delete', __DIR__ . '/sample.webp', 1 );
 
 		\WP_Mock::userFunction(
 			'trailingslashit',
@@ -390,14 +398,165 @@ class PluginTest extends TestCase {
 				]
 			);
 
+		\WP_Mock::expectAction( 'webp_img_metadata_delete', __DIR__ . '/sample1.webp', 1 );
+		\WP_Mock::expectAction( 'webp_img_metadata_delete', __DIR__ . '/sample2.webp', 1 );
+		\WP_Mock::expectAction( 'webp_img_metadata_delete', __DIR__ . '/sample3.webp', 1 );
+
 		// Create Mock Images.
 		$this->create_mock_image( __DIR__ . '/sample.webp' );
 		$this->create_mock_image( __DIR__ . '/sample1.webp' );
 		$this->create_mock_image( __DIR__ . '/sample2.webp' );
 		$this->create_mock_image( __DIR__ . '/sample3.webp' );
 
-		$image = $instance->remove_webp_images( 1 );
+		$image = $instance->delete_webp_images( 1 );
 
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_image_menu() {
+		\WP_Mock::userFunction( 'add_submenu_page' )
+			->once()
+			->with(
+				'upload.php',
+				'WebP Image Converter',
+				'WebP Image Converter',
+				'manage_options',
+				'webp-image-converter',
+				[ $this->instance, 'webp_image_menu_page' ]
+			)
+			->andReturn( null );
+
+		$menu = $this->instance->add_webp_image_menu();
+
+		$this->assertNull( $menu );
+		$this->assertConditionsMet();
+	}
+
+	public function test_webp_image_menu_page() {
+		\WP_Mock::userFunction( 'plugin_dir_path' )
+			->once()
+			->with( Plugin::$file )
+			->andReturn( './inc' );
+
+		\WP_Mock::userFunction( 'wp_nonce_field' )
+			->with( 'webp_settings_action', 'webp_settings_nonce' )
+			->andReturn( '' );
+
+		\WP_Mock::userFunction( 'esc_url' )
+			->once()
+			->with( '/wp-admin/upload.php?page=webp-image-converter' )
+			->andReturn( '/wp-admin/upload.php?page=webp-image-converter' );
+
+		\WP_Mock::userFunction( 'get_option' )
+			->times( 2 )
+			->with( 'webp_img_converter', [] )
+			->andReturn(
+				[
+					'quality'   => 75,
+					'converter' => 'imagick',
+				]
+			);
+
+		\WP_Mock::userFunction( 'esc_attr' )
+			->once()
+			->with( 75 )
+			->andReturn( '75' );
+
+		\WP_Mock::userFunction(
+			'esc_attr',
+			[
+				'times'  => 5,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
+		\WP_Mock::userFunction(
+			'esc_html',
+			[
+				'times'  => 10,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
+		$_SERVER = [
+			'REQUEST_URI' => '/wp-admin/upload.php?page=webp-image-converter',
+		];
+
+		ob_start();
+		$this->instance->webp_image_menu_page();
+		$output = ob_get_clean();
+
+		$this->assertEquals(
+			$output,
+			file_get_contents( __DIR__ . '/Views/settings.html' )
+		);
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_meta_to_attachment_bails_out() {
+		$webp = Mockery::mock( '\WP_Error' )->makePartial();
+
+		\WP_Mock::userFunction( 'is_wp_error' )
+			->once()
+			->with( $webp )
+			->andReturn( true );
+
+		$this->instance->add_webp_meta_to_attachment( $webp, 1 );
+
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_meta_to_attachment_updates_post_meta() {
+		$webp = 'https://example.com/wp-content/uploads/2024/01/sample.webp';
+
+		\WP_Mock::userFunction( 'is_wp_error' )
+			->once()
+			->with( $webp )
+			->andReturn( false );
+
+		\WP_Mock::userFunction( 'get_post_meta' )
+			->once()
+			->with( 1, 'webp_img', true )
+			->andReturn( '' );
+
+		\WP_Mock::userFunction( 'update_post_meta' )
+			->once()
+			->with( 1, 'webp_img', 'https://example.com/wp-content/uploads/2024/01/sample.webp' )
+			->andReturn( null );
+
+		$this->instance->add_webp_meta_to_attachment( $webp, 1 );
+
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_attachment_fields() {
+		$webp = 'https://example.com/wp-content/uploads/2024/01/sample.webp';
+
+		$post     = Mockery::mock( \WP_Post::class )->makePartial();
+		$post->ID = 1;
+
+		\WP_Mock::userFunction( 'get_post_meta' )
+			->once()
+			->with( 1, 'webp_img', true )
+			->andReturn( $webp );
+
+		$expected = $this->instance->add_webp_attachment_fields( [], $post );
+
+		$this->assertSame(
+			[
+				'webp_img' => [
+					'label' => 'WebP Image',
+					'input' => 'text',
+					'value' => 'https://example.com/wp-content/uploads/2024/01/sample.webp',
+					'helps' => 'WebP Image generated by webp-image-converter.',
+				],
+			],
+			$expected
+		);
 		$this->assertConditionsMet();
 	}
 
