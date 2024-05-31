@@ -90,6 +90,7 @@ class Plugin {
 		add_action( 'admin_menu', [ $this, 'add_webp_image_menu' ] );
 		add_action( 'webp_img_convert', [ $this, 'add_webp_meta_to_attachment' ], 10, 2 );
 		add_filter( 'attachment_fields_to_edit', [ $this, 'add_webp_attachment_fields' ], 10, 2 );
+		add_action( 'admin_init', [ $this, 'add_webp_settings' ], 10, 2 );
 	}
 
 	/**
@@ -431,6 +432,41 @@ class Plugin {
 		if ( file_exists( $settings ) ) {
 			require_once $settings;
 		}
+	}
+
+	/**
+	 * Save Plugin settings.
+	 *
+	 * This method handles all save actions for the
+	 * Plugin settings.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return void
+	 */
+	public function add_webp_settings(): void {
+		if ( ! isset( $_POST['webp_save_settings'] ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['webp_settings_nonce'] ) || ! wp_verify_nonce( $_POST['webp_settings_nonce'], 'webp_settings_action' ) ) {
+			return;
+		}
+
+		$fields = [ 'engine', 'quality' ];
+
+		update_option(
+			'webp_img_converter',
+			array_combine(
+				$fields,
+				array_map(
+					function ( $field ) {
+						return sanitize_text_field( $_POST[ $field ] ?? '' );
+					},
+					$fields
+				)
+			)
+		);
 	}
 
 	/**
