@@ -42,6 +42,15 @@ class Plugin {
 	public static $source;
 
 	/**
+	 * Plugin File.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @var string
+	 */
+	public static $file = __FILE__;
+
+	/**
 	 * Set up.
 	 *
 	 * @since 1.0.0
@@ -449,7 +458,7 @@ class Plugin {
 			return;
 		}
 
-		$fields = [ 'engine', 'quality' ];
+		$fields = [ 'quality', 'converter' ];
 
 		update_option(
 			'webp_img_converter',
