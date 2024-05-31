@@ -37,6 +37,29 @@ class WebPImageConverterTest extends TestCase {
 			]
 		);
 
+		\WP_Mock::userFunction( 'wp_parse_args' )
+			->once()
+			->with(
+				[],
+				[
+					'quality'     => 20,
+					'max-quality' => 100,
+					'converter'   => 'gd',
+				]
+			)
+			->andReturn(
+				[
+					'quality'     => 20,
+					'max-quality' => 100,
+					'converter'   => 'gd',
+				]
+			);
+
+		\WP_Mock::userFunction( 'get_option' )
+			->once()
+			->with( 'webp_img_converter', [] )
+			->andReturn( [] );
+
 		$options = $converter->get_options();
 
 		$this->assertSame(
