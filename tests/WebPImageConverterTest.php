@@ -73,7 +73,7 @@ class WebPImageConverterTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
-	public function test_get_options_returns_modified_settings() {
+	public function test_get_options_returns_filter_settings() {
 		$converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$converter->shouldAllowMockingProtectedMethods();
 
