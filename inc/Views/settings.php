@@ -16,20 +16,20 @@
 
 	<form method="POST" action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>">
 		<p>
-			<label for="Quality">Quality (%)</label><br/>
+			<label for="Quality">Quality (%)</label><br />
 			<input
 				type="number"
 				name="quality"
 				min="0"
 				max="100"
 				placeholder="20"
-				value="<?php esc_attr_e( get_option( 'webp_img_converter' )['quality'] ?? '' ); ?>"
+				value="<?php echo esc_attr( get_option( 'webp_img_converter', [] )['quality'] ?? '' ); ?>"
 			/>
 		</p>
 
 		<p>
-			<label for="Engine">Engine</label><br/>
-			<select name="engine">
+			<label for="Engine">Engine</label><br />
+			<select name="converter">
 			<?php
 			$engines = [
 				'gd'      => 'GD',
@@ -39,17 +39,15 @@
 				'gmagick' => 'Gmagick',
 			];
 
-			$engine = get_option( 'webp_img_converter' )['engine'] ?? '';
+			$engine = get_option( 'webp_img_converter', [] )['converter'] ?? '';
 
 			foreach ( $engines as $key => $value ) {
-				$selected = $engine === $key ? 'selected' : '';
-				_e(
-					sprintf(
-						'<option value="%1$s" %3$s>%2$s</option>',
-						esc_attr( $key ),
-						esc_html( $value ),
-						esc_html( $selected ),
-					)
+				$selected = $engine === $key ? ' selected' : '';
+				printf(
+					'<option value="%1$s"%3$s>%2$s</option>',
+					esc_attr( $key ),
+					esc_html( $value ),
+					esc_html( $selected ),
 				);
 			}
 			?>
