@@ -2,6 +2,9 @@
 
 ## 1.0.2
 * Add `webp_img_delete` and `webp_img_metadata_delete` hooks.
+* Add Settings page for plugin options.
+* Add WebP field on WP attachment modal.
+* Add new class methods.
 * Fix Bugs and Linting issues within class methods.
 * Add more Unit tests & Code coverage.
 * Update README notes.
