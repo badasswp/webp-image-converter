@@ -1,0 +1,31 @@
+<section class="wrap">
+	<h1>WebP Image Converter</h1>
+	<p>Manage your settings here.</p>
+
+	<form method="POST" action="/wp-admin/upload.php?page=webp-image-converter">
+		<p>
+			<label for="Quality">Quality (%)</label><br />
+			<input
+				type="number"
+				name="quality"
+				min="0"
+				max="100"
+				placeholder="20"
+				value="75"
+			/>
+		</p>
+
+		<p>
+			<label for="Engine">Engine</label><br />
+			<select name="converter">
+			<option value="gd">GD</option><option value="cwebp">CWebP</option><option value="ffmpeg">FFMpeg</option><option value="imagick" selected>Imagick</option><option value="gmagick">Gmagick</option>			</select>
+		</p>
+
+		<p>
+			<button name="webp_save_settings" type="submit" class="button button-primary">
+				<span>Save</span>
+			</button>
+		</p>
+
+			</form>
+</section>
