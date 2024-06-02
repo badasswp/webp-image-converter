@@ -24,6 +24,11 @@ You may not realize it, but imagery is a large part of it. This plugin helps tak
 
 == Changelog ==
 
+= 1.0.3 =
+* Update Plugin display name to Image Converter for WebP.
+* Update README and change logs.
+* Update version numbers.
+
 = 1.0.2 =
 * Add `webp_img_delete` and `webp_img_metadata_delete` hooks.
 * Add Settings page for plugin options.
