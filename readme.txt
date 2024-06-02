@@ -1,4 +1,4 @@
-=== WebP Image Converter ===
+=== Image Converter for WebP ===
 Contributors: badasswp
 Tags: webp, image, photo, picture, jpeg, png, gif, bmp, convert.
 Requires at least: 4.0
@@ -13,7 +13,7 @@ Convert your WordPress JPG/PNG images to WebP formats.
 == Installation ==
 
 1. Go to 'Plugins > Add New' on your WordPress admin dashboard.
-2. Search for 'WebP Image Converter' plugin from the official WordPress plugin repository.
+2. Search for 'Image Converter for WebP' plugin from the official WordPress plugin repository.
 3. Click 'Install Now' and then 'Activate'.
 
 == Description ==
