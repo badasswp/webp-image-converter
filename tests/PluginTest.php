@@ -418,8 +418,8 @@ class PluginTest extends TestCase {
 			->once()
 			->with(
 				'upload.php',
-				'WebP Image Converter',
-				'WebP Image Converter',
+				'Image Converter for WebP',
+				'Image Converter for WebP',
 				'manage_options',
 				'webp-image-converter',
 				[ $this->instance, 'webp_image_menu_page' ]
