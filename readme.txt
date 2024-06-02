@@ -1,6 +1,6 @@
 === Image Converter for WebP ===
 Contributors: badasswp
-Tags: webp, image, photo, picture, jpeg, png, gif, bmp, convert.
+Tags: webp, image, convert, jpeg, png.
 Requires at least: 4.0
 Tested up to: 6.5.3
 Stable tag: 1.0.3
