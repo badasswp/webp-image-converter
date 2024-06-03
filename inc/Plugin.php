@@ -511,13 +511,6 @@ class Plugin {
 				'post_type'      => 'attachment',
 				'posts_per_page' => -1,
 				'orderby'        => 'title',
-				'meta_query'     => [
-					[
-						'key'     => 'webp_img',
-						'value'   => '',
-						'compare' => '!=',
-					],
-				],
 			]
 		);
 
