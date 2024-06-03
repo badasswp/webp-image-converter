@@ -450,11 +450,11 @@ class Plugin {
 	 * @return void
 	 */
 	public function add_webp_settings(): void {
-		if ( ! isset( $_POST['webp_save_settings'] ) ) {
+		if ( ! isset( $_POST['webp_save_settings'] ) || ! isset( $_POST['webp_settings_nonce'] ) ) {
 			return;
 		}
 
-		if ( ! isset( $_POST['webp_settings_nonce'] ) || ! wp_verify_nonce( $_POST['webp_settings_nonce'], 'webp_settings_action' ) ) {
+		if ( ! wp_verify_nonce( $_POST['webp_settings_nonce'], 'webp_settings_action' ) ) {
 			return;
 		}
 
@@ -466,7 +466,9 @@ class Plugin {
 				$fields,
 				array_map(
 					function ( $field ) {
-						return sanitize_text_field( $_POST[ $field ] ?? '' );
+						if ( wp_verify_nonce( $_POST['webp_settings_nonce'], 'webp_settings_action' ) ) {
+							return sanitize_text_field( $_POST[ $field ] ?? '' );
+						}
 					},
 					$fields
 				)
