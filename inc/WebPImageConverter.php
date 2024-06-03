@@ -154,12 +154,18 @@ class WebPImageConverter {
 	 * when converting images to WebP format. E.g. quality...
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.2 Add plugin settings to options.
 	 *
 	 * @return mixed[]
 	 */
 	protected function get_options(): array {
+		$settings = get_option( 'webp_img_converter', [] );
+
+		// Make sure this array key is integer.
+		$settings['quality'] = (int) $settings['quality'] ?? 0;
+
 		$options = wp_parse_args(
-			get_option( 'webp_img_converter', [] ),
+			$settings,
 			[
 				'quality'     => 20,
 				'max-quality' => 100,
