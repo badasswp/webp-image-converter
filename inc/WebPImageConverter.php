@@ -162,7 +162,7 @@ class WebPImageConverter {
 		$settings = get_option( 'webp_img_converter', [] );
 
 		// Make sure this array key is integer.
-		$settings['quality'] = (int) $settings['quality'] ?? 0;
+		$settings['quality'] = (int) ( $settings['quality'] ?? 0 );
 
 		$options = wp_parse_args(
 			$settings,
