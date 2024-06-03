@@ -2,8 +2,9 @@
 
 ## 1.0.3
 * Update Plugin display name to __Image Converter for WebP__.
-* Update README and change logs.
+* Update README notes and change logs.
 * Update version numbers.
+* Add more Unit tests & Code coverage.
 
 ## 1.0.2
 * Add `webp_img_delete` and `webp_img_metadata_delete` hooks.
