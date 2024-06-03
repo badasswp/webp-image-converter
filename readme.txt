@@ -28,6 +28,7 @@ You may not realize it, but imagery is a large part of it. This plugin helps tak
 * Update Plugin display name to Image Converter for WebP.
 * Update README and change logs.
 * Update version numbers.
+* Add more Unit tests & Code coverage.
 
 = 1.0.2 =
 * Add `webp_img_delete` and `webp_img_metadata_delete` hooks.
