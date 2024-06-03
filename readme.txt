@@ -1,9 +1,9 @@
-=== WebP Image Converter ===
+=== Image Converter for WebP ===
 Contributors: badasswp
-Tags: webp, image, photo, picture, jpeg, png, gif, bmp, convert.
+Tags: webp, image, convert, jpeg, png.
 Requires at least: 4.0
 Tested up to: 6.5.3
-Stable tag: 1.0.0
+Stable tag: 1.0.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@ Convert your WordPress JPG/PNG images to WebP formats.
 == Installation ==
 
 1. Go to 'Plugins > Add New' on your WordPress admin dashboard.
-2. Search for 'WebP Image Converter' plugin from the official WordPress plugin repository.
+2. Search for 'Image Converter for WebP' plugin from the official WordPress plugin repository.
 3. Click 'Install Now' and then 'Activate'.
 
 == Description ==
@@ -23,6 +23,21 @@ As an internet user, you already know images can be the difference between a gre
 You may not realize it, but imagery is a large part of it. This plugin helps take care of all those concerns, by converting your WordPress images to WebP format during page load so that your site loads extremely fast, without any disruptions or downtime.
 
 == Changelog ==
+
+= 1.0.3 =
+* Update Plugin display name to Image Converter for WebP.
+* Update README and change logs.
+* Update version numbers.
+* Add more Unit tests & Code coverage.
+
+= 1.0.2 =
+* Add `webp_img_delete` and `webp_img_metadata_delete` hooks.
+* Add Settings page for plugin options.
+* Add WebP field on WP attachment modal.
+* Add new class methods.
+* Fix Bugs and Linting issues within class methods.
+* Add more Unit tests & Code coverage.
+* Update README notes.
 
 = 1.0.1 =
 * Refactor hook webp_img_convert to placement within convert public method.
