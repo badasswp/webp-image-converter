@@ -21,6 +21,8 @@ class PluginTest extends TestCase {
 
 	public function tearDown(): void {
 		\WP_Mock::tearDown();
+
+		$_POST = [];
 	}
 
 	public function test_get_instance_returns_singleton() {
@@ -494,6 +496,13 @@ class PluginTest extends TestCase {
 			$output,
 			file_get_contents( __DIR__ . '/Views/settings.html' )
 		);
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_settings_bails_out_if_POST_is_not_set() {
+		$settings = $this->instance->add_webp_settings();
+
+		$this->assertNull( $settings );
 		$this->assertConditionsMet();
 	}
 
