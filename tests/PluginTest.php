@@ -534,6 +534,46 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_add_webp_settings_passes() {
+		$_POST = [
+			'webp_save_settings'  => true,
+			'webp_settings_nonce' => 'a8vbq3cg3sa',
+			'quality'             => 75,
+			'converter'           => 'gd',
+		];
+
+		\WP_Mock::userFunction( 'wp_verify_nonce' )
+			->times( 3 )
+			->with( 'a8vbq3cg3sa', 'webp_settings_action' )
+			->andReturn( true );
+
+		\WP_Mock::userFunction( 'update_option' )
+			->once()
+			->with(
+				'webp_img_converter',
+				[
+					'quality'   => 75,
+					'converter' => 'gd',
+				]
+			)
+			->andReturn( null );
+
+		\WP_Mock::userFunction(
+			'sanitize_text_field',
+			[
+				'times'  => 2,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
+		$settings = $this->instance->add_webp_settings();
+
+		$this->assertNull( $settings );
+		$this->assertConditionsMet();
+	}
+
 	public function test_add_webp_meta_to_attachment_bails_out() {
 		$webp = Mockery::mock( '\WP_Error' )->makePartial();
 
