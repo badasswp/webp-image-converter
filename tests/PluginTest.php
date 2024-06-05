@@ -54,7 +54,7 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
-	public function test_generate_webp_image_passes() {
+	public function test_generate_webp_image_satisfies_conditions() {
 		$this->instance->converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$this->instance->converter->shouldAllowMockingProtectedMethods();
 
