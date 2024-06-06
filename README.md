@@ -137,7 +137,7 @@ public function delete_bmp_image( $webp, $attachment_id ): void {
 
 **Parameters**
 
-- webp _`{string}`_ By default this will be the abstract path of the WebP image.
+- webp _`{string}`_ By default this will be the absolute path of the WebP image.
 - attachment_id _`{int}`_ By default this is the Image ID.
 <br/>
 
@@ -159,7 +159,7 @@ public function delete_bmp_image( $webp, $attachment_id ): void {
 
 **Parameters**
 
-- webp _`{string}`_ By default this will be the abstract path of the WebP metadata image.
+- webp _`{string}`_ By default this will be the absolute path of the WebP metadata image.
 - attachment_id _`{int}`_ By default this is the Image ID.
 <br/>
 
