@@ -416,6 +416,11 @@ class PluginTest extends TestCase {
 	}
 
 	public function test_add_webp_image_menu() {
+		\WP_Mock::userFunction( '__' )
+			->twice()
+			->with( 'Image Converter for WebP', 'webp-img-converter' )
+			->andReturn( 'Image Converter for WebP' );
+
 		\WP_Mock::userFunction( 'add_submenu_page' )
 			->once()
 			->with(
@@ -478,6 +483,16 @@ class PluginTest extends TestCase {
 			'esc_html',
 			[
 				'times'  => 10,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
+		\WP_Mock::userFunction(
+			'esc_html__',
+			[
+				'times'  => 1,
 				'return' => function ( $text ) {
 					return $text;
 				},
