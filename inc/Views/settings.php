@@ -11,7 +11,7 @@
 
 ?>
 <section class="wrap">
-	<h1>Image Converter for WebP</h1>
+	<h1><?php echo esc_html__( 'Image Converter for WebP', 'webp-img-converter' ); ?></h1>
 	<p>Manage your settings here.</p>
 
 	<form method="POST" action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>">
