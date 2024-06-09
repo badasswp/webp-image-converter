@@ -467,7 +467,7 @@ class Plugin {
 			array_combine(
 				$fields,
 				array_map(
-					function ( $field ) {
+					function ( $field, $nonce = $nonce ) {
 						if ( wp_verify_nonce( $nonce, 'webp_settings_action' ) ) {
 							return sanitize_text_field( $_POST[ $field ] ?? '' );
 						}
