@@ -23,11 +23,12 @@ vendor/rosell-dk/image-mime-type-guesser/phpunit.xml.dist
 vendor/rosell-dk/image-mime-type-sniffer/phpunit.xml.dist
 vendor/rosell-dk/webp-convert/phpunit-41.xml.dist
 vendor/rosell-dk/webp-convert/phpunit-with-coverage.xml.dist
+vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-060-fbsd
 vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-060-solaris
-vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-120-linux-x86-64
-vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-120-windows-x64.exe
 vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-061-linux-x86-64
 vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-103-linux-x86-64-static
 vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-110-linux-x86-64
+vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-110-windows-x64.exe
 vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-110-mac-10_15
-vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-060-fbsd
+vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-120-linux-x86-64
+vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-120-windows-x64.exe
