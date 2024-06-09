@@ -499,6 +499,16 @@ class PluginTest extends TestCase {
 			]
 		);
 
+		\WP_Mock::userFunction(
+			'sanitize_text_field',
+			[
+				'times'  => 1,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
 		$_SERVER = [
 			'REQUEST_URI' => '/wp-admin/upload.php?page=image-converter-webp',
 		];
@@ -538,6 +548,16 @@ class PluginTest extends TestCase {
 			'webp_settings_nonce' => 'a8vbq3cg3sa',
 		];
 
+		\WP_Mock::userFunction( 'wp_unslash' )
+			->times( 1 )
+			->with( 'a8vbq3cg3sa' )
+			->andReturn( 'a8vbq3cg3sa' );
+
+		\WP_Mock::userFunction( 'sanitize_text_field' )
+			->times( 1 )
+			->with( 'a8vbq3cg3sa' )
+			->andReturn( 'a8vbq3cg3sa' );
+
 		\WP_Mock::userFunction( 'wp_verify_nonce' )
 			->once()
 			->with( 'a8vbq3cg3sa', 'webp_settings_action' )
@@ -556,6 +576,16 @@ class PluginTest extends TestCase {
 			'quality'             => 75,
 			'converter'           => 'gd',
 		];
+
+		\WP_Mock::userFunction( 'wp_unslash' )
+			->times( 3 )
+			->with( 'a8vbq3cg3sa' )
+			->andReturn( 'a8vbq3cg3sa' );
+
+		\WP_Mock::userFunction( 'sanitize_text_field' )
+			->times( 3 )
+			->with( 'a8vbq3cg3sa' )
+			->andReturn( 'a8vbq3cg3sa' );
 
 		\WP_Mock::userFunction( 'wp_verify_nonce' )
 			->times( 3 )
