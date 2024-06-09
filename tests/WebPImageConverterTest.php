@@ -258,7 +258,7 @@ class WebPImageConverterTest extends TestCase {
 
 		\WP_Mock::userFunction( '__' )
 			->once()
-			->with( 'Error: %s does not exist.', 'webp-img-converter' )
+			->with( 'Error: %s does not exist.', 'image-converter-webp' )
 			->andReturn( 'Error: does not exist.' );
 
 		$mock = Mockery::mock( WP_Error::class );
@@ -297,7 +297,7 @@ class WebPImageConverterTest extends TestCase {
 
 		\WP_Mock::userFunction( '__' )
 			->once()
-			->with( 'Error: %s is not an image.', 'webp-img-converter' )
+			->with( 'Error: %s is not an image.', 'image-converter-webp' )
 			->andReturn( 'Error: is not an image.' );
 
 		$mock = Mockery::mock( WP_Error::class );
@@ -435,7 +435,7 @@ class WebPImageConverterTest extends TestCase {
 
 		\WP_Mock::userFunction( '__' )
 			->once()
-			->with( 'Fatal Error: %s', 'webp-img-converter' )
+			->with( 'Fatal Error: %s', 'image-converter-webp' )
 			->andReturn( 'Fatal Error: %s' );
 
 		$webp = $converter->convert();

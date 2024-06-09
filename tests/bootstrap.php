@@ -5,7 +5,7 @@
  * Set up PHPUnit related dependencies
  * for WP Mock tests.
  *
- * @package WebPImageConverter
+ * @package ImageConverterWebP
  */
 
 // First we need to load the composer autoloader.

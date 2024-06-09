@@ -1,14 +1,14 @@
-# webp-image-converter
+# image-converter-webp
 
 Convert your WordPress JPG/PNG images to WebP formats during runtime.
 
-[![Coverage Status](https://coveralls.io/repos/github/badasswp/webp-image-converter/badge.svg)](https://coveralls.io/github/badasswp/webp-image-converter)
+[![Coverage Status](https://coveralls.io/repos/github/badasswp/image-converter-webp/badge.svg)](https://coveralls.io/github/badasswp/image-converter-webp)
 
-![screenshot](https://github.com/badasswp/webp-image-converter/assets/149586343/9c4a9cb2-63a0-462c-9ba1-a7adf23e51ea)
+![screenshot](https://github.com/badasswp/image-converter-webp/assets/149586343/9c4a9cb2-63a0-462c-9ba1-a7adf23e51ea)
 
 ## Download
 
-Get the latest version from any of our [release tags](https://github.com/badasswp/webp-image-converter/releases).
+Get the latest version from any of our [release tags](https://github.com/badasswp/image-converter-webp/releases).
 
 ## Why WebP Image Converter?
 
@@ -137,7 +137,7 @@ public function delete_bmp_image( $webp, $attachment_id ): void {
 
 **Parameters**
 
-- webp _`{string}`_ By default this will be the abstract path of the WebP image.
+- webp _`{string}`_ By default this will be the absolute path of the WebP image.
 - attachment_id _`{int}`_ By default this is the Image ID.
 <br/>
 
@@ -159,7 +159,7 @@ public function delete_bmp_image( $webp, $attachment_id ): void {
 
 **Parameters**
 
-- webp _`{string}`_ By default this will be the abstract path of the WebP metadata image.
+- webp _`{string}`_ By default this will be the absolute path of the WebP metadata image.
 - attachment_id _`{int}`_ By default this is the Image ID.
 <br/>
 
@@ -206,7 +206,7 @@ Contributing isn't just writing code - it's anything that improves the project. 
 
 ### Bugs
 
-If you're running into an issue, please take a look through [existing issues](https://github.com/badasswp/webp-image-converter/issues) and [open a new one](https://github.com/badasswp/webp-image-converter/issues/new) if needed. If you're able, include steps to reproduce, environment information, and screenshots/screencasts as relevant. To create a branch that fixes a bug, please use the convention `fix/{issue-number}-your-branch-name` like so:
+If you're running into an issue, please take a look through [existing issues](https://github.com/badasswp/image-converter-webp/issues) and [open a new one](https://github.com/badasswp/image-converter-webp/issues/new) if needed. If you're able, include steps to reproduce, environment information, and screenshots/screencasts as relevant. To create a branch that fixes a bug, please use the convention `fix/{issue-number}-your-branch-name` like so:
 
 ```
 git checkout -b fix/1234-image-mime-type-bug
@@ -214,7 +214,7 @@ git checkout -b fix/1234-image-mime-type-bug
 
 ### Features
 
-New features and enhancements are also managed via [issues](https://github.com/badasswp/webp-image-converter/issues). To create a branch that adds a feature, please use the convention `feat/{issue-number}-your-branch-name` like so:
+New features and enhancements are also managed via [issues](https://github.com/badasswp/image-converter-webp/issues). To create a branch that adds a feature, please use the convention `feat/{issue-number}-your-branch-name` like so:
 
 ```
 git checkout -b feat/1234-image-error-logging-capability

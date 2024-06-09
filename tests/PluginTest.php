@@ -21,6 +21,8 @@ class PluginTest extends TestCase {
 
 	public function tearDown(): void {
 		\WP_Mock::tearDown();
+
+		$_POST = [];
 	}
 
 	public function test_get_instance_returns_singleton() {
@@ -52,7 +54,7 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
-	public function test_generate_webp_image_passes() {
+	public function test_generate_webp_image_satisfies_conditions() {
 		$this->instance->converter = Mockery::mock( WebPImageConverter::class )->makePartial();
 		$this->instance->converter->shouldAllowMockingProtectedMethods();
 
@@ -414,6 +416,11 @@ class PluginTest extends TestCase {
 	}
 
 	public function test_add_webp_image_menu() {
+		\WP_Mock::userFunction( '__' )
+			->twice()
+			->with( 'Image Converter for WebP', 'image-converter-webp' )
+			->andReturn( 'Image Converter for WebP' );
+
 		\WP_Mock::userFunction( 'add_submenu_page' )
 			->once()
 			->with(
@@ -421,7 +428,7 @@ class PluginTest extends TestCase {
 				'Image Converter for WebP',
 				'Image Converter for WebP',
 				'manage_options',
-				'webp-image-converter',
+				'image-converter-webp',
 				[ $this->instance, 'webp_image_menu_page' ]
 			)
 			->andReturn( null );
@@ -444,8 +451,8 @@ class PluginTest extends TestCase {
 
 		\WP_Mock::userFunction( 'esc_url' )
 			->once()
-			->with( '/wp-admin/upload.php?page=webp-image-converter' )
-			->andReturn( '/wp-admin/upload.php?page=webp-image-converter' );
+			->with( '/wp-admin/upload.php?page=image-converter-webp' )
+			->andReturn( '/wp-admin/upload.php?page=image-converter-webp' );
 
 		\WP_Mock::userFunction( 'get_option' )
 			->times( 2 )
@@ -482,8 +489,28 @@ class PluginTest extends TestCase {
 			]
 		);
 
+		\WP_Mock::userFunction(
+			'esc_html__',
+			[
+				'times'  => 1,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
+		\WP_Mock::userFunction(
+			'sanitize_text_field',
+			[
+				'times'  => 1,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
 		$_SERVER = [
-			'REQUEST_URI' => '/wp-admin/upload.php?page=webp-image-converter',
+			'REQUEST_URI' => '/wp-admin/upload.php?page=image-converter-webp',
 		];
 
 		ob_start();
@@ -494,6 +521,101 @@ class PluginTest extends TestCase {
 			$output,
 			file_get_contents( __DIR__ . '/Views/settings.html' )
 		);
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_settings_bails_out_if_POST_is_not_set() {
+		$settings = $this->instance->add_webp_settings();
+
+		$this->assertNull( $settings );
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_settings_bails_out_if_any_nonce_settings_is_missing() {
+		$_POST = [
+			'webp_save_settings' => true,
+		];
+
+		$settings = $this->instance->add_webp_settings();
+
+		$this->assertNull( $settings );
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_settings_bails_out_if_nonce_verification_fails() {
+		$_POST = [
+			'webp_save_settings'  => true,
+			'webp_settings_nonce' => 'a8vbq3cg3sa',
+		];
+
+		\WP_Mock::userFunction( 'wp_unslash' )
+			->times( 1 )
+			->with( 'a8vbq3cg3sa' )
+			->andReturn( 'a8vbq3cg3sa' );
+
+		\WP_Mock::userFunction( 'sanitize_text_field' )
+			->times( 1 )
+			->with( 'a8vbq3cg3sa' )
+			->andReturn( 'a8vbq3cg3sa' );
+
+		\WP_Mock::userFunction( 'wp_verify_nonce' )
+			->once()
+			->with( 'a8vbq3cg3sa', 'webp_settings_action' )
+			->andReturn( false );
+
+		$settings = $this->instance->add_webp_settings();
+
+		$this->assertNull( $settings );
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_settings_passes() {
+		$_POST = [
+			'webp_save_settings'  => true,
+			'webp_settings_nonce' => 'a8vbq3cg3sa',
+			'quality'             => 75,
+			'converter'           => 'gd',
+		];
+
+		\WP_Mock::userFunction( 'wp_unslash' )
+			->times( 3 )
+			->with( 'a8vbq3cg3sa' )
+			->andReturn( 'a8vbq3cg3sa' );
+
+		\WP_Mock::userFunction( 'sanitize_text_field' )
+			->times( 3 )
+			->with( 'a8vbq3cg3sa' )
+			->andReturn( 'a8vbq3cg3sa' );
+
+		\WP_Mock::userFunction( 'wp_verify_nonce' )
+			->times( 3 )
+			->with( 'a8vbq3cg3sa', 'webp_settings_action' )
+			->andReturn( true );
+
+		\WP_Mock::userFunction( 'update_option' )
+			->once()
+			->with(
+				'webp_img_converter',
+				[
+					'quality'   => 75,
+					'converter' => 'gd',
+				]
+			)
+			->andReturn( null );
+
+		\WP_Mock::userFunction(
+			'sanitize_text_field',
+			[
+				'times'  => 2,
+				'return' => function ( $text ) {
+					return $text;
+				},
+			]
+		);
+
+		$settings = $this->instance->add_webp_settings();
+
+		$this->assertNull( $settings );
 		$this->assertConditionsMet();
 	}
 
@@ -530,6 +652,31 @@ class PluginTest extends TestCase {
 
 		$this->instance->add_webp_meta_to_attachment( $webp, 1 );
 
+		$this->assertConditionsMet();
+	}
+
+	public function test_add_webp_attachment_fields_escapes_array_return_type() {
+		$post     = Mockery::mock( \WP_Post::class )->makePartial();
+		$post->ID = 1;
+
+		\WP_Mock::userFunction( 'get_post_meta' )
+			->once()
+			->with( 1, 'webp_img', true )
+			->andReturn( [] );
+
+		$expected = $this->instance->add_webp_attachment_fields( [], $post );
+
+		$this->assertSame(
+			[
+				'webp_img' => [
+					'label' => 'WebP Image',
+					'input' => 'text',
+					'value' => '',
+					'helps' => 'WebP Image generated by Image Converter for WebP.',
+				],
+			],
+			$expected
+		);
 		$this->assertConditionsMet();
 	}
 

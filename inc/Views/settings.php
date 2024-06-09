@@ -5,16 +5,20 @@
  * This template is responsible for the Settings
  * page in the plugin.
  *
- * @package WebPImageConverter
+ * @package ImageConverterWebP
  * @since   1.0.2
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <section class="wrap">
-	<h1>Image Converter for WebP</h1>
+	<h1><?php echo esc_html__( 'Image Converter for WebP', 'image-converter-webp' ); ?></h1>
 	<p>Manage your settings here.</p>
 
-	<form method="POST" action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>">
+	<form method="POST" action="<?php echo esc_url( sanitize_text_field( $_SERVER['REQUEST_URI'] ) ); ?>">
 		<p>
 			<label for="Quality">Quality (%)</label><br />
 			<input
