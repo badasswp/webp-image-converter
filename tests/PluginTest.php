@@ -418,7 +418,7 @@ class PluginTest extends TestCase {
 	public function test_add_webp_image_menu() {
 		\WP_Mock::userFunction( '__' )
 			->twice()
-			->with( 'Image Converter for WebP', 'webp-img-converter' )
+			->with( 'Image Converter for WebP', 'image-converter-webp' )
 			->andReturn( 'Image Converter for WebP' );
 
 		\WP_Mock::userFunction( 'add_submenu_page' )

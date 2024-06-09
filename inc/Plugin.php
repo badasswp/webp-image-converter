@@ -414,8 +414,8 @@ class Plugin {
 	public function add_webp_image_menu(): void {
 		add_submenu_page(
 			'upload.php',
-			__( 'Image Converter for WebP', 'webp-img-converter' ),
-			__( 'Image Converter for WebP', 'webp-img-converter' ),
+			__( 'Image Converter for WebP', 'image-converter-webp' ),
+			__( 'Image Converter for WebP', 'image-converter-webp' ),
 			'manage_options',
 			'image-converter-webp',
 			[ $this, 'webp_image_menu_page' ]

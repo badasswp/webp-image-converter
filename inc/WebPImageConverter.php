@@ -62,7 +62,7 @@ class WebPImageConverter {
 				'webp-img-error',
 				sprintf(
 					/* translators: Absolute path to Source Image. */
-					__( 'Error: %s does not exist.', 'webp-img-converter' ),
+					__( 'Error: %s does not exist.', 'image-converter-webp' ),
 					$this->abs_source
 				)
 			);
@@ -75,7 +75,7 @@ class WebPImageConverter {
 				'webp-img-error',
 				sprintf(
 					/* translators: Absolute path to Source Image. */
-					__( 'Error: %s is not an image.', 'webp-img-converter' ),
+					__( 'Error: %s is not an image.', 'image-converter-webp' ),
 					$this->abs_source
 				)
 			);
@@ -92,7 +92,7 @@ class WebPImageConverter {
 		} catch ( Exception $e ) {
 			$error_msg = sprintf(
 				/* translators: Exception error msg. */
-				__( 'Fatal Error: %s', 'webp-img-converter' ),
+				__( 'Fatal Error: %s', 'image-converter-webp' ),
 				$e->getMessage()
 			);
 			error_log( $error_msg );
