@@ -428,7 +428,7 @@ class PluginTest extends TestCase {
 				'Image Converter for WebP',
 				'Image Converter for WebP',
 				'manage_options',
-				'webp-image-converter',
+				'image-converter-webp',
 				[ $this->instance, 'webp_image_menu_page' ]
 			)
 			->andReturn( null );
@@ -451,8 +451,8 @@ class PluginTest extends TestCase {
 
 		\WP_Mock::userFunction( 'esc_url' )
 			->once()
-			->with( '/wp-admin/upload.php?page=webp-image-converter' )
-			->andReturn( '/wp-admin/upload.php?page=webp-image-converter' );
+			->with( '/wp-admin/upload.php?page=image-converter-webp' )
+			->andReturn( '/wp-admin/upload.php?page=image-converter-webp' );
 
 		\WP_Mock::userFunction( 'get_option' )
 			->times( 2 )
@@ -500,7 +500,7 @@ class PluginTest extends TestCase {
 		);
 
 		$_SERVER = [
-			'REQUEST_URI' => '/wp-admin/upload.php?page=webp-image-converter',
+			'REQUEST_URI' => '/wp-admin/upload.php?page=image-converter-webp,
 		];
 
 		ob_start();

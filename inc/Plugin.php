@@ -417,7 +417,7 @@ class Plugin {
 			__( 'Image Converter for WebP', 'webp-img-converter' ),
 			__( 'Image Converter for WebP', 'webp-img-converter' ),
 			'manage_options',
-			'webp-image-converter',
+			'image-converter-webp',
 			[ $this, 'webp_image_menu_page' ]
 		);
 	}

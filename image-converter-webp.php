@@ -1,14 +1,14 @@
 <?php
 /**
  * Plugin Name: Image Converter for WebP
- * Plugin URI:  https://github.com/badasswp/webp-image-converter
+ * Plugin URI:  https://github.com/badasswp/image-converter-webp
  * Description: Convert your WordPress JPG/PNG images to WebP formats during runtime.
  * Version:     1.0.3
  * Author:      badasswp
  * Author URI:  https://github.com/badasswp
  * License:     GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain: webp-image-converter
+ * Text Domain: webp-img-converter
  * Domain Path: /languages
  *
  * @package WebPImageConverter

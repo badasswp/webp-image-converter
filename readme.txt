@@ -53,4 +53,4 @@ You may not realize it, but imagery is a large part of it. This plugin helps tak
 
 == Contribute ==
 
-If you'd like to contribute to the development of this plugin, you can find it on [GitHub](https://github.com/badasswp/webp-image-converter).
+If you'd like to contribute to the development of this plugin, you can find it on [GitHub](https://github.com/badasswp/image-converter-webp).
