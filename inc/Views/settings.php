@@ -5,7 +5,7 @@
  * This template is responsible for the Settings
  * page in the plugin.
  *
- * @package WebPImageConverter
+ * @package ImageConverterWebP
  * @since   1.0.2
  */
 

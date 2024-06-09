@@ -5,7 +5,7 @@
  * This class is responsible for converting the
  * JPG/PNG images to WebP format.
  *
- * @package WebPImageConverter
+ * @package ImageConverterWebP
  */
 
 namespace WebPImageConverter;

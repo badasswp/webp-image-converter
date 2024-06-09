@@ -11,7 +11,7 @@
  * Text Domain: image-converter-webp
  * Domain Path: /languages
  *
- * @package WebPImageConverter
+ * @package ImageConverterWebP
  */
 
 if ( ! defined( 'WPINC' ) ) {

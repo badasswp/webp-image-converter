@@ -5,7 +5,7 @@
  * This class represents the core of the plugin.
  * It initializes the plugin, manages the singleton instance.
  *
- * @package WebPImageConverter
+ * @package ImageConverterWebP
  */
 
 namespace WebPImageConverter;
