@@ -9,7 +9,9 @@
  * @since   1.0.2
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 ?>
 <section class="wrap">
