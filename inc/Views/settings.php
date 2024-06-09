@@ -9,6 +9,8 @@
  * @since   1.0.2
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 ?>
 <section class="wrap">
 	<h1><?php echo esc_html__( 'Image Converter for WebP', 'image-converter-webp' ); ?></h1>
