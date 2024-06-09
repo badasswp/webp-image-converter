@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<h1><?php echo esc_html__( 'Image Converter for WebP', 'image-converter-webp' ); ?></h1>
 	<p>Manage your settings here.</p>
 
-	<form method="POST" action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>">
+	<form method="POST" action="<?php echo esc_url( sanitize_text_field( $_SERVER['REQUEST_URI'] ) ); ?>">
 		<p>
 			<label for="Quality">Quality (%)</label><br />
 			<input
