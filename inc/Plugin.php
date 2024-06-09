@@ -454,9 +454,7 @@ class Plugin {
 			return;
 		}
 
-		$nonce = sanitize_text_field( wp_unslash( $_POST['webp_settings_nonce'] ) );
-
-		if ( ! wp_verify_nonce( $nonce, 'webp_settings_action' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['webp_settings_nonce'] ) ), 'webp_settings_action' ) ) {
 			return;
 		}
 
@@ -467,8 +465,8 @@ class Plugin {
 			array_combine(
 				$fields,
 				array_map(
-					function ( $field, $nonce = $nonce ) {
-						if ( wp_verify_nonce( $nonce, 'webp_settings_action' ) ) {
+					function ( $field ) {
+						if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['webp_settings_nonce'] ) ), 'webp_settings_action' ) ) {
 							return sanitize_text_field( $_POST[ $field ] ?? '' );
 						}
 					},
