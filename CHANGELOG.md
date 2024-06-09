@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.4
+* Add more Unit tests, Code coverage.
+* Fix bugs & linting issues.
+* Fix nonce related problems with settings page.
+* Update plugin folder name, file & text domain.
+* Update build, deploy-ignore listing.
+* README and change logs.
+
 ## 1.0.3
 * Update Plugin display name to __Image Converter for WebP__.
 * Update README notes and change logs.
