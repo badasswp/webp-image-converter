@@ -7,6 +7,12 @@ phpstan.neon
 phpunit.xml
 README.md
 tests
+vendor/rosell-dk/exec-with-fallback/.github
+vendor/rosell-dk/file-util/.github
+vendor/rosell-dk/image-mime-type-guesser/.github
+vendor/rosell-dk/image-mime-type-sniffer/.github
+vendor/rosell-dk/locate-binaries/.github
+vendor/rosell-dk/webp-convert/.github
 vendor/rosell-dk/exec-with-fallback/phpstan.neon
 vendor/rosell-dk/exec-with-fallback/phpunit.xml.dist
 vendor/rosell-dk/exec-with-fallback/phpunit.xml.dist.bak
@@ -25,9 +31,3 @@ vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-103-linux-x8
 vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-110-linux-x86-64
 vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-110-mac-10_15
 vendor/rosell-dk/webp-convert/src/Convert/Converters/Binaries/cwebp-060-fbsd
-vendor/rosell-dk/exec-with-fallback/.github
-vendor/rosell-dk/file-util/.github
-vendor/rosell-dk/image-mime-type-guesser/.github
-vendor/rosell-dk/image-mime-type-sniffer/.github
-vendor/rosell-dk/locate-binaries/.github
-vendor/rosell-dk/webp-convert/.github
