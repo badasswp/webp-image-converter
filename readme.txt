@@ -24,6 +24,14 @@ You may not realize it, but imagery is a large part of it. This plugin helps tak
 
 == Changelog ==
 
+= 1.0.4 =
+* Add more Unit tests, Code coverage.
+* Fix bugs & linting issues.
+* Fix nonce related problems with settings page.
+* Update plugin folder name, file & text domain.
+* Update build, deploy-ignore listing.
+* README and change logs.
+
 = 1.0.3 =
 * Update Plugin display name to Image Converter for WebP.
 * Update README and change logs.
