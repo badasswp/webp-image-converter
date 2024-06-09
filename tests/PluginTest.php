@@ -500,7 +500,7 @@ class PluginTest extends TestCase {
 		);
 
 		$_SERVER = [
-			'REQUEST_URI' => '/wp-admin/upload.php?page=image-converter-webp,
+			'REQUEST_URI' => '/wp-admin/upload.php?page=image-converter-webp',
 		];
 
 		ob_start();
