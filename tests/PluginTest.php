@@ -646,6 +646,90 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_get_webp_images_returns_only_valid_items() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		$post1       = Mockery::mock( \WP_Post::class )->makePartial();
+		$post1->ID   = 1;
+		$post1->guid = 'https://example.com/wp-content/uploads/2024/01/sample1.jpeg';
+
+		$post2       = Mockery::mock( \WP_Post::class )->makePartial();
+		$post2->ID   = 2;
+		$post2->guid = 'https://example.com/wp-content/uploads/2024/01/hello.pdf';
+
+		$post3       = Mockery::mock( \WP_Post::class )->makePartial();
+		$post3->ID   = 3;
+		$post3->guid = 'https://example.com/wp-content/uploads/2024/01/sample3.jpeg';
+
+		$post4 = null;
+
+		$post5       = Mockery::mock( \WP_Post::class )->makePartial();
+		$post5->ID   = 5;
+		$post5->guid = 'https://example.com/wp-content/uploads/2024/01/sample5.jpeg';
+
+		\WP_Mock::userFunction( 'get_posts' )
+			->once()
+			->with(
+				[
+					'post_type'      => 'attachment',
+					'posts_per_page' => -1,
+					'orderby'        => 'title',
+					'meta_query'     => [
+						[
+							'key'     => 'webp_img',
+							'compare' => 'EXISTS',
+						],
+					],
+				]
+			)
+			->andReturn( [ $post1, $post2, $post3, $post4, $post5 ] );
+
+		\WP_Mock::userFunction(
+			'wp_attachment_is_image',
+			[
+				'times' => 4,
+				'return' => function( $post ) {
+					if ( 2 === $post->ID ) {
+						return false;
+					}
+					return true;
+				}
+			]
+		);
+
+		\WP_Mock::userFunction( 'get_post_meta' )
+			->times( 3 )
+			->andReturnValues(
+				[
+					'https://example.com/wp-content/uploads/2024/01/sample1.webp',
+					'https://example.com/wp-content/uploads/2024/01/sample3.webp',
+					'https://example.com/wp-content/uploads/2024/01/sample5.webp',
+				]
+			);
+
+		$webp_images = $instance->get_webp_images();
+
+		$this->assertSame(
+			$webp_images,
+			[
+				[
+					'guid' => 'https://example.com/wp-content/uploads/2024/01/sample1.jpeg',
+					'webp' => 'https://example.com/wp-content/uploads/2024/01/sample1.webp',
+				],
+				[
+					'guid' => 'https://example.com/wp-content/uploads/2024/01/sample3.jpeg',
+					'webp' => 'https://example.com/wp-content/uploads/2024/01/sample3.webp',
+				],
+				[
+					'guid' => 'https://example.com/wp-content/uploads/2024/01/sample5.jpeg',
+					'webp' => 'https://example.com/wp-content/uploads/2024/01/sample5.webp',
+				]
+			]
+		);
+		$this->assertConditionsMet();
+	}
+
 	public function test_add_webp_meta_to_attachment_bails_out() {
 		$webp = Mockery::mock( '\WP_Error' )->makePartial();
 
