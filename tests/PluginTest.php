@@ -688,13 +688,13 @@ class PluginTest extends TestCase {
 		\WP_Mock::userFunction(
 			'wp_attachment_is_image',
 			[
-				'times' => 4,
-				'return' => function( $post ) {
+				'times'  => 4,
+				'return' => function ( $post ) {
 					if ( 2 === $post->ID ) {
 						return false;
 					}
 					return true;
-				}
+				},
 			]
 		);
 
@@ -724,7 +724,7 @@ class PluginTest extends TestCase {
 				[
 					'guid' => 'https://example.com/wp-content/uploads/2024/01/sample5.jpeg',
 					'webp' => 'https://example.com/wp-content/uploads/2024/01/sample5.webp',
-				]
+				],
 			]
 		);
 		$this->assertConditionsMet();
