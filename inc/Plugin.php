@@ -534,6 +534,7 @@ class Plugin {
 							'webp' => get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '',
 						];
 					}
+					return null;
 				},
 				$posts
 			),
