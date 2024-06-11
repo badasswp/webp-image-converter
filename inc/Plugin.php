@@ -525,16 +525,23 @@ class Plugin {
 			return [];
 		}
 
-		$images = array_map(
-			function ( $post ) {
-				if ( $post instanceof \WP_Post && wp_attachment_is_image( $post ) ) {
-					return [
-						'guid' => $post->guid,
-						'webp' => get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '',
-					];
+		$images = array_filter(
+			array_map(
+				function ( $post ) {
+					if ( $post instanceof \WP_Post && wp_attachment_is_image( $post ) ) {
+						return [
+							'guid' => $post->guid,
+							'webp' => get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '',
+						];
+					}
+				},
+				$posts
+			),
+			function( $item ) {
+				if ( ! is_null( $item ) ) {
+					return $item;
 				}
-			},
-			$posts
+			}
 		);
 
 		return $images;
