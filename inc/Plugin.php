@@ -538,7 +538,7 @@ class Plugin {
 				},
 				$posts
 			),
-			function( $item ) {
+			function ( $item ) {
 				if ( ! is_null( $item ) ) {
 					return $item;
 				}
