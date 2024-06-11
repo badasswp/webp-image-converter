@@ -531,7 +531,7 @@ class Plugin {
 					if ( $post instanceof \WP_Post && wp_attachment_is_image( $post ) ) {
 						return [
 							'guid' => $post->guid,
-							'webp' => get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '',
+							'webp' => (string) ( get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '' ),
 						];
 					}
 					return null;
@@ -539,9 +539,7 @@ class Plugin {
 				$posts
 			),
 			function ( $item ) {
-				if ( ! is_null( $item ) ) {
-					return $item;
-				}
+				return ! is_null( $item );
 			}
 		);
 
