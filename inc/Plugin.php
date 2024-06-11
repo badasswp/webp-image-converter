@@ -544,7 +544,7 @@ class Plugin {
 			}
 		);
 
-		return $images;
+		return array_values( $images );
 	}
 
 	/**
