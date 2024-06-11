@@ -619,6 +619,33 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
+	public function test_get_webp_images_returns_empty_array() {
+		$instance = Mockery::mock( Plugin::class )->makePartial();
+		$instance->shouldAllowMockingProtectedMethods();
+
+		\WP_Mock::userFunction( 'get_posts' )
+			->once()
+			->with(
+				[
+					'post_type'      => 'attachment',
+					'posts_per_page' => -1,
+					'orderby'        => 'title',
+					'meta_query'     => [
+						[
+							'key'     => 'webp_img',
+							'compare' => 'EXISTS',
+						],
+					],
+				]
+			)
+			->andReturn( [] );
+
+		$webp_images = $instance->get_webp_images();
+
+		$this->assertSame( [], $webp_images );
+		$this->assertConditionsMet();
+	}
+
 	public function test_add_webp_meta_to_attachment_bails_out() {
 		$webp = Mockery::mock( '\WP_Error' )->makePartial();
 
