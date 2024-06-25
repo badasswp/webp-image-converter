@@ -493,6 +493,17 @@ class Plugin {
 		if ( ! is_wp_error( $webp ) && ! get_post_meta( $attachment_id, 'webp_img', true ) ) {
 			update_post_meta( $attachment_id, 'webp_img', $webp );
 		}
+
+		if ( is_wp_error( $webp ) ) {
+			wp_insert_post(
+				[
+					'post_type'    => 'webp_error',
+					'post_title'   => 'WebP error log, ID - ' . $attachment_id,
+					'post_content' => (string) $webp->get_error_message(),
+					'post_status'  => 'publish',
+				]
+			);
+		}
 	}
 
 	/**
