@@ -730,13 +730,29 @@ class PluginTest extends TestCase {
 		$this->assertConditionsMet();
 	}
 
-	public function test_add_webp_meta_to_attachment_bails_out() {
+	public function test_add_webp_meta_to_attachment_bails_out_if_wp_error_is_true() {
 		$webp = Mockery::mock( '\WP_Error' )->makePartial();
 
-		\WP_Mock::userFunction( 'is_wp_error' )
+		$webp->shouldReceive( 'get_error_message' )
 			->once()
+			->andReturn( 'Fatal Error: sample.pdf is not an image...' );
+
+		\WP_Mock::userFunction( 'is_wp_error' )
+			->twice()
 			->with( $webp )
 			->andReturn( true );
+
+		\WP_Mock::userFunction( 'wp_insert_post' )
+			->once()
+			->with(
+				[
+					'post_type'    => 'webp_error',
+					'post_title'   => 'WebP error log, ID - 1',
+					'post_content' => 'Fatal Error: sample.pdf is not an image...',
+					'post_status'  => 'publish',
+				]
+			)
+			->andReturn( 100 );
 
 		$this->instance->add_webp_meta_to_attachment( $webp, 1 );
 
@@ -747,7 +763,7 @@ class PluginTest extends TestCase {
 		$webp = 'https://example.com/wp-content/uploads/2024/01/sample.webp';
 
 		\WP_Mock::userFunction( 'is_wp_error' )
-			->once()
+			->twice()
 			->with( $webp )
 			->andReturn( false );
 
