@@ -493,6 +493,17 @@ class Plugin {
 		if ( ! is_wp_error( $webp ) && ! get_post_meta( $attachment_id, 'webp_img', true ) ) {
 			update_post_meta( $attachment_id, 'webp_img', $webp );
 		}
+
+		if ( is_wp_error( $webp ) ) {
+			wp_insert_post(
+				[
+					'post_type'    => 'webp_error',
+					'post_title'   => 'WebP error log, ID - ' . $attachment_id,
+					'post_content' => (string) $webp->get_error_message(),
+					'post_status'  => 'publish',
+				]
+			);
+		}
 	}
 
 	/**
@@ -502,6 +513,7 @@ class Plugin {
 	 * associated WebP versions, if any.
 	 *
 	 * @since 1.0.2
+	 * @since 1.0.5 Optimise query using meta_query.
 	 *
 	 * @return mixed[]
 	 */
@@ -511,6 +523,12 @@ class Plugin {
 				'post_type'      => 'attachment',
 				'posts_per_page' => -1,
 				'orderby'        => 'title',
+				'meta_query'     => [
+					[
+						'key'     => 'webp_img',
+						'compare' => 'EXISTS',
+					],
+				],
 			]
 		);
 
@@ -518,19 +536,25 @@ class Plugin {
 			return [];
 		}
 
-		$images = array_map(
-			function ( $post ) {
-				if ( $post instanceof \WP_Post && wp_attachment_is_image( $post ) ) {
-					return [
-						'guid' => $post->guid,
-						'webp' => get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '',
-					];
-				}
-			},
-			$posts
+		$images = array_filter(
+			array_map(
+				function ( $post ) {
+					if ( $post instanceof \WP_Post && wp_attachment_is_image( $post ) ) {
+						return [
+							'guid' => $post->guid,
+							'webp' => (string) ( get_post_meta( (int) $post->ID, 'webp_img', true ) ?? '' ),
+						];
+					}
+					return null;
+				},
+				$posts
+			),
+			function ( $item ) {
+				return ! is_null( $item );
+			}
 		);
 
-		return $images;
+		return array_values( $images );
 	}
 
 	/**

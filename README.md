@@ -8,7 +8,9 @@ Convert your WordPress JPG/PNG images to WebP formats during runtime.
 
 ## Download
 
-Get the latest version from any of our [release tags](https://github.com/badasswp/image-converter-webp/releases).
+Download from [WordPress plugin repository](https://wordpress.org/plugins/image-converter-webp/).
+
+You can also get the latest version from any of our [release tags](https://github.com/badasswp/image-converter-webp/releases).
 
 ## Why WebP Image Converter?
 
