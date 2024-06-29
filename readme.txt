@@ -3,7 +3,7 @@ Contributors: badasswp
 Tags: webp, image, convert, jpeg, png.
 Requires at least: 4.0
 Tested up to: 6.5.3
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,6 +23,13 @@ As an internet user, you already know images can be the difference between a gre
 You may not realize it, but imagery is a large part of it. This plugin helps take care of all those concerns, by converting your WordPress images to WebP format during page load so that your site loads extremely fast, without any disruptions or downtime.
 
 == Changelog ==
+
+= 1.0.5 =
+* Add language translation.
+* Add error logging capabilities to **Settings** page.
+* Add more Unit tests, Code coverage.
+* Fix bugs & linting issues.
+* Update README notes.
 
 = 1.0.4 =
 * Add more Unit tests, Code coverage.

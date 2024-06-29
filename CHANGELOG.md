@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.5
+* Add language translation.
+* Add error logging capabilities to **Settings** page.
+* Add more Unit tests, Code coverage.
+* Fix bugs & linting issues.
+* Update README notes.
+
 ## 1.0.4
 * Add more Unit tests, Code coverage.
 * Fix bugs & linting issues.
