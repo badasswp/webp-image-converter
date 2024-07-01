@@ -6,6 +6,7 @@ phpcs.xml
 phpstan.neon
 phpunit.xml
 README.md
+assets
 tests
 vendor/rosell-dk/exec-with-fallback/.github
 vendor/rosell-dk/file-util/.github
